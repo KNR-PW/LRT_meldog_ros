@@ -2,7 +2,7 @@ name: Build ROS 2 package
 on:
   # Run this action whenever a pull request is made
   pull_request:
-  push: 
+  push:
     branches:
       - main
 
@@ -20,3 +20,4 @@ jobs:
       - uses: ros-tooling/action-ros-ci@v0.3
         with:
           package-name: meldog_logger
+          target-ros2-distro: humble
