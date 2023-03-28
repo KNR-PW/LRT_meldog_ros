@@ -21,9 +21,7 @@ class Talker(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-
     talker = Talker()
-
     rclpy.spin(talker)
     
     talker.destroy_node()
