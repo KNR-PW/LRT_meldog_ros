@@ -26,9 +26,7 @@ class Multi_Moteus_Controller_Node(Node):
         # Inicjalizacja moteusow:
 
         self.transport = moteus.Fdcanusb()
-        self.servos = {servo_id: moteus.Controller(id = servo_id, transport = self.transport) 
-                  for servo_id in self.moteus_index_list}
-        await self.transport.cycle(servo.set_stop() for servo in self.servos.values())
+        self.servos = self.multi_moteus_spawn()
 
         # Inicjalizacja publisherow, subscriberow i serwera serwisu:
 
@@ -71,8 +69,12 @@ class Multi_Moteus_Controller_Node(Node):
                                                  query = True) 
                                                  for id in self.moteus_index_list]
         self.results = await self.transport.cycle(commands)    
-        
-
+    
+    async def multi_moteus_spawn(self):
+        self.servos = {servo_id: moteus.Controller(id = servo_id, transport = self.transport) 
+                  for servo_id in self.moteus_index_list}
+        await self.transport.cycle(servo.set_stop() for servo in self.servos.values())
+    
 
 
 
