@@ -21,3 +21,8 @@ jobs:
           package-name: meldog_logger
           target-ros2-distro: humble
           skip-tests: true
+      - uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          package-name: meldog_bridge
+          target-ros2-distro: humble
+          skip-tests: true
