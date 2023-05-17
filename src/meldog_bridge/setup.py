@@ -22,7 +22,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'listener = meldog_bridge.listener:main'
+            'listener = meldog_bridge.listener:main',
+            'multi_moteus_controller = meldog_bridge.multi_moteus_controller:main',
         ],
     },
 )
