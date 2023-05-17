@@ -32,7 +32,6 @@ class Multi_Moteus_Controller_Node(Node):
         except RuntimeError:
             print("No moteus detected")
             sys.exit()
-            return
         self.servos = self.multi_moteus_spawn()
 
         # Inicjalizacja publisherow, subscriberow i serwera serwisu:
