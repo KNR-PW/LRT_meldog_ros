@@ -8,6 +8,7 @@ from meldog_interfaces.msg import MultiMoteusState
 from meldog_interfaces.msg import MoteusState
 from meldog_interfaces.msg import MoteusControl
 from meldog_interfaces.srv import MultiMoteusActive
+import sys
 
 # TODO: Pomysl o serwerze do zatrzymywania moteusa w stalej pozycji/wylaczeniu?
 
@@ -26,8 +27,12 @@ class Multi_Moteus_Controller_Node(Node):
         self.active_servos_list = []
 
         # Inicjalizacja moteusow:
-
-        self.transport = moteus.Fdcanusb()
+        try:
+            self.transport = moteus.Fdcanusb()
+        except RuntimeError:
+            print("No moteus detected")
+            sys.exit()
+            return
         self.servos = self.multi_moteus_spawn()
 
         # Inicjalizacja publisherow, subscriberow i serwera serwisu:
