@@ -12,6 +12,7 @@ import sys
 import math
 import threading
 import moteus.multiplex
+import copy
 
 # TODO: Dodaj serwer do wylaczenia moteusa (make_stop())
 
@@ -22,8 +23,8 @@ class Multi_Moteus_Controller_Node(Node):
         # Parametry:
 
         # Liczba moteusow:
-
-        self.declare_parameter("number_of_servos", 1) 
+    
+        self.declare_parameter("number_of_servos", 2) 
         self.amount_of_servos = self.get_parameter("number_of_servos").value  
         self.moteus_index_list = range(1, self.amount_of_servos+1)
 
@@ -80,15 +81,15 @@ class Multi_Moteus_Controller_Node(Node):
         # Petla sterowania moteusami:
 
         while True:
-            with self.lock:
-                target = self.current_request
+            successfully_acquired = self.lock.acquire(False)
 
-            if target:
-                await self.multi_moteus_control(self.multi_moteus_control_msg.control_array)
-                self.current_request = False
-            else:
-                await self.multi_moteus_query()
-            await asyncio.sleep(0.001)
+            if(successfully_acquired):
+                target = self.current_request
+                control_msg = copy.deepcopy(self.multi_moteus_control_msg.control_array)
+                self.lock.release()
+            
+            await self.multi_moteus_control(control_msg)
+            await asyncio.sleep(0.01)
 
     # Funkcja do publikacji stanu moteusow:
 
@@ -108,8 +109,8 @@ class Multi_Moteus_Controller_Node(Node):
 
     def multi_moteus_state(self): 
         for id in self.moteus_index_list:
-            self.state_arrays[id-1].position = self.results[id-1].values[moteus.Register.POSITION]
-            self.state_arrays[id-1].velocity = self.results[id-1].values[moteus.Register.VELOCITY]
+            self.state_arrays[id-1].position = self.results[id-1].values[moteus.Register.POSITION]*2*math.pi
+            self.state_arrays[id-1].velocity = self.results[id-1].values[moteus.Register.VELOCITY]*2*math.pi
             self.state_arrays[id-1].torque = self.results[id-1].values[moteus.Register.TORQUE]
             self.state_arrays[id-1].q_current = self.results[id-1].values[moteus.Register.Q_CURRENT]
             self.state_arrays[id-1].d_current = self.results[id-1].values[moteus.Register.D_CURRENT]
@@ -118,12 +119,12 @@ class Multi_Moteus_Controller_Node(Node):
     # Funkcja do generowania polecen do moteusow:
 
     async def multi_moteus_control(self, control_array: MultiMoteusControl.control_array):
-        commands = [self.servos[id].make_position(position=control_array[id-1].desired_position,
-                                                 velocity=control_array[id-1].desired_velocity,
-                                                 feedforward_torque=control_array[id-1].feedforward_torque, velocity_limit = 20,
+        commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi),
+                                                 velocity=control_array[id-1].desired_velocity/(2*math.pi),
+                                                 feedforward_torque=control_array[id-1].feedforward_torque, 
+                                                 velocity_limit = 0.5,
                                                  query=True)
                     for id in self.moteus_index_list]
-        print("Pozycja:" + str(control_array[0].desired_position))
         self.results = await self.transport.cycle(commands)
 
     # Funkcja do restartu moteusow:
@@ -135,7 +136,7 @@ class Multi_Moteus_Controller_Node(Node):
     # Funkcja inicjalizacji pozycji (aby moteusy mogly wysylac sygnaly):
 
     async def multi_moteus_init(self):
-        commands = [servo.make_position(position= 0, velocity_limit = 1, query=True)
+        commands = [servo.make_position(position= 0, velocity_limit = 0.2, query=True)
                     for servo in self.servos.values()]
         self.results = await self.transport.cycle(commands)
 
