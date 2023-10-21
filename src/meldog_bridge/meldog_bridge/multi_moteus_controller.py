@@ -3,16 +3,14 @@ import rclpy
 from rclpy.node import Node
 import asyncio
 import moteus
-from meldog_interfaces.msg import MultiMoteusControl
-from meldog_interfaces.msg import MultiMoteusState
-from meldog_interfaces.msg import MoteusState
-from meldog_interfaces.msg import MoteusControl
+from meldog_interfaces.msg import MultiMoteusControl, MultiMoteusState, MoteusState, MoteusControl
 from meldog_interfaces.srv import MultiMoteusActive
 import sys
 import math
 import threading
 import moteus.multiplex
 import copy
+import queue
 
 # TODO: Dodaj serwer do wylaczenia moteusa (make_stop())
 
@@ -24,18 +22,21 @@ class Multi_Moteus_Controller_Node(Node):
 
         # Liczba moteusow:
     
-        self.declare_parameter("number_of_servos", 2) 
+        self.declare_parameter("number_of_servos", 1) 
         self.amount_of_servos = self.get_parameter("number_of_servos").value  
         self.moteus_index_list = range(1, self.amount_of_servos+1)
-
         # Wiadomosci subscribera i publishera:
 
         self.multi_moteus_control_msg = MultiMoteusControl()
         self.multi_moteus_state_msg = MultiMoteusState()
 
         # Wyniki pomiaru moteusow:
-
+        self.i = 0
         self.results = []
+
+        # Czy doszlo do komunikacji na kanale control:
+
+        self.current_request = False
 
         # Lista stanow moteusow:
 
@@ -54,6 +55,10 @@ class Multi_Moteus_Controller_Node(Node):
         self.lock = threading.Lock()
         self.current_request = None
 
+        # Kolejka sygnalow sterujacych dla moteusow:
+
+        self.control_queue = queue.Queue()
+
         # Laczenie z moteusami:
 
         try:
@@ -71,25 +76,28 @@ class Multi_Moteus_Controller_Node(Node):
         # Restart moteusow:
 
         await self.multi_moteus_spawn()
-        await asyncio.sleep(0.01)
 
         # Inicjalizacja moteusow:
          
-        await self.multi_moteus_init()
-        await asyncio.sleep(0.01)
+        self.multi_moteus_init()
 
         # Petla sterowania moteusami:
 
         while True:
-            successfully_acquired = self.lock.acquire(False)
 
-            if(successfully_acquired):
+            # with self.lock:
+            if not self.control_queue.empty():
+                self.current_control_msg = self.control_queue.get()
+                print(self.control_queue.qsize())
                 target = self.current_request
-                control_msg = copy.deepcopy(self.multi_moteus_control_msg.control_array)
-                self.lock.release()
+
+            await self.multi_moteus_control(self.current_control_msg.control_array)
+            self.state_publish()
             
-            await self.multi_moteus_control(control_msg)
-            await asyncio.sleep(0.01)
+            # else:
+            #     await self.multi_moteus_query()
+            #     print("Odczytuje")
+            #     await asyncio.sleep(0.01)
 
     # Funkcja do publikacji stanu moteusow:
 
@@ -101,8 +109,9 @@ class Multi_Moteus_Controller_Node(Node):
     # Funkcja do odbierania polecen do moteusow:
 
     def control_callback(self, msg):
-        with self.lock:
-            self.multi_moteus_control_msg = msg
+        # with self.lock:
+        if not self.same_messages(self.current_control_msg.control_array, msg.control_array):
+            self.control_queue.put(msg)
             self.current_request = True
 
     # Funkcja  do uzyskiwania stanow moteusow:
@@ -122,10 +131,13 @@ class Multi_Moteus_Controller_Node(Node):
         commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi),
                                                  velocity=control_array[id-1].desired_velocity/(2*math.pi),
                                                  feedforward_torque=control_array[id-1].feedforward_torque, 
-                                                 velocity_limit = 0.5,
+                                                 velocity_limit = 40/(2*math.pi),
+                                                 maximum_torque = 0.2,
+                                                 accel_limit = 400/(2*math.pi),
                                                  query=True)
                     for id in self.moteus_index_list]
         self.results = await self.transport.cycle(commands)
+        await asyncio.sleep(0.001)
 
     # Funkcja do restartu moteusow:
 
@@ -135,17 +147,40 @@ class Multi_Moteus_Controller_Node(Node):
 
     # Funkcja inicjalizacji pozycji (aby moteusy mogly wysylac sygnaly):
 
-    async def multi_moteus_init(self):
-        commands = [servo.make_position(position= 0, velocity_limit = 0.2, query=True)
-                    for servo in self.servos.values()]
-        self.results = await self.transport.cycle(commands)
+    def multi_moteus_init(self):
+        init_msg = MultiMoteusControl()
+        init_list = []
+        single_msg = MoteusControl()
+        single_msg.desired_position = 0.0
+        single_msg.desired_velocity = 0.0
+        single_msg.feedforward_torque = 0.0
+
+        for id in self.moteus_index_list:
+            init_list.append(single_msg)
+        init_msg.control_array = init_list    
+        self.control_queue.put(init_msg)
+        # commands = [servo.make_position(position= 0,
+        #                             velocity_limit = 4,
+        #                             maximum_torque = 0.3,
+        #                             query=True)
+        #         for servo in self.servos.values()]
+        # self.results = await self.transport.cycle(commands)
+        # await asyncio.sleep(0.01)
 
     # Funkcja pozyskujaca aktualne pomiary dla moteusa:
 
     async def multi_moteus_query(self):
         commands = [servo.make_query()
-                    for servo in self.servos.values()]
+                        for servo in self.servos.values()]
         self.results = await self.transport.cycle(commands)
+        await asyncio.sleep(0.01)
+    
+    def same_messages(self, current_message_array: MultiMoteusControl.control_array, new_message_array: MultiMoteusControl.control_array):
+        all_same = True
+        for id in self.moteus_index_list:
+            current_same = current_message_array[id-1].desired_position == new_message_array[id-1].desired_position and current_message_array[id-1].desired_velocity == new_message_array[id-1].desired_velocity and current_message_array[id-1].feedforward_torque == new_message_array[id-1].feedforward_torque
+            all_same  = all_same and current_same
+        return all_same
 
 
 
@@ -160,7 +195,7 @@ async def main_coroutine():
         node.control_subscriber_ = node.create_subscription(MultiMoteusControl, "multi_moteus_control",
                                                             node.control_callback, 10)
         # self.active_server_ = self.create_service(MultiMoteusActive, "multi_moteus_active", self.active_server_callback)
-        node.timer_ = node.create_timer(0.1, node.state_publish)
+        # node.timer_ = node.create_timer(0.01, node.state_publish)
         rclpy.spin(node)
         rclpy.shutdown()
     
