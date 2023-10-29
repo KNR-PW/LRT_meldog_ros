@@ -11,8 +11,8 @@ class Demo_Single_Motor(Node):
     def __init__(self, name):
         super().__init__(name)
 
-        self.frequency = 1/5
-        self.amplitude = 8*math.pi
+        self.frequency = 1
+        self.amplitude = 1.5*2*math.pi
         self.time = 0
         self.timer_period = 0.01
         self.control_array = []
@@ -24,8 +24,8 @@ class Demo_Single_Motor(Node):
         self.timer = self.create_timer(self.timer_period, self.sinus_callback)
 
     def sinus_callback(self):
-
-        self.control_array[0].desired_position = self.amplitude *math.sin(2*math.pi*self.frequency*self.time)
+        angular_veclocity = 2*math.pi*self.frequency
+        self.control_array[0].desired_position = self.amplitude *math.sin(angular_veclocity*self.time)
         self.control_array[0].desired_velocity = 0.0
         self.control_array[0].feedforward_torque = 0.0
         self.multi_moteus_control_msg.control_array = self.control_array

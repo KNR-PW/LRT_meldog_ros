@@ -8,7 +8,7 @@ class Circle_Trajectory(Node):
         super().__init__(name)
         self.declare_parameter("position_x", 0.15)
         self.declare_parameter("position_y", 0.35)
-        self.declare_parameter("radius",0.05)
+        self.declare_parameter("radius",0.1)
         self.declare_parameter("angular_velocity",0.6)
         self.x = self.get_parameter("position_x").value
         self.y = self.get_parameter("position_y").value

@@ -88,9 +88,8 @@ class Multi_Moteus_Controller_Node(Node):
             # with self.lock:
             if not self.control_queue.empty():
                 self.current_control_msg = self.control_queue.get()
-                print(self.control_queue.qsize())
                 target = self.current_request
-
+            #print((self.state_arrays[0].position-self.current_control_msg.control_array[0].desired_position)/(self.state_arrays[0].position+0.01))
             await self.multi_moteus_control(self.current_control_msg.control_array)
             self.state_publish()
             
@@ -103,6 +102,9 @@ class Multi_Moteus_Controller_Node(Node):
 
     def state_publish(self):
         self.multi_moteus_state()
+        state_procent = abs((self.state_arrays[0].position-self.current_control_msg.control_array[0].desired_position)/self.state_arrays[0].position+0.001)
+        print("\r Dokladnosc: " + "{:.2f}".format(state_procent) + " % " + "Moment: " + "{:.2f}".format(abs(self.state_arrays[0].torque)) + " Nm" + 
+              " Queue size: " + str(self.control_queue.qsize()),end = "\r",flush = True)
         msg = self.multi_moteus_state_msg
         self.state_publisher_.publish(msg)
 
@@ -129,15 +131,15 @@ class Multi_Moteus_Controller_Node(Node):
 
     async def multi_moteus_control(self, control_array: MultiMoteusControl.control_array):
         commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi),
-                                                 velocity=control_array[id-1].desired_velocity/(2*math.pi),
-                                                 feedforward_torque=control_array[id-1].feedforward_torque, 
-                                                 velocity_limit = 40/(2*math.pi),
-                                                 maximum_torque = 0.2,
-                                                 accel_limit = 400/(2*math.pi),
+                                                 velocity= 0.0,
+                                                 feedforward_torque=0.0, 
+                                                 #velocity_limit = 150/(2*math.pi),
+                                                 maximum_torque = 0.25,
+                                                 #accel_limit = 2500/(2*math.pi),
                                                  query=True)
                     for id in self.moteus_index_list]
         self.results = await self.transport.cycle(commands)
-        await asyncio.sleep(0.001)
+        await asyncio.sleep(0.0005)
 
     # Funkcja do restartu moteusow:
 
@@ -159,13 +161,6 @@ class Multi_Moteus_Controller_Node(Node):
             init_list.append(single_msg)
         init_msg.control_array = init_list    
         self.control_queue.put(init_msg)
-        # commands = [servo.make_position(position= 0,
-        #                             velocity_limit = 4,
-        #                             maximum_torque = 0.3,
-        #                             query=True)
-        #         for servo in self.servos.values()]
-        # self.results = await self.transport.cycle(commands)
-        # await asyncio.sleep(0.01)
 
     # Funkcja pozyskujaca aktualne pomiary dla moteusa:
 
