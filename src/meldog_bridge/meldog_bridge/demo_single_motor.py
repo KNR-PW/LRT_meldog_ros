@@ -11,8 +11,8 @@ class Demo_Single_Motor(Node):
     def __init__(self, name):
         super().__init__(name)
 
-        self.frequency = 1
-        self.amplitude = 1.5*2*math.pi
+        self.frequency = 0.25
+        self.amplitude = 0.2*2*math.pi
         self.time = 0
         self.timer_period = 0.01
         self.control_array = []

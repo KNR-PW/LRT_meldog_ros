@@ -22,7 +22,7 @@ class Multi_Moteus_Controller_Node(Node):
 
         # Liczba moteusow:
     
-        self.declare_parameter("number_of_servos", 1) 
+        self.declare_parameter("number_of_servos", 2) 
         self.amount_of_servos = self.get_parameter("number_of_servos").value  
         self.moteus_index_list = range(1, self.amount_of_servos+1)
         # Wiadomosci subscribera i publishera:
@@ -120,7 +120,7 @@ class Multi_Moteus_Controller_Node(Node):
 
     def multi_moteus_state(self): 
         for id in self.moteus_index_list:
-            self.state_arrays[id-1].position = self.results[id-1].values[moteus.Register.POSITION]*2*math.pi
+            self.state_arrays[id-1].position = self.results[id-1].values[moteus.Register.POSITION]*2*math.pi/16
             self.state_arrays[id-1].velocity = self.results[id-1].values[moteus.Register.VELOCITY]*2*math.pi
             self.state_arrays[id-1].torque = self.results[id-1].values[moteus.Register.TORQUE]
             self.state_arrays[id-1].q_current = self.results[id-1].values[moteus.Register.Q_CURRENT]
@@ -130,16 +130,16 @@ class Multi_Moteus_Controller_Node(Node):
     # Funkcja do generowania polecen do moteusow:
 
     async def multi_moteus_control(self, control_array: MultiMoteusControl.control_array):
-        commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi),
+        commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi)*16,
                                                  velocity= 0.0,
                                                  feedforward_torque=0.0, 
                                                  #velocity_limit = 150/(2*math.pi),
-                                                 maximum_torque = 0.25,
+                                                 maximum_torque = 0.3,
                                                  #accel_limit = 2500/(2*math.pi),
                                                  query=True)
                     for id in self.moteus_index_list]
         self.results = await self.transport.cycle(commands)
-        await asyncio.sleep(0.0005)
+        #await asyncio.sleep(0.0001)
 
     # Funkcja do restartu moteusow:
 

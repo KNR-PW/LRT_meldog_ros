@@ -6,10 +6,10 @@ import math
 class Circle_Trajectory(Node):
     def __init__(self,name):
         super().__init__(name)
-        self.declare_parameter("position_x", 0.15)
-        self.declare_parameter("position_y", 0.35)
-        self.declare_parameter("radius",0.1)
-        self.declare_parameter("angular_velocity",0.6)
+        self.declare_parameter("position_x", 0.0)
+        self.declare_parameter("position_y", 0.3)
+        self.declare_parameter("radius",0.15)
+        self.declare_parameter("angular_velocity",3)
         self.x = self.get_parameter("position_x").value
         self.y = self.get_parameter("position_y").value
         self.r = self.get_parameter("radius").value
@@ -20,15 +20,15 @@ class Circle_Trajectory(Node):
         self.end_effector_position = Vector3()
 
         self.publisher_ = self.create_publisher(Vector3, 'end_effector_trajectory', 10)
-        timer_period = 0.01  # seconds
-        self.timer = self.create_timer(timer_period, self.trajectory_callback)
+        self.timer_period = 0.015  # seconds
+        self.timer = self.create_timer(self.timer_period, self.trajectory_callback)
 
     def trajectory_callback(self):
         self.end_effector_position.x = self.x + self.r*math.cos(self.w*self.t)
-        self.end_effector_position.y = self.x + self.r*math.sin(self.w*self.t)
+        self.end_effector_position.y = self.y + self.r*math.sin(self.w*self.t)
         self.end_effector_position.z = 0.0
+        self.t += self.timer_period
         self.publisher_.publish(self.end_effector_position)
-        self.t +=0.01
         if(self.t > 2*math.pi/self.w):
             self.t = 0
 

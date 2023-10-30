@@ -19,7 +19,7 @@ class Leg_Inverse_Kinematics_Solver(Node):
         self.length_2 = self.get_parameter("length_2").value
         self.gear_ratio = self.get_parameter("gear_ratio").value
         self.position = [0,0]
-        self.end_effector_vector = [0.15, 0.35]
+        self.end_effector_vector = [0.0, 0.35]
 
         self.multi_moteus_control_msg = MultiMoteusControl()
         self.control_array = []
@@ -28,7 +28,7 @@ class Leg_Inverse_Kinematics_Solver(Node):
 
         self.publisher = self.create_publisher(MultiMoteusControl,'multi_moteus_control',10);
 
-        timer_period = 0.01
+        timer_period = 0.015
         self.timer = self.create_timer(timer_period, self.inverse_kinematics_callback)
 
         self.subscription = self.create_subscription(Vector3,"end_effector_trajectory",self.listener_callback,10)
