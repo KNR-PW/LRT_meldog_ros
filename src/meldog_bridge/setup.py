@@ -28,6 +28,8 @@ setup(
             'circle_trajectory = meldog_bridge.circle_trajectory:main',
             'demo_single_motor = meldog_bridge.demo_single_motor:main',
             'ploter_demo = meldog_bridge.ploter:main',
+            'multi_moteus_controller_new = meldog_bridge.multi_moteus_controller_new:main',
+            'linear_trajectory = meldog_bridge.linear_trajectory:main',
         ],
     },
 )

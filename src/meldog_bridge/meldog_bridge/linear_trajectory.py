@@ -9,7 +9,7 @@ class Circle_Trajectory(Node):
         self.declare_parameter("position_x", 0.0)
         self.declare_parameter("position_y", 0.3)
         self.declare_parameter("radius",0.15)
-        self.declare_parameter("angular_velocity",5)
+        self.declare_parameter("angular_velocity",3)
         self.x = self.get_parameter("position_x").value
         self.y = self.get_parameter("position_y").value
         self.r = self.get_parameter("radius").value
@@ -24,7 +24,7 @@ class Circle_Trajectory(Node):
         self.timer = self.create_timer(self.timer_period, self.trajectory_callback)
 
     def trajectory_callback(self):
-        self.end_effector_position.x = self.x + self.r*math.cos(self.w*self.t)
+        self.end_effector_position.x = 0.0
         self.end_effector_position.y = self.y + self.r*math.sin(self.w*self.t)
         self.end_effector_position.z = 0.0
         self.t += self.timer_period
