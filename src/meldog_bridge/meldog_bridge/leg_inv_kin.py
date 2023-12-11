@@ -43,10 +43,10 @@ class Leg_Inverse_Kinematics_Solver(Node):
         self.position[1] = math.atan2(b,a)
         self.position[0]= self.position[1] + w
 
-        x_new = self.length_1*math.cos(self.position[0]+math.pi/2) + self.length_2*math.cos(self.position[1]+math.pi/2)
-        y_new = self.length_1*math.sin(self.position[0]+math.pi/2) + self.length_2*math.sin(self.position[1]+math.pi/2)
-        print(x_new)
-        print(y_new)
+        # x_new = self.length_1*math.cos(self.position[0]+math.pi/2) + self.length_2*math.cos(self.position[1]+math.pi/2)
+        # y_new = self.length_1*math.sin(self.position[0]+math.pi/2) + self.length_2*math.sin(self.position[1]+math.pi/2)
+        # print(x_new)
+        # print(y_new)
         
 
     def inverse_kinematics_callback(self):
