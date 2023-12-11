@@ -11,6 +11,7 @@ import threading
 import moteus.multiplex
 import copy
 import queue
+import time
 
 # TODO: Dodaj serwer do wylaczenia moteusa (make_stop())
 
@@ -33,6 +34,7 @@ class Multi_Moteus_Controller_Node(Node):
         # Wyniki pomiaru moteusow:
         self.i = 0
         self.results = []
+        self.current_time = time.clock_gettime_ns()
 
         # Czy doszlo do komunikacji na kanale control:
 
@@ -110,14 +112,17 @@ class Multi_Moteus_Controller_Node(Node):
     # Funkcja do generowania polecen do moteusow:
 
     async def multi_moteus_control(self, control_array: MultiMoteusControl.control_array):
+        
         commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi)*16,
-                                                 velocity= 0,
+                                                 velocity= (control_array[id-1].desired_position-self.state_array[id-1].position)/(2*math.pi)*16
+                                                 /(time.clock_gettime_ns()-self.current_time)*(10.0)^9,
                                                  feedforward_torque=0.0, 
                                                  #velocity_limit = 150/(2*math.pi),
                                                  maximum_torque = 0.2,
                                                  #accel_limit = 2500/(2*math.pi),
                                                  query=True)
                     for id in self.moteus_index_list]
+        self.current_time = time.clock_gettime_ns
         self.results = await self.transport.cycle(commands)
         #await asyncio.sleep(0.0001)
 
