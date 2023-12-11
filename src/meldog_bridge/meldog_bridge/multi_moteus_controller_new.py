@@ -114,8 +114,7 @@ class Multi_Moteus_Controller_Node(Node):
     async def multi_moteus_control(self, control_array: MultiMoteusControl.control_array):
         
         commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi)*16,
-                                                 velocity= (control_array[id-1].desired_position-self.state_array[id-1].position)/(2*math.pi)*16
-                                                 /(time.clock_gettime_ns()-self.current_time)*(10.0)^9,
+                                                 velocity= 0,
                                                  feedforward_torque=0.0, 
                                                  #velocity_limit = 150/(2*math.pi),
                                                  maximum_torque = 0.2,
