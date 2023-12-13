@@ -7,11 +7,8 @@ from meldog_interfaces.msg import MultiMoteusControl, MultiMoteusState, MoteusSt
 from meldog_interfaces.srv import MultiMoteusActive
 import sys
 import math
-import threading
 import moteus.multiplex
-import copy
-import queue
-import time
+
 
 # TODO: Dodaj serwer do wylaczenia moteusa (make_stop())
 
@@ -34,7 +31,6 @@ class Multi_Moteus_Controller_Node(Node):
         # Wyniki pomiaru moteusow:
         self.i = 0
         self.results = []
-        self.current_time = time.clock_gettime_ns()
 
         # Czy doszlo do komunikacji na kanale control:
 
@@ -86,11 +82,7 @@ class Multi_Moteus_Controller_Node(Node):
 
     def state_publish(self):
         self.multi_moteus_state()
-        state_procent = abs((self.state_arrays[0].position-self.multi_moteus_control_msg.control_array[0].desired_position)/self.state_arrays[0].position+0.01)
-        print("\r Dokladnosc: " + "{:.2f}".format(state_procent) + " % " + "Moment: " + "{:.2f}".format(abs(self.state_arrays[0].torque)) + " Nm"
-              ,end = "\r",flush = True)
-        msg = self.multi_moteus_state_msg
-        self.state_publisher_.publish(msg)
+        self.state_publisher_.publish(self.multi_moteus_state_msg)
 
     # Funkcja do odbierania polecen do moteusow:
 
@@ -114,14 +106,13 @@ class Multi_Moteus_Controller_Node(Node):
     async def multi_moteus_control(self, control_array: MultiMoteusControl.control_array):
         
         commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi)*16,
-                                                 velocity= 0,
+                                                 velocity= 0.0,
                                                  feedforward_torque=0.0, 
                                                  #velocity_limit = 150/(2*math.pi),
                                                  maximum_torque = 0.2,
                                                  #accel_limit = 2500/(2*math.pi),
                                                  query=True)
                     for id in self.moteus_index_list]
-        self.current_time = time.clock_gettime_ns
         self.results = await self.transport.cycle(commands)
         #await asyncio.sleep(0.0001)
 
