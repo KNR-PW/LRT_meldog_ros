@@ -20,7 +20,7 @@ class Multi_Moteus_Controller_Node(Node):
 
         # Liczba moteusow:
     
-        self.declare_parameter("number_of_servos", 1) 
+        self.declare_parameter("number_of_servos", 2) 
         self.amount_of_servos = self.get_parameter("number_of_servos").value  
         self.moteus_index_list = range(1, self.amount_of_servos+1)
         # Wiadomosci subscribera i publishera:
