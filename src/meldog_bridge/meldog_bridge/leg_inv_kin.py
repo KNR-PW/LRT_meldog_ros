@@ -20,6 +20,7 @@ class Leg_Inverse_Kinematics_Solver(Node):
         self.gear_ratio = self.get_parameter("gear_ratio").value
         self.position = [0,0]
         self.end_effector_vector = [0.0, 0.35]
+        self.start_iterations = 1
 
         self.multi_moteus_control_msg = MultiMoteusControl()
         self.control_array = []
@@ -34,9 +35,14 @@ class Leg_Inverse_Kinematics_Solver(Node):
         self.subscription = self.create_subscription(Vector3,"end_effector_trajectory",self.listener_callback,10)
 
     def inverse_kinematics_solver(self):
-        x = self.end_effector_vector[0]
-        y = self.end_effector_vector[1]
-
+        if(self.start_iterations == 100):
+            x = self.end_effector_vector[0]
+            y = self.end_effector_vector[1]
+        else:
+            self.start_iterations = self.start_iterations+1
+            x = 0
+            y = -(0.5 - self.end_effector_vector[1])/(99)*self.start_iterations + 0.5 + (0.5 - self.end_effector_vector[1])/(99)
+        
         w = -math.acos((x**2+y**2-self.length_1**2-self.length_2**2)/(2*self.length_1*self.length_2))
         a = ((self.length_1*math.cos(w)+self.length_2)*y - self.length_1*math.sin(w)*x)/(x**2+y**2)
         b = -((self.length_1*math.cos(w)+self.length_2)*x + self.length_1*math.sin(w)*y)/(x**2+y**2)

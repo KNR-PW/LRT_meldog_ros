@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
+from rclpy.duration import Duration
 import asyncio
 import moteus
 from meldog_interfaces.msg import MultiMoteusControl, MultiMoteusState, MoteusState, MoteusControl
@@ -23,6 +24,7 @@ class Multi_Moteus_Controller_Node(Node):
         self.declare_parameter("number_of_servos", 2) 
         self.amount_of_servos = self.get_parameter("number_of_servos").value  
         self.moteus_index_list = range(1, self.amount_of_servos+1)
+        self.clock = self.get_clock()
         # Wiadomosci subscribera i publishera:
 
         self.multi_moteus_control_msg = MultiMoteusControl()
@@ -72,7 +74,7 @@ class Multi_Moteus_Controller_Node(Node):
 
         # Inicjalizacja moteusow:
          
-        self.multi_moteus_init()
+        await self.multi_moteus_init()
 
     async def run_controller(self):
             await self.multi_moteus_control(self.multi_moteus_control_msg.control_array)
@@ -124,7 +126,17 @@ class Multi_Moteus_Controller_Node(Node):
 
     # Funkcja inicjalizacji pozycji (aby moteusy mogly wysylac sygnaly):
 
-    def multi_moteus_init(self):
+    async def multi_moteus_init(self):
+        commands = [self.servos[id].make_position(position=0.0,
+                                                 velocity= 0.0,
+                                                 feedforward_torque=0.0, 
+                                                 velocity_limit = 50/(2*math.pi),
+                                                 maximum_torque = 0.1,
+                                                 accel_limit = 100/(2*math.pi),
+                                                 query=True)
+                    for id in self.moteus_index_list]
+        await self.transport.cycle(commands)
+        self.clock.sleep_for(Duration(nanoseconds = 10**6))    
         init_msg = MultiMoteusControl()
         init_list = []
         single_msg = MoteusControl()
@@ -134,7 +146,7 @@ class Multi_Moteus_Controller_Node(Node):
 
         for id in self.moteus_index_list:
             init_list.append(single_msg)
-        init_msg.control_array = init_list    
+        init_msg.control_array = init_list
         self.multi_moteus_control_msg = init_msg
     # Funkcja pozyskujaca aktualne pomiary dla moteusa:
 
@@ -142,7 +154,7 @@ class Multi_Moteus_Controller_Node(Node):
         commands = [servo.make_query()
                         for servo in self.servos.values()]
         self.results = await self.transport.cycle(commands)
-        await asyncio.sleep(0.01)
+        #await asyncio.sleep(0.01)
 
 
 
