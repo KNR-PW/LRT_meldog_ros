@@ -127,10 +127,11 @@ class Multi_Moteus_Controller_Node(Node):
     # Funkcja inicjalizacji pozycji (aby moteusy mogly wysylac sygnaly):
 
     async def multi_moteus_init(self):
+
         commands = [self.servos[id].make_position(position=0.0,
                                                  velocity= 0.0,
                                                  feedforward_torque=0.0, 
-                                                 velocity_limit = 50/(2*math.pi),
+                                                 velocity_limit = 70/(2*math.pi),
                                                  maximum_torque = 0.1,
                                                  accel_limit = 100/(2*math.pi),
                                                  query=True)
