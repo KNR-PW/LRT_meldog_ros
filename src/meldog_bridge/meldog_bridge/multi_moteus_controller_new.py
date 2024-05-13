@@ -109,7 +109,7 @@ class Multi_Moteus_Controller_Node(Node):
         
         commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi)*16,
                                                  velocity= 0.0,
-                                                 feedforward_torque=0.0, 
+                                                 feedforward_torque=control_array[id-1].feedforward_torque/16.0, 
                                                  #velocity_limit = 150/(2*math.pi),
                                                  maximum_torque = 0.2,
                                                  #accel_limit = 2500/(2*math.pi),
@@ -131,7 +131,7 @@ class Multi_Moteus_Controller_Node(Node):
         commands = [self.servos[id].make_position(position=0.0,
                                                  velocity= 0.0,
                                                  feedforward_torque=0.0, 
-                                                 velocity_limit = 70/(2*math.pi),
+                                                 velocity_limit = 30/(2*math.pi),
                                                  maximum_torque = 0.1,
                                                  accel_limit = 100/(2*math.pi),
                                                  query=True)

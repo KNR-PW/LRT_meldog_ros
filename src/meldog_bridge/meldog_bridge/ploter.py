@@ -15,7 +15,7 @@ class Ploter(Node):
 
         self.control_subscriber = self.create_subscription(MultiMoteusControl,'multi_moteus_control',self.plot_control,10)
         self.state_subscriber = self.create_subscription(MultiMoteusState,'multi_moteus_state',self.plot_state,10)
-        self.timer = self.create_timer(0.04, self.update_plot)
+        self.timer = self.create_timer(0.01, self.update_plot)
 
         self.time_list = []
         self.control_array = []
@@ -29,10 +29,10 @@ class Ploter(Node):
         
 
     def plot_control(self, msg):
-            self.control_value = msg.control_array[0].desired_position
+            self.control_value = msg.control_array[0].feedforward_torque
         
     def plot_state(self, msg):       
-            self.state_value = msg.state_array[0].position
+            self.state_value = msg.state_array[0].torque
     def update_plot(self):
          self.state_array.append(self.state_value)
          self.control_array.append(self.control_value)
@@ -44,7 +44,7 @@ class Ploter(Node):
         data_list_1 = data_list_1[-100:]
         data_list_2 = data_list_2[-100:]
         self.ax.clear()
-        self.ax.set_ylim([-10, 10])
+        self.ax.set_ylim([-20, 20])
         self.ax.set_ylabel("Pozycja [rad]")
         self.ax.plot(data_list_1, label = "ROS")
         self.ax.plot(data_list_2, label = "Silnik")
@@ -67,7 +67,7 @@ def main(args=None):
     ros_thread = threading.Thread(target=start_ros)
     ros_thread.start()
     #ani_1 = animation.FuncAnimation(node.figure, node.animate_1, fargs=(node.relative_error_array), interval = 50)
-    ani_2 = animation.FuncAnimation(node.figure, node.animate_2, fargs=(node.control_array, node.state_array), interval = 10)
+    ani_2 = animation.FuncAnimation(node.figure, node.animate_2, fargs=(node.control_array, node.state_array), interval = 1)
     plt.show()
 
     

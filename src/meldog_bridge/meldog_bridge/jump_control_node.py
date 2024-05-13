@@ -29,7 +29,7 @@ class Optimal_Jump_Controler_Node(Node):
         self.subscription = self.create_subscription(MultiMoteusState,"multi_moteus_state",self.listener_callback,10)
 
 
-        df = pandas.read_csv('/home/meldog/meldog-ros/src/meldog_bridge/meldog_bridge/jump_data_St_nice.csv')
+        df = pandas.read_csv('~/KNR/meldog-ros/src/meldog_bridge/meldog_bridge/jump_data_St_nice.csv')
 
         # PIERWSZY SKOK
         self.first_jump_time = df['time_first_jump'].to_numpy()
@@ -75,10 +75,11 @@ class Optimal_Jump_Controler_Node(Node):
         self.critical_velocities = self.critical_velocities[~numpy.isnan(self.critical_velocities)]
         self.critital_velocities_factor = 1
 
-        timer_period = 0.00001
+        timer_period = 0.000001
         self.timer = self.create_timer(timer_period, self.jumping_control)
 
         self.clock = self.get_clock()
+        self.time_prew = self.clock.now()
             
 
     def publish_control(self):
@@ -120,12 +121,12 @@ class Optimal_Jump_Controler_Node(Node):
         i = 0
         while(i < (len(self.first_jump_time)-1)):
             self.change_control_message(self.first_jump_position_1[i], self.first_jump_position_2[i],
-                                        self.first_jump_torque_1[i], self.first_jump_torque_2[i])
+                                        torque_1 = self.first_jump_torque_1[i], torque_2 = self.first_jump_torque_2[i])
             self.publish_control()
             self.clock.sleep_for(Duration(nanoseconds = (self.first_jump_time[i+1]-self.first_jump_time[i])*10**9))
             i += 1
         self.change_control_message(self.first_jump_position_1[i], self.first_jump_position_2[i],
-                                        self.first_jump_torque_1[i], self.first_jump_torque_2[i])
+                                        torque_1 = self.first_jump_torque_1[i], torque_2 = self.first_jump_torque_2[i])
         self.publish_control()
         self.state = self.FLY
         return
@@ -136,12 +137,12 @@ class Optimal_Jump_Controler_Node(Node):
         i = 0
         while(i < (len(self.fly_time)-1) and not self.leg_on_ground()):
             self.change_control_message(self.fly_position_1[i], self.fly_position_2[i],
-                                        self.fly_torque_1[i], self.fly_torque_2[i])
+                                        torque_1 = self.fly_torque_1[i], torque_2 = self.fly_torque_2[i])
             self.clock.sleep_for(Duration(nanoseconds = (self.fly_time[i+1]-self.fly_time[i])*10**9))
             self.publish_control()
             i += 1
         self.change_control_message(self.fly_position_1[i], self.fly_position_2[i],
-                                        self.fly_torque_1[i], self.fly_torque_2[i])
+                                        torque_1 = self.fly_torque_1[i], torque_2 = self.fly_torque_2[i])
         self.publish_control()
         if(not self.leg_on_ground()):
             self.clock.sleep_for(Duration(nanoseconds = 5*10**6))
@@ -151,14 +152,16 @@ class Optimal_Jump_Controler_Node(Node):
     def jump_control(self):
         print("JUMPING PHASE!")
         i = 0
+        self.time_now = self.clock.now()
+        print(f"Czas skoku - {(self.time_now-self.time_prew)/10**9}")
         while(i < (len(self.jump_time)-1)):
             self.change_control_message(self.jump_position_1[i], self.jump_position_2[i],
-                                        self.jump_torque_1[i], self.jump_torque_2[i])
+                                        torque_1 = self.jump_torque_1[i], torque_2 = self.jump_torque_2[i])
             self.publish_control()
             self.clock.sleep_for(Duration(nanoseconds = (self.jump_time[i+1]-self.jump_time[i])*10**9))
             i += 1
         self.change_control_message(self.jump_position_1[i], self.jump_position_2[i], 
-                                        self.jump_torque_1[i], self.jump_torque_2[i])
+                                        torque_1 = self.jump_torque_1[i], torque_2 = self.jump_torque_2[i])
         self.publish_control()
         self.state = self.FLY
         return
