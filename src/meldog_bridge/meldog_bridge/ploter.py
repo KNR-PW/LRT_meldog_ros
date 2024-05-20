@@ -67,7 +67,7 @@ def main(args=None):
     ros_thread = threading.Thread(target=start_ros)
     ros_thread.start()
     #ani_1 = animation.FuncAnimation(node.figure, node.animate_1, fargs=(node.relative_error_array), interval = 50)
-    ani_2 = animation.FuncAnimation(node.figure, node.animate_2, fargs=(node.control_array, node.state_array), interval = 1)
+    ani_2 = animation.FuncAnimation(node.figure, node.animate_2, fargs=(node.control_array, node.state_array), interval = 10)
     plt.show()
 
     
