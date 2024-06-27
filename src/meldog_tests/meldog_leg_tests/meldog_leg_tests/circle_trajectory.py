@@ -12,31 +12,31 @@ class Circle_Trajectory(Node):
         self.declare_parameter("angular_velocity",5)
         self.x = self.get_parameter("position_x").value
         self.y = self.get_parameter("position_y").value
-        self.r = self.get_parameter("radius").value
-        self.w = self.get_parameter("angular_velocity").value
+        self.radius = self.get_parameter("radius").value
+        self.angular_velocity = self.get_parameter("angular_velocity").value
 
         self.t = 0
 
         self.end_effector_position = Vector3()
 
         self.publisher_ = self.create_publisher(Vector3, 'end_effector_trajectory', 10)
-        self.timer_period = 0.005  # seconds
+        self.timer_period = 0.01  # seconds
         self.timer = self.create_timer(self.timer_period, self.trajectory_callback)
 
     def trajectory_callback(self):
-        self.end_effector_position.x = self.x + self.r*math.cos(self.w*self.t)
-        self.end_effector_position.y = self.y + self.r*math.sin(self.w*self.t)
+        self.end_effector_position.x = self.x + self.radius*math.cos(self.angular_velocity*self.t)
+        self.end_effector_position.y = self.y + self.radius*math.sin(self.angular_velocity*self.t)
         self.end_effector_position.z = 0.0
         self.t += self.timer_period
         self.publisher_.publish(self.end_effector_position)
-        if(self.t > 2*math.pi/self.w):
+        if(self.t > 2*math.pi/self.angular_velocity):
             self.t = 0
 
 
 
 def main(args=None):
     rclpy.init(args=args)
-    node = Circle_Trajectory("circle_traj")
+    node = Circle_Trajectory("circle_trajectory")
     rclpy.spin(node)
 
     node.destroy_node()

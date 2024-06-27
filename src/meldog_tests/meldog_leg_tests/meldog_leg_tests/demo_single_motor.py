@@ -14,7 +14,7 @@ class Demo_Single_Motor(Node):
         self.frequency = 0.25
         self.amplitude = 1*2*math.pi
         self.time = 0
-        self.timer_period = 0.001
+        self.timer_period = 0.01
         self.control_array = []
         self.control_array.append(MoteusControl())
         self.multi_moteus_control_msg = MultiMoteusControl()
