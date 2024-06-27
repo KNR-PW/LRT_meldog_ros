@@ -30,7 +30,7 @@ def generate_launch_description():
     )
     linear_trajectory = Node(
         package = 'meldog_leg_tests',
-        executable = 'linear_trajectory',
+        executable = 'circle_trajectory',
         parameters = [{
             'start_position': START_POSITION,
             'radius': RADIUS,
