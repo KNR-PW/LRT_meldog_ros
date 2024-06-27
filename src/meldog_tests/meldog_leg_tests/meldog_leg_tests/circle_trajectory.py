@@ -19,7 +19,7 @@ class Circle_Trajectory(Node):
 
         self.end_effector_position = Vector3()
 
-        self.publisher_ = self.create_publisher(Vector3, 'end_effector_trajectory', 10)
+        self.publisher_ = self.create_publisher(Vector3, 'end_effector_desired_trajectory', 10)
         self.timer_period = 0.01  # seconds
         self.timer = self.create_timer(self.timer_period, self.trajectory_callback)
 

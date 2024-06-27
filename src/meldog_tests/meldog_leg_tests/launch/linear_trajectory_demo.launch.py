@@ -5,7 +5,6 @@ from launch_ros.actions import Node
 
 LENGTH_1 = 0.225
 LENGTH_2 = 0.225
-GEAR_RATIO = 16
 START_POSITION = [0.0, -0.30]
 RADIUS = 0.1
 ANGULAR_VALOCITY = 3.14
@@ -16,8 +15,16 @@ def generate_launch_description():
         parameters = [{
             'length_1': LENGTH_1,
             'length_2': LENGTH_2,
-            'gear_ratio': GEAR_RATIO,
             'start_position': START_POSITION
+        }],
+        output = 'screen'
+    )
+    forward_kinematics = Node(
+        package = 'meldog_leg_tests',
+        executable = 'forward_kinematics_2D',
+        parameters = [{
+            'length_1': LENGTH_1,
+            'length_2': LENGTH_2
         }],
         output = 'screen'
     )
@@ -33,5 +40,5 @@ def generate_launch_description():
     )
 
     nodes = [inverse_kinematics, linear_trajectory]
-    ld = LaunchDescription()
-    ld.add_action()
+    ld = LaunchDescription(nodes)
+    return ld

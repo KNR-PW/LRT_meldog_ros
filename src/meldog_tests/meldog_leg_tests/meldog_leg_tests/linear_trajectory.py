@@ -11,11 +11,13 @@ class Linear_Trajectory(Node):
         super().__init__(name)
         self.declare_parameter("start_position", [0.0, -0.35])
         self.declare_parameter("radius",0.125)
-        self.declare_parameter("angular_velocity",6)
+        self.declare_parameter("angular_velocity",1.0)
         self.x = self.get_parameter("start_position").value[0]
         self.y = self.get_parameter("start_position").value[1]
         self.radius = self.get_parameter("radius").value
         self.angular_velocity = self.get_parameter("angular_velocity").value
+
+        self.logger = self.get_logger()
 
         self.clock = self.get_clock()
         self.time_prev = self.clock.now()
@@ -30,7 +32,7 @@ class Linear_Trajectory(Node):
 
 
         self.wait_for_solver()
-        self.publisher_ = self.create_publisher(Vector3, 'end_effector_trajectory', 10)
+        self.publisher_ = self.create_publisher(Vector3, 'end_effector_desired_trajectory', 10)
         self.timer_period = 0.01  # seconds
         self.timer = self.create_timer(self.timer_period, self.trajectory_callback)
 
@@ -43,13 +45,15 @@ class Linear_Trajectory(Node):
         self.end_effector_position.z = 0.0
         if(cycle_duration > self.cycle_period):
             self.time_prev = self.time_now
+            self.logger.info("Cycle ended!")
         self.publisher_.publish(self.end_effector_position)
 
     def wait_for_solver(self): # Czeka chwilę, aż noga ustawi się w pozycji startowej
-        wait_time = Time(seconds = 1)
+        wait_time = Duration(seconds = 1)
         while(wait_time > (self.clock.now() - self.time_prev)):
             self.clock.sleep_for(Duration(nanoseconds = 10**8))
-        
+        self.logger.info("Trajectory generation has started!")
+        self.time_prev = self.clock.now()
 
 def main(args=None):
     rclpy.init(args=args)
