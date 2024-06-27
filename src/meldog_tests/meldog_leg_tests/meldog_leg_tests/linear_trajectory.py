@@ -52,7 +52,7 @@ class Linear_Trajectory(Node):
         wait_time = Duration(seconds = 1)
         while(wait_time > (self.clock.now() - self.time_prev)):
             self.clock.sleep_for(Duration(nanoseconds = 10**8))
-        self.logger.info("Trajectory generation has started!")
+        self.logger.info("Linear trajectory generation has started!")
         self.time_prev = self.clock.now()
 
 def main(args=None):
