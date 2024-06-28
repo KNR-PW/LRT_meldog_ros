@@ -20,11 +20,14 @@ class Multi_Moteus_Controller_Node(Node):
         # Parametry:
 
         # Liczba moteusow:
-    
+
         self.declare_parameter("number_of_servos", 2) 
         self.amount_of_servos = self.get_parameter("number_of_servos").value  
+        self.declare_parameter("gear_ratio", 16)
+        self.gear_ratio = self.get_parameter("gear_ratio")
         self.moteus_index_list = range(1, self.amount_of_servos+1)
         self.clock = self.get_clock()
+        self.logger = self.get_logger()
         # Wiadomosci subscribera i publishera:
 
         self.multi_moteus_control_msg = MultiMoteusControl()
@@ -55,11 +58,11 @@ class Multi_Moteus_Controller_Node(Node):
         try:
             self.transport = moteus.Fdcanusb()
         except RuntimeError:
-            print("No moteus detected")
+            self.logger.error("Cannot connect to moteuses!")
             sys.exit()
         self.servos = {servo_id: moteus.Controller(id=servo_id, transport=self.transport)
                        for servo_id in self.moteus_index_list}
-        
+        self.logger.info("Successfully connected to moteuses!")
         #Inicjalizacja publisherow i subscriberow:
         
         self.state_publisher_ = self.create_publisher(
@@ -96,9 +99,9 @@ class Multi_Moteus_Controller_Node(Node):
 
     def multi_moteus_state(self): 
         for id in self.moteus_index_list:
-            self.state_arrays[id-1].position = self.results[id-1].values[moteus.Register.POSITION]*2*math.pi/16
-            self.state_arrays[id-1].velocity = self.results[id-1].values[moteus.Register.VELOCITY]*2*math.pi
-            self.state_arrays[id-1].torque = self.results[id-1].values[moteus.Register.TORQUE]
+            self.state_arrays[id-1].position = self.results[id-1].values[moteus.Register.POSITION]*2*math.pi/self.gear_ratio
+            self.state_arrays[id-1].velocity = self.results[id-1].values[moteus.Register.VELOCITY]*2*math.pi/self.gear_ratio
+            self.state_arrays[id-1].torque = self.results[id-1].values[moteus.Register.TORQUE]*self.gear_ratio
             self.state_arrays[id-1].q_current = self.results[id-1].values[moteus.Register.Q_CURRENT]
             self.state_arrays[id-1].d_current = self.results[id-1].values[moteus.Register.D_CURRENT]
         self.multi_moteus_state_msg.state_array = self.state_arrays
@@ -107,9 +110,9 @@ class Multi_Moteus_Controller_Node(Node):
 
     async def multi_moteus_control(self, control_array: MultiMoteusControl.control_array):
         
-        commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi)*16,
+        commands = [self.servos[id].make_position(position=control_array[id-1].desired_position/(2*math.pi)*self.gear_ratio,
                                                  velocity= 0.0,
-                                                 feedforward_torque=control_array[id-1].feedforward_torque/16.0, 
+                                                 feedforward_torque=control_array[id-1].feedforward_torque/self.gear_ratio, 
                                                  #velocity_limit = 150/(2*math.pi),
                                                  maximum_torque = 0.2,
                                                  #accel_limit = 2500/(2*math.pi),
