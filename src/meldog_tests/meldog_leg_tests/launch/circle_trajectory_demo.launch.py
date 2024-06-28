@@ -3,11 +3,11 @@ from launch_ros.actions import Node
 
 
 
-LENGTH_1 = 0.225
-LENGTH_2 = 0.225
-START_POSITION = [0.0, -0.30]
-RADIUS = 0.1
-ANGULAR_VALOCITY = 3.14
+LENGTH_1 = 0.225                    # Length of body one [m]
+LENGTH_2 = 0.225                    # Length of body two [m]
+START_POSITION = [0.0, -0.30]       # Start position (-y axis) [m]
+RADIUS = 0.1                        # Radius of circle [m]
+ANGULAR_VALOCITY = 3.14             # Angular velocity of motion [rad/s]
 def generate_launch_description():
     inverse_kinematics = Node(
         package = 'meldog_leg_tests',
