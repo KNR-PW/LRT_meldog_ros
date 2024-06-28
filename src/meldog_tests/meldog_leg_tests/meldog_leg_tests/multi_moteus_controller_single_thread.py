@@ -11,9 +11,6 @@ import math
 import moteus.multiplex
 
 
-# TODO: Dodaj serwer do wylaczenia moteusa (make_stop())
-
-
 class Multi_Moteus_Controller_Node(Node):
     def __init__(self, name):
         super().__init__(name)
@@ -78,7 +75,7 @@ class Multi_Moteus_Controller_Node(Node):
         # Inicjalizacja moteusow:
          
         await self.multi_moteus_init()
-
+        self.logger.info("Controllers are activate!")
     async def run_controller(self):
             await self.multi_moteus_control(self.multi_moteus_control_msg.control_array)
             self.state_publish()
