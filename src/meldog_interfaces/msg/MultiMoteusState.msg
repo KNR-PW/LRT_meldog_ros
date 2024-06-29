@@ -1,1 +1,0 @@
-MoteusState[] state_array

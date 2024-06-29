@@ -1,1 +1,0 @@
-MoteusControl[] control_array
