@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from meldog_interfaces.msg import MultiMoteusState
+from meldog_interfaces_tests.msg import MultiMoteusState
 from geometry_msgs.msg import Vector3
 import math
 import matplotlib.pyplot as plt

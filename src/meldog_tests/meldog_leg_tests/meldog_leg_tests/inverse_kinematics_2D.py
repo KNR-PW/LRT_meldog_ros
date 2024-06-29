@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
-from meldog_interfaces.msg import MultiMoteusControl
-from meldog_interfaces.msg import MoteusControl
+from meldog_interfaces_tests.msg import MultiMoteusControl
+from meldog_interfaces_tests.msg import MoteusControl
 from geometry_msgs.msg import Vector3
 import math
 import matplotlib.pyplot as plt

@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.duration import Duration
-from meldog_interfaces.msg import MoteusControl, MultiMoteusControl, MoteusState, MultiMoteusState
+from meldog_interfaces_tests.msg import MoteusControl, MultiMoteusControl, MoteusState, MultiMoteusState
 from geometry_msgs.msg import Vector3
 import math
 import pandas 

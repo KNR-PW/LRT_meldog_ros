@@ -4,8 +4,8 @@ from rclpy.node import Node
 from rclpy.duration import Duration
 import asyncio
 import moteus
-from meldog_interfaces.msg import MultiMoteusControl, MultiMoteusState, MoteusState, MoteusControl
-from meldog_interfaces.srv import MultiMoteusActive
+from meldog_interfaces_tests.msg import MultiMoteusControl, MultiMoteusState, MoteusState, MoteusControl
+from meldog_interfaces_tests.srv import MultiMoteusActive
 import sys
 import math
 import moteus.multiplex

@@ -16,7 +16,7 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='jmacuga',
+    maintainer='bartomiejk',
     maintainer_email='bartlomiejk@vp.pl',
     description='TODO: Package description',
     license='TODO: License declaration',
