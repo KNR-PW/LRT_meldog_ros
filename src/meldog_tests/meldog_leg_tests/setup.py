@@ -27,7 +27,7 @@ setup(
             'inverse_kinematics_2D = meldog_leg_tests.inverse_kinematics_2D:main',
             'circle_trajectory = meldog_leg_tests.circle_trajectory:main',
             'demo_single_motor = meldog_leg_tests.demo_single_motor:main',
-            'ploter_demo = meldog_leg_tests.ploter:main',
+            'moteus_ploter = meldog_leg_tests.moteus_ploter:main',
             'multi_moteus_controller_single_thread = meldog_leg_tests.multi_moteus_controller_single_thread:main',
             'linear_trajectory = meldog_leg_tests.linear_trajectory:main',
             'jump_control_node = meldog_leg_tests.jump_control_node:main',
