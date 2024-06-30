@@ -13,12 +13,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/MoteusState.msg"
   "msg/MultiMoteusControl.msg"
   "msg/MultiMoteusState.msg"
-
-
-  "srv/MultiMoteusActive.srv"
-
-
-
 )
 ament_export_dependencies(rosidl_default_runtime)
 ament_package()
