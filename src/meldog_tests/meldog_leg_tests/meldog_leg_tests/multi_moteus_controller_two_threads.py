@@ -120,7 +120,7 @@ class Multi_Moteus_Controller_Node(Node):
     def multi_moteus_state(self): 
         for id in self.moteus_index_list:
             self.state_arrays[id-1].position = self.results[id-1].values[moteus.Register.POSITION]*2*math.pi/16
-            self.state_arrays[id-1].velocity = self.results[id-1].values[moteus.Register.VELOCITY]*2*math.pi
+            self.state_arrays[id-1].velocity = self.results[id-1].values[moteus.Register.VELOCITY]*2*math.pi/16
             self.state_arrays[id-1].torque = self.results[id-1].values[moteus.Register.TORQUE]
             self.state_arrays[id-1].q_current = self.results[id-1].values[moteus.Register.Q_CURRENT]
             self.state_arrays[id-1].d_current = self.results[id-1].values[moteus.Register.D_CURRENT]

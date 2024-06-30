@@ -130,9 +130,9 @@ class Multi_Moteus_Controller_Node(Node):
         commands = [self.servos[id].make_position(position=0.0,
                                                  velocity= 0.0,
                                                  feedforward_torque=0.0, 
-                                                 velocity_limit = 30/(2*math.pi),
-                                                 maximum_torque = 0.1,
-                                                 accel_limit = 100/(2*math.pi),
+                                                 velocity_limit = 20/(2*math.pi),
+                                                 maximum_torque = 0.5,
+                                                 accel_limit = 50/(2*math.pi),
                                                  query=True)
                     for id in self.moteus_index_list]
         await self.transport.cycle(commands)
