@@ -8,6 +8,7 @@
   1. Linear motion: ```ros2 launch meldog_leg_tests linear_trajectory_demo.launch.py```
   2. Circle motion: ```ros2 launch meldog_leg_tests circle_trajectory_demo.launch.py```
   3. Jumping: ```ros2 launch meldog_leg_tests jumping_demo.launch.py```
+  4. Simple sinusoidal movement for single motor: ```ros2 launch meldog_leg_tests demo_single_motor.launch.py```
 
 # Nodes:
 
@@ -39,7 +40,7 @@ __Jumping using precalculated data__:
 ##
 __Simple plotting__:
 
-- ```ploter.py```
+- ```moteus_ploter.py```
 
 # Topics:
 -  ```multi_moteus_control```: Control topic for moteuses (```MultiMoteusControl```)
