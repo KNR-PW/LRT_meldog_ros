@@ -17,6 +17,13 @@ class Ploter(Node):
         self.declare_parameter("which_motor", 1)
         self.variable = self.get_parameter("variable").value
         self.which_motor = self.get_parameter("which_motor").value
+        self.y_label = ""
+        if(self.variable == "position"):
+             self.y_label = "Pozycja złącza [rad]"
+        elif(self.variable == "velocity"):
+             self.y_label = "Prędkość kątowa złącza [rad/s]"
+        elif(self.variable == "torque"):
+             self.y_label = "Moment złącza [Nm]"
         self.control_subscriber = self.create_subscription(MultiMoteusControl,'multi_moteus_control',self.plot_control,10)
         self.state_subscriber = self.create_subscription(MultiMoteusState,'multi_moteus_state',self.plot_state,10)
         self.timer = self.create_timer(0.01, self.update_plot)
@@ -54,14 +61,7 @@ class Ploter(Node):
             min_value = min([min(data_list_1),min(data_list_2)])
         self.ax.clear()
         self.ax.set_ylim([min_value, max_value])
-        y_label = ""
-        if(self.variable == "position"):
-             y_label = "Pozycja złączy [rad]"
-        elif(self.variable == "velocity"):
-             y_label = "Prędkość kątowa złączy [rad/s]"
-        elif(self.variable == "torque"):
-             y_label = "Moment siły złączy [Nm]"
-        self.ax.set_ylabel(y_label )
+        self.ax.set_ylabel(self.y_label )
         self.ax.plot(data_list_1, label = "ROS")
         self.ax.plot(data_list_2, label = "Silnik")
         self.ax.legend()
