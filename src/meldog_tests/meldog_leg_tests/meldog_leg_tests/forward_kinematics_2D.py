@@ -27,8 +27,8 @@ class Leg_Forward_Kinematics_Solver(Node):
         self.y = self.length_1*math.sin(self.position_1) + self.length_2*math.sin(self.position_1 + self.position_2)
 
     def forward_kinematics_callback(self,msg):
-        self.position_1 = msg[0].position
-        self.position_2 = msg[1].position - msg[0].position
+        self.position_1 = msg.state_array[0].position - math.pi/2
+        self.position_2 = msg.state_array[1].position - msg.state_array[0].position
         self.forward_kinematics_solver()
         end_effector_vector = Vector3()
         end_effector_vector.x = self.x

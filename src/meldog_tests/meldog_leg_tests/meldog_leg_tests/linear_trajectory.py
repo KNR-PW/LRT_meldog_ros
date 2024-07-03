@@ -9,9 +9,9 @@ import rclpy.time
 class Linear_Trajectory(Node):
     def __init__(self,name):
         super().__init__(name)
-        self.declare_parameter("start_position", [0.0, -0.35])
-        self.declare_parameter("radius",0.125)
-        self.declare_parameter("angular_velocity",1.0)
+        self.declare_parameter("start_position", [0.0, -0.30])
+        self.declare_parameter("radius",0.1)
+        self.declare_parameter("angular_velocity", 6 * 3.14)
         self.x = self.get_parameter("start_position").value[0]
         self.y = self.get_parameter("start_position").value[1]
         self.radius = self.get_parameter("radius").value
@@ -49,7 +49,7 @@ class Linear_Trajectory(Node):
         self.publisher_.publish(self.end_effector_position)
 
     def wait_for_solver(self): # Czeka chwilę, aż noga ustawi się w pozycji startowej
-        wait_time = Duration(seconds = 1)
+        wait_time = Duration(seconds = 2)
         while(wait_time > (self.clock.now() - self.time_prev)):
             self.clock.sleep_for(Duration(nanoseconds = 10**8))
         self.logger.info("Linear trajectory generation has started!")

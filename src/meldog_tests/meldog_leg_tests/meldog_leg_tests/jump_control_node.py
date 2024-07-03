@@ -99,7 +99,6 @@ class Optimal_Jump_Controler_Node(Node):
 
     def jumping_control(self):
         if self.multi_moteus_state_msg is None:
-            self.logger.error("Can't connect to moteus controller!")
             self.clock.sleep_for(Duration(seconds = 5))
             return
         if(self.state == self.PREPARE_FOR_FIRST_JUMP):
@@ -164,7 +163,8 @@ class Optimal_Jump_Controler_Node(Node):
         self.logger.info("JUMPING PHASE!")
         i = 0
         self.time_now = self.clock.now()
-        self.logger.info(f"Jump duration: {(self.time_now-self.time_prew)/10**9}")
+        self.logger.info(f"Jump duration: {(self.time_now.nanoseconds-self.time_prew.nanoseconds)/10**9}")
+        self.time_prew = self.time_now
         while(i < (len(self.jump_time)-1)):
             self.change_control_message(self.jump_position_1[i], self.jump_position_2[i],
                                         torque_1 = self.jump_torque_1[i], torque_2 = self.jump_torque_2[i])

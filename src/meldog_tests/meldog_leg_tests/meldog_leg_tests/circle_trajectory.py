@@ -12,7 +12,7 @@ class Circle_Trajectory(Node):
         self.CIRCLE_PHASE = 1
         self.phase = self.INIT_PHASE
         self.declare_parameter("start_position", [0.0, -0.35])
-        self.declare_parameter("radius",0.125)
+        self.declare_parameter("radius",0.1)
         self.declare_parameter("angular_velocity",1.0)
         self.x = self.get_parameter("start_position").value[0]
         self.y = self.get_parameter("start_position").value[1]
@@ -35,7 +35,7 @@ class Circle_Trajectory(Node):
         self.wait_for_solver()
         self.subscriber = self.create_subscription(Vector3, 'end_effector_actual_trajectory', self.phase_callback, 10)
         self.publisher_ = self.create_publisher(Vector3, 'end_effector_desired_trajectory', 10)
-        self.timer_period = 0.01  # seconds
+        self.timer_period = 0.001  # seconds
         self.timer = self.create_timer(self.timer_period, self.trajectory_callback)
 
     def trajectory_callback(self):
@@ -64,10 +64,13 @@ class Circle_Trajectory(Node):
             actual_position = [msg.x, msg.y]
             starting_position = [self.x + self.radius, self.y]
             self.logger.info("Movement to starting position!")
-            while(not math.isclose(actual_position,abs_tol = 0.05)):
-                error = starting_position - actual_position
-                self.end_effector_position.x = actual_position[0] + 0.1*error[0]
-                self.end_effector_position.x = actual_position[1] + 0.1*error[1]
+            while(not math.isclose(starting_position[0], actual_position[0],abs_tol = 0.05) 
+                  and not math.isclose(starting_position[1], actual_position[1],abs_tol = 0.05)):
+                error = [starting_position[0] - actual_position[0], 
+                         starting_position[1] - actual_position[1]]
+                self.end_effector_position.x = actual_position[0] + 0.01*error[0]
+                self.end_effector_position.x = actual_position[1] + 0.01*error[1]
+                self.publisher_.publish(self.end_effector_position)
             self.phase = self.CIRCLE_PHASE
             self.time_prev = self.clock.now()
 

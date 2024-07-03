@@ -39,10 +39,10 @@ class Ploter(Node):
         
         self.logger.info("Ploter initialized!")
     def plot_control(self, msg):
-            self.control_value = msg.control_array[self.which_motor - 1].feedforward_torque
+            self.control_value = msg.control_array[self.which_motor - 1].desired_velocity
         
     def plot_state(self, msg):       
-            self.state_value = msg.state_array[self.which_motor - 1].torque
+            self.state_value = msg.state_array[self.which_motor - 1].velocity
     def update_plot(self):
          self.state_array.append(self.state_value)
          self.control_array.append(self.control_value)
@@ -59,6 +59,14 @@ class Ploter(Node):
         else:
             max_value = max([max(data_list_1),max(data_list_2)])
             min_value = min([min(data_list_1),min(data_list_2)])
+            if(max_value >= 0):
+                 max_value *= 1.2
+            else:
+                 max_value *= 0.8
+            if(min_value <= 0):
+                 min_value *= 1.2
+            else:
+                 min_value *= 0.8
         self.ax.clear()
         self.ax.set_ylim([min_value, max_value])
         self.ax.set_ylabel(self.y_label )

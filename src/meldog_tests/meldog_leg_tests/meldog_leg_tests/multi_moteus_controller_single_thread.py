@@ -20,11 +20,13 @@ class Multi_Moteus_Controller_Node(Node):
         self.declare_parameter("number_of_servos", 2) 
         self.amount_of_servos = self.get_parameter("number_of_servos").value  
         self.declare_parameter("gear_ratio", 16)
-        self.gear_ratio = self.get_parameter("gear_ratio")
+        self.gear_ratio = self.get_parameter("gear_ratio").value
         self.moteus_index_list = range(1, self.amount_of_servos+1)
         self.clock = self.get_clock()
         self.logger = self.get_logger()
         # Wiadomosci subscribera i publishera:
+
+        self.max_velocity = 0.0
 
         self.multi_moteus_control_msg = MultiMoteusControl()
         self.multi_moteus_state_msg = MultiMoteusState()
@@ -100,6 +102,9 @@ class Multi_Moteus_Controller_Node(Node):
             self.state_arrays[id-1].torque = self.results[id-1].values[moteus.Register.TORQUE]*self.gear_ratio
             self.state_arrays[id-1].q_current = self.results[id-1].values[moteus.Register.Q_CURRENT]
             self.state_arrays[id-1].d_current = self.results[id-1].values[moteus.Register.D_CURRENT]
+        self.max_velocity = max(self.max_velocity, max(self.results[0].values[moteus.Register.VELOCITY], 
+                                                       self.results[1].values[moteus.Register.VELOCITY]))
+        self.logger.info(f"Max velocity: {self.max_velocity}")
         self.multi_moteus_state_msg.state_array = self.state_arrays
 
     # Funkcja do generowania polecen do moteusow:
@@ -110,7 +115,7 @@ class Multi_Moteus_Controller_Node(Node):
                                                  velocity= 0.0,
                                                  feedforward_torque=control_array[id-1].feedforward_torque/self.gear_ratio, 
                                                  #velocity_limit = 150/(2*math.pi),
-                                                 maximum_torque = 0.2,
+                                                 maximum_torque = 1.0,
                                                  #accel_limit = 2500/(2*math.pi),
                                                  query=True)
                     for id in self.moteus_index_list]

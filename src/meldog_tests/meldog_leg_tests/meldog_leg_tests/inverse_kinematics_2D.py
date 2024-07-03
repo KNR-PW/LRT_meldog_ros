@@ -28,7 +28,7 @@ class Leg_Inverse_Kinematics_Solver(Node):
 
         self.publisher = self.create_publisher(MultiMoteusControl,'multi_moteus_control',10)
 
-        timer_period = 0.01
+        timer_period = 0.001
         self.timer = self.create_timer(timer_period, self.inverse_kinematics_callback)
 
         self.subscription = self.create_subscription(Vector3,"end_effector_desired_trajectory",self.listener_callback,10)
