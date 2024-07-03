@@ -5,9 +5,9 @@ from launch_ros.actions import Node
 
 LENGTH_1 = 0.225                    # Length of body one [m]
 LENGTH_2 = 0.225                    # Length of body two [m]
-START_POSITION = [0.0, -0.30]       # Start position (-y axis) [m]
+START_POSITION = [0.0, -0.25]       # Start position (-y axis) [m]
 RADIUS = 0.1                        # Radius of circle [m]
-ANGULAR_VELOCITY = 3.14             # Angular velocity of motion [rad/s]
+ANGULAR_VELOCITY = 3.14*8             # Angular velocity of motion [rad/s]
 def generate_launch_description():
     inverse_kinematics = Node(
         package = 'meldog_leg_tests',
@@ -34,7 +34,7 @@ def generate_launch_description():
         parameters = [{
             'start_position': START_POSITION,
             'radius': RADIUS,
-            'angular_velocity': ANGULER_VALOCITY
+            'angular_velocity': ANGULAR_VELOCITY
         }],
         output = 'screen'
     )
