@@ -39,10 +39,10 @@ class Ploter(Node):
         
         self.logger.info("Ploter initialized!")
     def plot_control(self, msg):
-            self.control_value = msg.control_array[self.which_motor - 1].desired_velocity
+            self.control_value = msg.control_array[self.which_motor - 1].desired_position
         
     def plot_state(self, msg):       
-            self.state_value = msg.state_array[self.which_motor - 1].velocity
+            self.state_value = msg.state_array[self.which_motor - 1].position
     def update_plot(self):
          self.state_array.append(self.state_value)
          self.control_array.append(self.control_value)
@@ -91,7 +91,7 @@ def main(args=None):
     ros_thread = threading.Thread(target=start_ros)
     ros_thread.start()
     #ani_1 = animation.FuncAnimation(node.figure, node.animate_1, fargs=(node.relative_error_array), interval = 50)
-    ani_2 = animation.FuncAnimation(node.figure, node.animate_2, fargs=(node.control_array, node.state_array), interval = 10)
+    ani_2 = animation.FuncAnimation(node.figure, node.animate_2, fargs=(node.control_array, node.state_array), interval = 50)
     plt.show()
 
     

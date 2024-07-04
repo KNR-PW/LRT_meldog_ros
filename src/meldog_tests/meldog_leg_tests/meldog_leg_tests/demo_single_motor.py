@@ -12,14 +12,14 @@ class Demo_Single_Motor(Node):
     def __init__(self, name):
         super().__init__(name)
         self.declare_parameter("which_motor", 1)
-        self.declare_parameter("angular velocity", 1.0)
+        self.declare_parameter("angular_velocity", 1.0)
         self.declare_parameter("amplitude", 1.0)
         self.logger = self.get_logger()
-        self.angular_velocity = self.get_parameter("angular velocity").value
+        self.angular_velocity = self.get_parameter("angular_velocity").value
         self.amplitude = self.get_parameter("amplitude").value
         self.motor_index = self.get_parameter("which_motor").value
         self.time = 0
-        self.timer_period = 0.01
+        self.timer_period = 0.001
         self.control_array = []
         self.control_array.append(MoteusControl())
         self.multi_moteus_control_msg = MultiMoteusControl()

@@ -53,7 +53,7 @@ class Circle_Trajectory(Node):
         
 
     def wait_for_solver(self): # Czeka chwilę, aż noga ustawi się w pozycji startowej
-        wait_time = Duration(seconds = 1)
+        wait_time = Duration(seconds = 2)
         while(wait_time > (self.clock.now() - self.time_prev)):
             self.clock.sleep_for(Duration(nanoseconds = 10**8))
         self.logger.info("Circle trajectory generation has started!")
