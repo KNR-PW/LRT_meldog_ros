@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #pragma once
-
+#include <stdexcept>
 #include <sched.h>
 
 namespace mjbots {
