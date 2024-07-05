@@ -2,17 +2,23 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.duration import Duration
-from meldog_interfaces.msg import MoteusControl, MultiMoteusControl, MoteusState, MultiMoteusState
+from meldog_interfaces_tests.msg import MoteusControl, MultiMoteusControl, MoteusState, MultiMoteusState
 from geometry_msgs.msg import Vector3
 import math
 import pandas 
 import numpy
+import pathlib
+import sys
 
 class Optimal_Jump_Controler_Node(Node):
 
     def __init__(self, name):
         super().__init__(name)
-
+        default_filepath = str(pathlib.Path("jump_data_St_nice.csv").parent.absolute()) + "/src/meldog_tests/meldog_leg_tests/meldog_leg_tests/jump_data/"
+        print(default_filepath)
+        self.declare_parameter("filepath", "jump_data_St_nice.csv")
+        self.filepath = default_filepath + self.get_parameter("filepath").value
+        self.logger = self.get_logger()
         self.PREPARE_FOR_FIRST_JUMP = 0
         self.FIRST_JUMP = 1
         self.FLY = 2
@@ -27,9 +33,11 @@ class Optimal_Jump_Controler_Node(Node):
 
         self.publisher = self.create_publisher(MultiMoteusControl,'multi_moteus_control',10)
         self.subscription = self.create_subscription(MultiMoteusState,"multi_moteus_state",self.listener_callback,10)
-
-
-        df = pandas.read_csv('~/KNR/meldog-ros/src/meldog_bridge/meldog_bridge/jump_data_St_nice.csv')
+        print(self.filepath)
+        try:
+            df = pandas.read_csv(self.filepath)
+        except OSError:
+            self.logger.error("File doesn't exist!")
 
         # PIERWSZY SKOK
         self.first_jump_time = df['time_first_jump'].to_numpy()
@@ -80,7 +88,8 @@ class Optimal_Jump_Controler_Node(Node):
 
         self.clock = self.get_clock()
         self.time_prew = self.clock.now()
-            
+        
+        self.logger.info("Controller ready to begin!")
 
     def publish_control(self):
         self.publisher.publish(self.multi_moteus_control_msg)
@@ -90,6 +99,7 @@ class Optimal_Jump_Controler_Node(Node):
 
     def jumping_control(self):
         if self.multi_moteus_state_msg is None:
+            self.clock.sleep_for(Duration(seconds = 5))
             return
         if(self.state == self.PREPARE_FOR_FIRST_JUMP):
             self.prepare_first_jump()
@@ -112,12 +122,12 @@ class Optimal_Jump_Controler_Node(Node):
             self.clock.sleep_for(Duration(nanoseconds = 10**6))
         else:
             self.state = self.FIRST_JUMP
-            print("START!")
+            self.logger.info("START!")
             self.clock.sleep_for(Duration(nanoseconds = 10*10**9))
         return
 
     def first_jump_control(self):
-        print("FIRST JUMP!")
+        self.logger.info("FIRST JUMP!")
         i = 0
         while(i < (len(self.first_jump_time)-1)):
             self.change_control_message(self.first_jump_position_1[i], self.first_jump_position_2[i],
@@ -133,7 +143,7 @@ class Optimal_Jump_Controler_Node(Node):
     
     ## TODO: POMYSL CZY NIE ZMIENIC NA TO ABY CZEKAL NA SKOKU W PREDKOSCIACH KATOWYCH
     def flying_control(self):
-        print("FLYING PHASE!")
+        self.logger.info("FLYING PHASE!")
         i = 0
         while(i < (len(self.fly_time)-1) and not self.leg_on_ground()):
             self.change_control_message(self.fly_position_1[i], self.fly_position_2[i],
@@ -150,10 +160,11 @@ class Optimal_Jump_Controler_Node(Node):
         return
     
     def jump_control(self):
-        print("JUMPING PHASE!")
+        self.logger.info("JUMPING PHASE!")
         i = 0
         self.time_now = self.clock.now()
-        print(f"Czas skoku - {(self.time_now-self.time_prew)/10**9}")
+        self.logger.info(f"Jump duration: {(self.time_now.nanoseconds-self.time_prew.nanoseconds)/10**9}")
+        self.time_prew = self.time_now
         while(i < (len(self.jump_time)-1)):
             self.change_control_message(self.jump_position_1[i], self.jump_position_2[i],
                                         torque_1 = self.jump_torque_1[i], torque_2 = self.jump_torque_2[i])
