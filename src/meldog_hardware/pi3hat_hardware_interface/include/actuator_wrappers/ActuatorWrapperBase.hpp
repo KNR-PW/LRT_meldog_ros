@@ -6,7 +6,6 @@
 template<class Derived>
 class ActuatorWrapperBase
 {
-    // aaaaaaaa
     protected:
     /* pi3hat CAN frames */
     mjbots::pi3hat::CanFrame& tx_frame_;
