@@ -7,7 +7,11 @@
 
 
 namespace joint_actuator_transform
-{
+{   
+    /* 
+        Transmission interface class. Its job is to create triplets for sparse transformation matrixes.
+        
+    */
     class Transmission
     {
         public:
@@ -18,7 +22,7 @@ namespace joint_actuator_transform
         virtual ~Transmission() = default;
     };
 
-    /*  Simple transmission (gearboxes, simple pulley systems etc.):
+    /*  Simple Transmission: (gearboxes, simple pulley systems etc.):
         http://docs.ros.org/en/jade/api/transmission_interface/html/c++/classtransmission__interface_1_1SimpleTransmission.html
     */
     class SimpleTransmission: Transmission
@@ -33,7 +37,8 @@ namespace joint_actuator_transform
 
     };
 
-    /*  More complicated systems where second actuator is coupled with first one, like shown here:
+    /*  FourBarLinkage Transmission: more complicated systems where second 
+        actuator is coupled with first one, like shown here:
         http://docs.ros.org/en/jade/api/transmission_interface/html/c++/classtransmission__interface_1_1FourBarLinkageTransmission.html
     */
     class FourBarLinkageTransmission: Transmission

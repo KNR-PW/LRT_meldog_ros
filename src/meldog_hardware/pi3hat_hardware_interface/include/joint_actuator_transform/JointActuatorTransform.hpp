@@ -7,7 +7,10 @@
 
 namespace joint_actuator_transform
 {
-
+    /*
+        Class for transforming joint space to actuator space and actuator space to joint space.
+        It uses Transmission objects to create sparse matrixes used in transformations.
+    */
     class JointActuatorTransform
     {
         private:
