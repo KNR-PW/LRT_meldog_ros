@@ -1,4 +1,4 @@
-#include "../include/wrappers/MoteusWrapper.hpp"
+#include "../include/actuator_wrappers/MoteusWrapper.hpp"
 
 
 MoteusWrapper::MoteusWrapper(const mjbots::moteus::Controller::Options& options = {}, 
