@@ -23,6 +23,7 @@
 #include "pi3hat/pi3hat.h"
 #include "pi3hat/realtime.h"
 
+#include "visibility_control.hpp"
 
 namespace pi3hat_hardware_interface
 {
@@ -31,25 +32,33 @@ namespace pi3hat_hardware_interface
     public:
         RCLCPP_SHARED_PTR_DEFINITIONS(Pi3HatHardwareInterface)
 
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         hardware_interface::CallbackReturn on_init(
             const hardware_interface::HardwareInfo &info) override;
 
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         hardware_interface::CallbackReturn on_configure(
             const rclcpp_lifecycle::State &previous_state) override;
 
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
-
+        
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         hardware_interface::CallbackReturn on_activate(
             const rclcpp_lifecycle::State &previous_state) override;
 
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         hardware_interface::CallbackReturn on_deactivate(
             const rclcpp_lifecycle::State &previous_state) override;
 
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         hardware_interface::return_type read(
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         hardware_interface::return_type write(
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
