@@ -56,31 +56,36 @@ void JointActuatorTransform::make_transform_matrixes(const TransmissionVector& t
     joint_torque_matrix_.makeCompressed();
 }
 
-void JointActuatorTransform:: positions_to_joint_space()
+void JointActuatorTransform::positions_to_joint_space()
 {
-    joint_positions_ = joint_position_velocity_matrix_ * actuator_positions_;
+    joint_positions_ = joint_position_velocity_matrix_ * actuator_positions_ + joint_offsets_;
 }
 
-void JointActuatorTransform:: positions_to_actuator_space()
+void JointActuatorTransform::positions_to_actuator_space()
 {
-    actuator_positions_ = actuator_position_velocity_matrix_ * joint_positions_;
+    actuator_positions_ = actuator_position_velocity_matrix_ * (joint_positions_ - joint_offsets_);
 }
 
-void JointActuatorTransform:: velocities_to_joint_space()
+void JointActuatorTransform::velocities_to_joint_space()
 {
     joint_velocities_ = joint_position_velocity_matrix_ * actuator_velocities_;
 }
 
-void JointActuatorTransform:: velocities_to_actuator_space()
+void JointActuatorTransform::velocities_to_actuator_space()
 {
     actuator_velocities_= actuator_position_velocity_matrix_ * joint_velocities_;
 }
 
-void JointActuatorTransform:: torques_to_joint_space()
+void JointActuatorTransform::torques_to_joint_space()
 {
     joint_torques_ = joint_torque_matrix_ * actuator_torques_;
 }
-void JointActuatorTransform:: torques_to_actuator_space()
+void JointActuatorTransform::torques_to_actuator_space()
 {
     actuator_torques_ = actuator_torque_matrix_ * joint_torques_;
+}
+
+void JointActuatorTransform::add_offsets(vector&& joint_offsets)
+{
+    joint_offsets_ = std::move(joint_offsets);
 }

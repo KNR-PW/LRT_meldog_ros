@@ -34,6 +34,8 @@ namespace joint_actuator_transform
         Eigen::SparseMatrix<double> actuator_position_velocity_matrix_;
         Eigen::SparseMatrix<double> actuator_torque_matrix_;
 
+        vector joint_offsets_;
+
         public:
         /* Constructor */
         JointActuatorTransform(vector joint_positions, vector& joint_velocities, vector& joint_torques, 
@@ -41,6 +43,11 @@ namespace joint_actuator_transform
 
         /* Create all transform matrixes */
         void make_transform_matrixes(const TransmissionVector& transmission_vector);
+
+        /* Add joint offsets to transform
+            q_actuator = 0 and q_joint = q_joint_start
+        */
+        void add_offsets(vector&& joint_offsets);
 
         /* joint <-> actuator transformations */
         void positions_to_joint_space();
