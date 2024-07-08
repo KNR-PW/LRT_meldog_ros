@@ -10,7 +10,8 @@
     so remember to change instance of your derived class in pi3hat hardware interface files 
     (only for creation of an object).
 */
-
+namespace motor_wrappers
+{
 struct MotorState
 {
     double position_;
@@ -51,9 +52,13 @@ class MotorWrapperBase
     {
         derived().make_position(position, velocity, feedforward_torque);
     };
+    void make_position(double position, double velocity, double feedforward_torque)
+    {
+        derived().make_position(position, velocity, feedforward_torque); //POPRAW
+    };
     
 };
-
+};
 
 
 #endif

@@ -5,6 +5,8 @@
 #include "moteus/moteus.h"
 #include "MotorWrapperBase.hpp"
 
+namespace motor_wrappers
+{
 class MoteusWrapper: public MotorWrapperBase<MoteusWrapper>, protected mjbots::moteus::Controller
 {
     private:
@@ -14,13 +16,14 @@ class MoteusWrapper: public MotorWrapperBase<MoteusWrapper>, protected mjbots::m
     public:
     /* Create Moteus Wrapper from existing frames */
     MoteusWrapper(const mjbots::moteus::Controller::Options& options = {}, 
-    mjbots::pi3hat::CanFrame& tx_frame,mjbots::pi3hat::CanFrame& rx_frame,
+    mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame,
     MotorState& motor_command, MotorState& motor_state,
     mjbots::moteus::PositionMode::Command command);
 
     /* Static override */
-    void make_position(double position, double velocity, double feedforward_torque);
-    void 
+    void make_command(double position, double velocity, double feedforward_torque);
+    void get_state();
+};
 };
 
 

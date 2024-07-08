@@ -91,13 +91,31 @@ namespace pi3hat_hardware_interface
         std::vector<double> hw_motor_effort_maxs_;
 
         /* Motor states */
-        std::vector<MotorState> hw_states_;
+        std::vector<motor_wrappers::MotorState> hw_motor_states_;
 
         // Motor commands
-        std::vector<MotorState> hw_commands_;
+        std::vector<motor_wrappers::MotorState> hw_motor_commands_;
 
         /* Motor Wrappers (here change to your own wrapper) */
-        std::vector<MoteusWrapper> moteus_wrappers;
+        std::vector<motor_wrappers::MoteusWrapper> moteus_wrappers;
+
+        template<class Wrapper>
+        void make_commands(std::vector<motor_wrappers::MotorWrapperBase<Wrapper>> motor_wrappers)
+        {
+            for(auto& motor_wrapper: motor_wrappers)
+            {
+                motor_wrapper.make_command();
+            }
+        };
+
+        template<class Wrapper>
+        void get_states(std::vector<motor_wrappers::MotorWrapperBase<Wrapper>> motor_wrappers)
+        {
+            for(auto& motor_wrapper: motor_wrappers)
+            {
+                motor_wrapper.get_state();
+            }
+        }
     };
 
 } 

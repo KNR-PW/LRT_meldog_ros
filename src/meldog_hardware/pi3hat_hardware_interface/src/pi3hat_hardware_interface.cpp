@@ -9,18 +9,16 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     {
         return hardware_interface::CallbackReturn::ERROR;
     }
-    // POPRAW
-    hw_motor_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-    hw_motor_velocities_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-    hw_motor_torques_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
+    
+    hw_motor_commands_.resize(info_.joints.size(), MotorState{std::numeric_limits<double>::quiet_NaN(),
+     std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()});
 
-    hw_command_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-    hw_command_velocities_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-    hw_command_torques_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
+    hw_motor_states_.resize(info_.joints.size(), MotorState{std::numeric_limits<double>::quiet_NaN(),
+     std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()});
     
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
-        hw_motor_can_channels_.push_back(std::stoi(joint.parameters.at("can_channel")));
+        hw_motor_can_buses_.push_back(std::stoi(joint.parameters.at("can_channel")));
         hw_motor_can_ids_.push_back(std::stoi(joint.parameters.at("can_id")));  
         hw_motor_position_mins_.push_back(std::stod(joint.parameters.at("position_min")));
         hw_motor_position_maxs_.push_back(std::stod(joint.parameters.at("position_max")));
@@ -68,8 +66,8 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
         auto options = mjbots::moteus::Controller::Options();
         options.id = hw_motor_can_ids_[i];
         options.bus = hw_motor_can_buses_[i];
-        auto moteus_wrapper = MoteusWrapper(options, tx_can_frames_[i], 
-        rx_can_frames_[i], mjbots::moteus::PositionMode::Command());
+        auto moteus_wrapper = MoteusWrapper(options, tx_can_frames_[i], rx_can_frames_[i],
+        hw_motor_commands_[i], hw_motor_states_[i], mjbots::moteus::PositionMode::Command());
         moteus_wrappers.push_back(moteus_wrapper);
     }
 }
