@@ -10,6 +10,14 @@
     so remember to change instance of your derived class in pi3hat hardware interface files 
     (only for creation of an object).
 */
+
+struct MotorState
+{
+    double position_;
+    double velocity_;
+    double torque_;
+};
+
 template<class Derived>
 class MotorWrapperBase
 {
@@ -27,11 +35,16 @@ class MotorWrapperBase
     mjbots::pi3hat::CanFrame& tx_frame_;
     mjbots::pi3hat::CanFrame& rx_frame_;
 
+    /* Motor commands and states */
+    MotorState& motor_command_;
+    MotorState& motor_state_;
     public:
     
     /* Constructor: takes CanFrame for later editing*/
-    MotorWrapperBase(mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame): 
-    tx_frame_(tx_frame), rx_frame_(rx_frame) {};
+    MotorWrapperBase(mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame, 
+    MotorState& motor_command, MotorState& motor_state): 
+    tx_frame_(tx_frame), rx_frame_(rx_frame), 
+    motor_command_(motor_command), motor_state_(motor_state) {};
 
     /* Static virtual method for preparing TX CAN frame */
     void make_position(double position, double velocity, double feedforward_torque)

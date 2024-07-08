@@ -9,6 +9,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     {
         return hardware_interface::CallbackReturn::ERROR;
     }
+    // POPRAW
     hw_motor_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
     hw_motor_velocities_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
     hw_motor_torques_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
@@ -51,13 +52,24 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     pi3hat_input_.tx_can = tx_can_frames_span_;
 
     // Set up the CAN configuration
-    for (size_t i = 0; i < info_.joints.size(); i++)
+    for (size_t i = 0; i < info_.joints.size(); i++) // TUTAJ POMYSL O CO CMN
     {
-        config.can[hw_motor_can_channels_[i] - 1] = can_config;
+        config.can[hw_motor_can_buses_[i] - 1] = can_config;
         pi3hat_input_.tx_can[i].id = hw_motor_can_ids_[i];
-        pi3hat_input_.tx_can[i].bus = hw_motor_can_channels_[i];
+        pi3hat_input_.tx_can[i].bus = hw_motor_can_buses_[i];
         pi3hat_input_.tx_can[i].expect_reply = true;
     }
     // Initialize the Pi3Hat
     pi3hat_ =  std::make_shared<mjbots::pi3hat::Pi3Hat>(config);
+
+    /* Create motor wrappers*/
+    for(size_t i = 0; i < info_.joints.size(); i++)
+    {
+        auto options = mjbots::moteus::Controller::Options();
+        options.id = hw_motor_can_ids_[i];
+        options.bus = hw_motor_can_buses_[i];
+        auto moteus_wrapper = MoteusWrapper(options, tx_can_frames_[i], 
+        rx_can_frames_[i], mjbots::moteus::PositionMode::Command());
+        moteus_wrappers.push_back(moteus_wrapper);
+    }
 }

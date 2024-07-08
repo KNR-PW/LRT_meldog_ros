@@ -15,10 +15,12 @@ class MoteusWrapper: public MotorWrapperBase<MoteusWrapper>, protected mjbots::m
     /* Create Moteus Wrapper from existing frames */
     MoteusWrapper(const mjbots::moteus::Controller::Options& options = {}, 
     mjbots::pi3hat::CanFrame& tx_frame,mjbots::pi3hat::CanFrame& rx_frame,
-     mjbots::moteus::PositionMode::Command command);
+    MotorState& motor_command, MotorState& motor_state,
+    mjbots::moteus::PositionMode::Command command);
 
     /* Static override */
     void make_position(double position, double velocity, double feedforward_torque);
+    void 
 };
 
 

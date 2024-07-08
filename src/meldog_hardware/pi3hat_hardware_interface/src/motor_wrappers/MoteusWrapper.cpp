@@ -7,9 +7,10 @@
 
 */
 MoteusWrapper::MoteusWrapper(const mjbots::moteus::Controller::Options& options = {}, 
-mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame, 
-mjbots::moteus::PositionMode::Command command): 
-MotorWrapperBase<MoteusWrapper>(tx_frame, rx_frame), mjbots::moteus::Controller(options), position_command_(command)
+    mjbots::pi3hat::CanFrame& tx_frame,mjbots::pi3hat::CanFrame& rx_frame,
+    MotorState& motor_command, MotorState& motor_state,
+    mjbots::moteus::PositionMode::Command command): 
+MotorWrapperBase<MoteusWrapper>(tx_frame, rx_frame, motor_command, motor_state), mjbots::moteus::Controller(options), position_command_(command)
 {
     /* Prepare CAN tx frame*/
     MotorWrapperBase<MoteusWrapper>::tx_frame_.id = options.id; 

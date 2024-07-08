@@ -78,7 +78,7 @@ namespace pi3hat_hardware_interface
         std::array<double, 3> hw_state_imu_linear_acceleration_; // x, y, z
 
         /* Motor CAN config */
-        std::vector<int> hw_motor_can_channels_;
+        std::vector<int> hw_motor_can_buses_;
         std::vector<int> hw_motor_can_ids_;
 
         /* Motor parameters */
@@ -91,15 +91,13 @@ namespace pi3hat_hardware_interface
         std::vector<double> hw_motor_effort_maxs_;
 
         /* Motor states */
-        std::vector<double> hw_motor_positions_;
-        std::vector<double> hw_motor_velocities_;
-        std::vector<double> hw_motor_torques_;
+        std::vector<MotorState> hw_states_;
 
         // Motor commands
-        std::vector<double> hw_command_positions_;
-        std::vector<double> hw_command_velocities_;
-        std::vector<double> hw_command_torques_;
-    
+        std::vector<MotorState> hw_commands_;
+
+        /* Motor Wrappers (here change to your own wrapper) */
+        std::vector<MoteusWrapper> moteus_wrappers;
     };
 
 } 
