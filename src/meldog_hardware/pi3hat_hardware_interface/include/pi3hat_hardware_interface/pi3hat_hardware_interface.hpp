@@ -24,6 +24,8 @@
 
 #include "visibility_control.hpp"
 
+#include <cmath>
+
 namespace pi3hat_hardware_interface
 {
     class Pi3HatHardwareInterface : public hardware_interface::SystemInterface
@@ -63,28 +65,23 @@ namespace pi3hat_hardware_interface
 
     private:
 
-        mjbots::pi3hat::Pi3Hat& pi3hat_;
+        std::shared_ptr<mjbots::pi3hat::Pi3Hat> pi3hat_;
         mjbots::pi3hat::Pi3Hat::Input pi3hat_input_;
         mjbots::pi3hat::Attitude attitude_;
-        std::vector<mjbots::pi3hat::CanFrame> tx_can_frames_; //Pomysl jeszcze nad tym!
-        std::vector<mjbots::pi3hat::CanFrame> rx_can_frames_;
+
+        std::shared_ptr<mjbots::pi3hat::CanFrame[]> tx_can_frames_; //Pomysl jeszcze nad tym!
+        std::shared_ptr<mjbots::pi3hat::CanFrame[]> rx_can_frames_;
 
         /* IMU states */ 
         std::array<double, 4> hw_state_imu_orientation_;         // x, y, z, w
         std::array<double, 3> hw_state_imu_angular_velocity_;    // x, y, z
         std::array<double, 3> hw_state_imu_linear_acceleration_; // x, y, z
 
-        /* Actuator CAN config */
+        /* Motor CAN config */
         std::vector<int> hw_motor_can_channels_;
         std::vector<int> hw_motor_can_ids_;
 
-        /* Actuator parameters */
-        std::vector<double> hw_motor_position_scales_;
-        std::vector<double> hw_motor_velocity_scales_;
-        std::vector<double> hw_motor_effort_scales_;
-        std::vector<double> hw_motor_kp_scales_;
-        std::vector<double> hw_motor_kd_scales_;
-        std::vector<int> hw_motor_axis_directions_;
+        /* Motor parameters */
         std::vector<double> hw_motor_position_offsets_;
 
         /* Motor limits */
@@ -92,8 +89,6 @@ namespace pi3hat_hardware_interface
         std::vector<double> hw_motor_position_maxs_;
         std::vector<double> hw_motor_velocity_maxs_;
         std::vector<double> hw_motor_effort_maxs_;
-        std::vector<double> hw_motor_kp_maxs_;
-        std::vector<double> hw_motor_kd_maxs_;
 
         /* Motor states */
         std::vector<double> hw_motor_positions_;
