@@ -3,9 +3,9 @@
 
 
 #include "moteus/moteus.h"
-#include "ActuatorWrapperBase.hpp"
+#include "MotorWrapperBase.hpp"
 
-class MoteusWrapper: public ActuatorWrapperBase<MoteusWrapper>, protected mjbots::moteus::Controller
+class MoteusWrapper: public MotorWrapperBase<MoteusWrapper>, protected mjbots::moteus::Controller
 {
     private:
     /* Command structure for moteus object*/

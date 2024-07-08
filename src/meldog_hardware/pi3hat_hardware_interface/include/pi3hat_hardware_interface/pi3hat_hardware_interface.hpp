@@ -17,8 +17,7 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-#include "actuator_wrappers/MoteusWrapper.hpp"
-#include "joint_actuator_transform/JointActuatorTransform.hpp"
+#include "motor_wrappers/MoteusWrapper.hpp"
 
 #include "pi3hat/pi3hat.h"
 #include "pi3hat/realtime.h"
@@ -76,37 +75,35 @@ namespace pi3hat_hardware_interface
         std::array<double, 3> hw_state_imu_linear_acceleration_; // x, y, z
 
         /* Actuator CAN config */
-        std::vector<int> hw_actuator_can_channels_;
-        std::vector<int> hw_actuator_can_ids_;
+        std::vector<int> hw_motor_can_channels_;
+        std::vector<int> hw_motor_can_ids_;
 
         /* Actuator parameters */
-        std::vector<double> hw_actuator_position_scales_;
-        std::vector<double> hw_actuator_velocity_scales_;
-        std::vector<double> hw_actuator_effort_scales_;
-        std::vector<double> hw_actuator_kp_scales_;
-        std::vector<double> hw_actuator_kd_scales_;
-        std::vector<int> hw_actuator_axis_directions_;
-        std::vector<double> hw_actuator_position_offsets_;
+        std::vector<double> hw_motor_position_scales_;
+        std::vector<double> hw_motor_velocity_scales_;
+        std::vector<double> hw_motor_effort_scales_;
+        std::vector<double> hw_motor_kp_scales_;
+        std::vector<double> hw_motor_kd_scales_;
+        std::vector<int> hw_motor_axis_directions_;
+        std::vector<double> hw_motor_position_offsets_;
 
-        // Actuator limits
-        std::vector<double> hw_actuator_position_mins_; 
-        std::vector<double> hw_actuator_position_maxs_;
-        std::vector<double> hw_actuator_velocity_maxs_;
-        std::vector<double> hw_actuator_effort_maxs_;
-        std::vector<double> hw_actuator_kp_maxs_;
-        std::vector<double> hw_actuator_kd_maxs_;
+        /* Motor limits */
+        std::vector<double> hw_motor_position_mins_; 
+        std::vector<double> hw_motor_position_maxs_;
+        std::vector<double> hw_motor_velocity_maxs_;
+        std::vector<double> hw_motor_effort_maxs_;
+        std::vector<double> hw_motor_kp_maxs_;
+        std::vector<double> hw_motor_kd_maxs_;
 
-        using eigen_vector = Eigen::Vector<double, Eigen::Dynamic>;
+        /* Motor states */
+        std::vector<double> hw_motor_positions_;
+        std::vector<double> hw_motor_velocities_;
+        std::vector<double> hw_motor_torques_;
 
-        /* Joint states */
-        eigen_vector hw_joint_positions_;
-        eigen_vector hw_joint_velocities_;
-        eigen_vector hw_joint_torques_;
-
-        // Actuator commands
-        eigen_vector hw_command_positions_;
-        eigen_vector hw_command_velocities_;
-        eigen_vector hw_command_torques_;
+        // Motor commands
+        std::vector<double> hw_command_positions_;
+        std::vector<double> hw_command_velocities_;
+        std::vector<double> hw_command_torques_;
     
     };
 
