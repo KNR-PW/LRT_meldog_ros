@@ -17,7 +17,7 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-#include "motor_wrappers/MoteusWrapper.hpp"
+#include "actuator_wrappers/MoteusWrapper.hpp"
 
 #include "pi3hat/pi3hat.h"
 #include "pi3hat/realtime.h"
@@ -77,43 +77,43 @@ namespace pi3hat_hardware_interface
         std::array<double, 3> hw_state_imu_angular_velocity_;    // x, y, z
         std::array<double, 3> hw_state_imu_linear_acceleration_; // x, y, z
 
-        /* Motor CAN config */
-        std::vector<int> hw_motor_can_buses_;
-        std::vector<int> hw_motor_can_ids_;
+        /* Actuator CAN config */
+        std::vector<int> hw_actuator_can_buses_;
+        std::vector<int> hw_actuator_can_ids_;
 
-        /* Motor parameters */
-        std::vector<double> hw_motor_position_offsets_;
+        /* Actuator parameters */
+        std::vector<double> hw_actuator_position_offsets_;
 
-        /* Motor limits */
-        std::vector<double> hw_motor_position_mins_; 
-        std::vector<double> hw_motor_position_maxs_;
-        std::vector<double> hw_motor_velocity_maxs_;
-        std::vector<double> hw_motor_effort_maxs_;
+        /* Actuator limits */
+        std::vector<double> hw_actuator_position_mins_; 
+        std::vector<double> hw_actuator_position_maxs_;
+        std::vector<double> hw_actuator_velocity_maxs_;
+        std::vector<double> hw_actuator_effort_maxs_;
 
-        /* Motor states */
-        std::vector<motor_wrappers::MotorState> hw_motor_states_;
+        /* Actuator states */
+        std::vector<actuator_wrappers::ActuatorState> hw_actuator_states_;
 
-        // Motor commands
-        std::vector<motor_wrappers::MotorState> hw_motor_commands_;
+        // Actuator commands
+        std::vector<actuator_wrappers::ActuatorState> hw_actuator_commands_;
 
-        /* Motor Wrappers (here change to your own wrapper) */
-        std::vector<motor_wrappers::MoteusWrapper> moteus_wrappers;
+        /* Actuator Wrappers (here change to your own wrapper) */
+        std::vector<actuator_wrappers::MoteusWrapper> moteus_wrappers;
 
         template<class Wrapper>
-        void make_commands(std::vector<motor_wrappers::MotorWrapperBase<Wrapper>> motor_wrappers)
+        void make_commands(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
         {
-            for(auto& motor_wrapper: motor_wrappers)
+            for(auto& actuator_wrapper: actuator_wrappers)
             {
-                motor_wrapper.make_command();
+                actuator_wrapper.make_command();
             }
         };
 
         template<class Wrapper>
-        void get_states(std::vector<motor_wrappers::MotorWrapperBase<Wrapper>> motor_wrappers)
+        void get_states(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
         {
-            for(auto& motor_wrapper: motor_wrappers)
+            for(auto& actuator_wrapper: actuator_wrappers)
             {
-                motor_wrapper.get_state();
+                actuator_wrapper.get_state();
             }
         }
     };

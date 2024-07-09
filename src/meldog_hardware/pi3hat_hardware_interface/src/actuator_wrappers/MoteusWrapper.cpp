@@ -1,25 +1,25 @@
-#include "../include/motor_wrappers/MoteusWrapper.hpp"
+#include "../include/actuator_wrappers/MoteusWrapper.hpp"
 
 
 /*
-    Moteus Motor Wrapper. It uses API from moteus repository to communicate with pi3hat interface.
+    Moteus Actuator Wrapper. It uses API from moteus repository to communicate with pi3hat interface.
     https://github.com/mjbots/moteus
 
 */
 
-using namespace motor_wrappers;
+using namespace actuator_wrappers;
 
 MoteusWrapper::MoteusWrapper(const mjbots::moteus::Controller::Options& options = {}, 
     mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame,
-    MotorState& motor_command, MotorState& motor_state,
+    ActuatorState& actuator_command, ActuatorState& actuator_state,
     mjbots::moteus::PositionMode::Command command): 
-MotorWrapperBase<MoteusWrapper>(tx_frame, rx_frame, motor_command, motor_state), mjbots::moteus::Controller(options), position_command_(command)
+ActuatorWrapperBase<MoteusWrapper>(tx_frame, rx_frame, actuator_command, actuator_state), mjbots::moteus::Controller(options), position_command_(command)
 {
     /* Prepare CAN tx frame*/
-    MotorWrapperBase<MoteusWrapper>::tx_frame_.id = options.id; 
-    MotorWrapperBase<MoteusWrapper>::tx_frame_.bus = options.bus;       // Copies values from options structure
+    ActuatorWrapperBase<MoteusWrapper>::tx_frame_.id = options.id; 
+    ActuatorWrapperBase<MoteusWrapper>::tx_frame_.bus = options.bus;       // Copies values from options structure
 
-    MotorWrapperBase<MoteusWrapper>::tx_frame_.expect_reply = true;     // Expect reply from the same bus
+    ActuatorWrapperBase<MoteusWrapper>::tx_frame_.expect_reply = true;     // Expect reply from the same bus
 }
 
 

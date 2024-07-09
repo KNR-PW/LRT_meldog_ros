@@ -1,7 +1,7 @@
 #include "../include/pi3hat_hardware_interface/pi3hat_hardware_interface.hpp"
 
 using namespace pi3hat_hardware_interface;
-
+using namespace actuator_wrappers;
 
 hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardware_interface::HardwareInfo &info)
 {
@@ -9,22 +9,22 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     {
         return hardware_interface::CallbackReturn::ERROR;
     }
-    
-    hw_motor_commands_.resize(info_.joints.size(), MotorState{std::numeric_limits<double>::quiet_NaN(),
+
+    hw_actuator_commands_.resize(info_.joints.size(), ActuatorState{std::numeric_limits<double>::quiet_NaN(),
      std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()});
 
-    hw_motor_states_.resize(info_.joints.size(), MotorState{std::numeric_limits<double>::quiet_NaN(),
+    hw_actuator_states_.resize(info_.joints.size(), ActuatorState{std::numeric_limits<double>::quiet_NaN(),
      std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()});
     
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
-        hw_motor_can_buses_.push_back(std::stoi(joint.parameters.at("can_channel")));
-        hw_motor_can_ids_.push_back(std::stoi(joint.parameters.at("can_id")));  
-        hw_motor_position_mins_.push_back(std::stod(joint.parameters.at("position_min")));
-        hw_motor_position_maxs_.push_back(std::stod(joint.parameters.at("position_max")));
-        hw_motor_velocity_maxs_.push_back(std::stod(joint.parameters.at("velocity_max")));
-        hw_motor_effort_maxs_.push_back(std::stod(joint.parameters.at("effort_max")));
-        hw_motor_position_offsets_.push_back(std::stod(joint.parameters.at("position_offset")));
+        hw_actuator_can_buses_.push_back(std::stoi(joint.parameters.at("can_channel")));
+        hw_actuator_can_ids_.push_back(std::stoi(joint.parameters.at("can_id")));  
+        hw_actuator_position_mins_.push_back(std::stod(joint.parameters.at("position_min")));
+        hw_actuator_position_maxs_.push_back(std::stod(joint.parameters.at("position_max")));
+        hw_actuator_velocity_maxs_.push_back(std::stod(joint.parameters.at("velocity_max")));
+        hw_actuator_effort_maxs_.push_back(std::stod(joint.parameters.at("effort_max")));
+        hw_actuator_position_offsets_.push_back(std::stod(joint.parameters.at("position_offset")));
     }
     
     /* Standard CAN config */
@@ -52,22 +52,22 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     // Set up the CAN configuration
     for (size_t i = 0; i < info_.joints.size(); i++) // TUTAJ POMYSL O CO CMN
     {
-        config.can[hw_motor_can_buses_[i] - 1] = can_config;
-        pi3hat_input_.tx_can[i].id = hw_motor_can_ids_[i];
-        pi3hat_input_.tx_can[i].bus = hw_motor_can_buses_[i];
+        config.can[hw_actuator_can_buses_[i] - 1] = can_config;
+        pi3hat_input_.tx_can[i].id = hw_actuator_can_ids_[i];
+        pi3hat_input_.tx_can[i].bus = hw_actuator_can_buses_[i];
         pi3hat_input_.tx_can[i].expect_reply = true;
     }
     // Initialize the Pi3Hat
     pi3hat_ =  std::make_shared<mjbots::pi3hat::Pi3Hat>(config);
 
-    /* Create motor wrappers*/
+    /* Create actuator wrappers*/
     for(size_t i = 0; i < info_.joints.size(); i++)
     {
         auto options = mjbots::moteus::Controller::Options();
-        options.id = hw_motor_can_ids_[i];
-        options.bus = hw_motor_can_buses_[i];
+        options.id = hw_actuator_can_ids_[i];
+        options.bus = hw_actuator_can_buses_[i];
         auto moteus_wrapper = MoteusWrapper(options, tx_can_frames_[i], rx_can_frames_[i],
-        hw_motor_commands_[i], hw_motor_states_[i], mjbots::moteus::PositionMode::Command());
+        hw_actuator_commands_[i], hw_actuator_states_[i], mjbots::moteus::PositionMode::Command());
         moteus_wrappers.push_back(moteus_wrapper);
     }
 }

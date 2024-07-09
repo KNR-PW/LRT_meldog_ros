@@ -5,14 +5,14 @@
 
 
 /*  
-    Base Motor Wrapper class, used for wrapping actuator API with simple CRTP interface 
+    Base Actuator Wrapper class, used for wrapping actuator API with simple CRTP interface 
     to create CAN frames for pi3hat Input structure. Note that it uses static polymorphism, 
     so remember to change instance of your derived class in pi3hat hardware interface files 
     (only for creation of an object).
 */
-namespace motor_wrappers
+namespace actuator_wrappers
 {
-struct MotorState
+struct ActuatorState
 {
     double position_;
     double velocity_;
@@ -20,7 +20,7 @@ struct MotorState
 };
 
 template<class Derived>
-class MotorWrapperBase
+class ActuatorWrapperBase
 {
     private:
 
@@ -36,16 +36,16 @@ class MotorWrapperBase
     mjbots::pi3hat::CanFrame& tx_frame_;
     mjbots::pi3hat::CanFrame& rx_frame_;
 
-    /* Motor commands and states */
-    MotorState& motor_command_;
-    MotorState& motor_state_;
+    /* Actuator commands and states */
+    ActuatorState& actuator_command_;
+    ActuatorState& actuator_state_;
     public:
     
     /* Constructor: takes CanFrame for later editing*/
-    MotorWrapperBase(mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame, 
-    MotorState& motor_command, MotorState& motor_state): 
+    ActuatorWrapperBase(mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame, 
+    ActuatorState& actuator_command, ActuatorState& actuator_state): 
     tx_frame_(tx_frame), rx_frame_(rx_frame), 
-    motor_command_(motor_command), motor_state_(motor_state) {};
+    actuator_command_(actuator_command), actuator_state_(actuator_state) {};
 
     /* Static virtual method for preparing TX CAN frame */
     void make_position(double position, double velocity, double feedforward_torque)

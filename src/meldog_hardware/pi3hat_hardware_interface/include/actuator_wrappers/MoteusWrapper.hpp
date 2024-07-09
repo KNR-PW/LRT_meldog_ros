@@ -3,11 +3,11 @@
 
 
 #include "moteus/moteus.h"
-#include "MotorWrapperBase.hpp"
+#include "ActuatorWrapperBase.hpp"
 
-namespace motor_wrappers
+namespace actuator_wrappers
 {
-class MoteusWrapper: public MotorWrapperBase<MoteusWrapper>, protected mjbots::moteus::Controller
+class MoteusWrapper: public ActuatorWrapperBase<MoteusWrapper>, protected mjbots::moteus::Controller
 {
     private:
     /* Command structure for moteus object*/
@@ -17,7 +17,7 @@ class MoteusWrapper: public MotorWrapperBase<MoteusWrapper>, protected mjbots::m
     /* Create Moteus Wrapper from existing frames */
     MoteusWrapper(const mjbots::moteus::Controller::Options& options = {}, 
     mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame,
-    MotorState& motor_command, MotorState& motor_state,
+    ActuatorState& motor_command, ActuatorState& motor_state,
     mjbots::moteus::PositionMode::Command command);
 
     /* Static override */
