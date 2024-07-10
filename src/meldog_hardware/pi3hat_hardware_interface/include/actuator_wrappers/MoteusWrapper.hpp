@@ -12,17 +12,18 @@ class MoteusWrapper: public ActuatorWrapperBase<MoteusWrapper>, protected mjbots
     private:
     /* Command structure for moteus object*/
     mjbots::moteus::PositionMode::Command position_command_;
+    mjbots::moteus::PositionMode::Format potision_format_;
 
     public:
     /* Create Moteus Wrapper from existing frames */
-    MoteusWrapper(const mjbots::moteus::Controller::Options& options = {}, 
-    mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame,
-    ActuatorState& motor_command, ActuatorState& motor_state,
+    MoteusWrapper(ActuatorParameters params, 
+    mjbots::moteus::Controller::Options& options,
+    mjbots::moteus::PositionMode::Format format,
     mjbots::moteus::PositionMode::Command command);
 
     /* Static override */
-    void make_command(double position, double velocity, double feedforward_torque);
-    void get_state();
+    void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command);
+    void rx_frame_to_state(CanFrame& rx_frame, ActuatorState& state);
 };
 };
 

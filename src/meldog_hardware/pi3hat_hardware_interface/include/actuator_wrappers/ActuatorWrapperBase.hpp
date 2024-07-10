@@ -2,7 +2,7 @@
 #define _MOTOR_WRAPPER_BASE_
 
 #include "pi3hat/pi3hat.h"
-
+#include <cmath>
 
 /*  
     Base Actuator Wrapper class, used for wrapping actuator API with simple CRTP interface 
@@ -12,6 +12,14 @@
 */
 namespace actuator_wrappers
 {
+
+struct ActuatorCommand
+{
+    double position_;
+    double velocity_;
+    double torque_;
+};
+
 struct ActuatorState
 {
     double position_;
@@ -19,10 +27,21 @@ struct ActuatorState
     double torque_;
 };
 
+struct ActuatorParameters
+{
+    double position_max_;
+    double position_min_;
+    double velocity_max_;
+    double torque_max_;
+    int direction_;
+};
+
 template<class Derived>
 class ActuatorWrapperBase
 {
     private:
+
+    ActuatorParameters params_;
 
     /* Used for CRTP interface */
     Derived& derived()
@@ -33,28 +52,29 @@ class ActuatorWrapperBase
     protected:
     
     /* pi3hat CAN frames */
-    mjbots::pi3hat::CanFrame& tx_frame_;
-    mjbots::pi3hat::CanFrame& rx_frame_;
+    using CanFrame = mjbots::pi3hat::CanFrame;
 
-    /* Actuator commands and states */
-    ActuatorState& actuator_command_;
-    ActuatorState& actuator_state_;
     public:
     
     /* Constructor: takes CanFrame for later editing*/
-    ActuatorWrapperBase(mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame, 
-    ActuatorState& actuator_command, ActuatorState& actuator_state): 
-    tx_frame_(tx_frame), rx_frame_(rx_frame), 
-    actuator_command_(actuator_command), actuator_state_(actuator_state) {};
+    ActuatorWrapperBase(ActuatorParameters params): params_(params) {};
 
-    /* Static virtual method for preparing TX CAN frame */
-    void make_position(double position, double velocity, double feedforward_torque)
+    /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
+    void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
     {
-        derived().make_position(position, velocity, feedforward_torque);
+        command.position_ = params_.direction_* (fmax(command.position_, params_.position_min), params_.position_max_);
+        command.velocity_ = params_.direction_* fmin(fmax(command.velocity_, -params_.velocity_max_), params_.velocity_max_);
+        command.torque_ = params_.direction_* fmin(fmax(command.torque_, -params_.torque_max_), params_.torque_max_);
+
+        derived().make_position(tx_frame, command);
     };
-    void make_position(double position, double velocity, double feedforward_torque)
+    /* Static virtual method for preparing ActuatorState form RX CAN frame */
+    void rx_frame_to_state(CanFrame& rx_frame, ActuatorState& state)
     {
-        derived().make_position(position, velocity, feedforward_torque); //POPRAW
+        derived().make_position(rx_frame, state);
+        state.position_ = params_.direction_ * state.position_;
+        state.velocity_ = params_.direction_ * state.velocity_;
+        state.torque_ = params_.direction_ * state.torque_; 
     };
     
 };
