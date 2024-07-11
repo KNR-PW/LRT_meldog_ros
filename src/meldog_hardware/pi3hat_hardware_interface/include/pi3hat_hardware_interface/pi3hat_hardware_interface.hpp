@@ -65,6 +65,8 @@ namespace pi3hat_hardware_interface
 
     private:
 
+        size_t number_of_actuators;
+
         std::shared_ptr<mjbots::pi3hat::Pi3Hat> pi3hat_;
         mjbots::pi3hat::Pi3Hat::Input pi3hat_input_;
         mjbots::pi3hat::Attitude attitude_;
@@ -78,15 +80,15 @@ namespace pi3hat_hardware_interface
         std::array<double, 3> hw_state_imu_linear_acceleration_; // x, y, z
 
         /* Actuator CAN config */
-        std::vector<int> hw_actuator_can_buses_;
+        std::vector<int> hw_actuator_can_buses_;  
         std::vector<int> hw_actuator_can_ids_;
 
         /* Actuator parameters */
-        std::vector<double> hw_actuator_position_offsets_;
+        std::vector<double> hw_actuator_position_offsets_; // To wrzucimy do opcji
 
         /* Actuator limits */
         std::vector<double> hw_actuator_position_mins_; 
-        std::vector<double> hw_actuator_position_maxs_;
+        std::vector<double> hw_actuator_position_maxs_; // To wrzucimy do opcji
         std::vector<double> hw_actuator_velocity_maxs_;
         std::vector<double> hw_actuator_effort_maxs_;
 
@@ -102,18 +104,21 @@ namespace pi3hat_hardware_interface
         template<class Wrapper>
         void make_commands(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
         {
-            for(auto& actuator_wrapper: actuator_wrappers)
-            {
-                actuator_wrapper.make_command();
+            // TODO: Uporządkuj wcześniej silniki względem id
+            for(size_t i = 0; i < number_of_actuators; i++)
+            {   
+                size_t actuator_id = tx_can_frames_[i].id;
+                actuator_wrappers[actuator_id].command_to_tx_frame(tx_can_frames_[i], hw_actuator_commands_[actuator_id]);
             }
         };
 
         template<class Wrapper>
         void get_states(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
         {
-            for(auto& actuator_wrapper: actuator_wrappers)
-            {
-                actuator_wrapper.get_state();
+            for(size_t i = 0; i < number_of_actuators; i++)
+            {   
+                size_t actuator_id = tx_can_frames_[i].id;
+                actuator_wrappers[actuator_id].rx_frame_to_state(rx_can_frames_[i], hw_actuator_states_[actuator_id]);
             }
         }
     };

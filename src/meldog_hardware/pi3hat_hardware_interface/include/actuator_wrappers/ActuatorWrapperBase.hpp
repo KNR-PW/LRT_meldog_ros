@@ -59,6 +59,12 @@ class ActuatorWrapperBase
     /* Constructor: takes CanFrame for later editing*/
     ActuatorWrapperBase(ActuatorParameters& params): params_(params) {};
 
+    /* Static virtual method for starting actuators */
+    void init(CanFrame& tx_frame)
+    {
+        derived().init(CanFrame& tx_frame);
+    };
+
     /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
     void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
     {
@@ -68,6 +74,7 @@ class ActuatorWrapperBase
 
         derived().make_position(tx_frame, command);
     };
+
     /* Static virtual method for preparing ActuatorState form RX CAN frame */
     void rx_frame_to_state(CanFrame& rx_frame, ActuatorState& state)
     {

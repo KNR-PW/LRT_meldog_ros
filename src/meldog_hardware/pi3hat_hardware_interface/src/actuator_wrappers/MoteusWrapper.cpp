@@ -11,12 +11,20 @@ using namespace actuator_wrappers;
 
 MoteusWrapper::MoteusWrapper(ActuatorParameters& params, 
     mjbots::moteus::Controller::Options& options,
-    mjbots::moteus::PositionMode::Format& command_format,
-    mjbots::moteus::Query::Format& query_format,
     mjbots::moteus::PositionMode::Command& command): 
 ActuatorWrapperBase<MoteusWrapper>(params), mjbots::moteus::Controller(options), 
-position_command_(command), command_format_(command_format), query_format_(query_format) { }
+position_command_(command){ }
 
+
+
+void MoteusWrapper::init(CanFrame& tx_frame)
+{
+    mjbots::moteus::CanFdFrame can_fd_frame = mjbots::moteus::Controller::MakeStop();
+    
+    /* Copy data from CANFD frame to CAN frame*/
+    tx_frame.size = can_fd_frame.size;
+    std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
+}
 
 void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, const ActuatorCommand& command)
 {
@@ -26,18 +34,17 @@ void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, const ActuatorComman
     position_command_.feedforward_torque = command.torque_; //POPRAW
 
     /* create CANFD frame*/
-    mjbots::moteus::CanFdFrame can_fd_frame = mjbots::moteus::Controller::MakePosition(position_command_,
-     &command_format_, &query_format_);
+    mjbots::moteus::CanFdFrame can_fd_frame = mjbots::moteus::Controller::MakePosition(position_command_);
     
     /* Copy data from CANFD frame to CAN frame*/
     tx_frame.size = can_fd_frame.size;
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 }
 
-
 void MoteusWrapper::rx_frame_to_state(const CanFrame& rx_frame, ActuatorState& state)
 {
-    auto result = mjbots::moteus::Query::Parse(rx_frame.data, rx_frame.size);
+    /* Parse data from RX CAN frame to Result object */
+    mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame.data, rx_frame.size);
     state.position_ = result.position;
     state.velocity_ = result.velocity;
     state.torque_ = result.torque;
