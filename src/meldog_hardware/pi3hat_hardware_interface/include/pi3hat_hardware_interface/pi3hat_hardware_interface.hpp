@@ -94,7 +94,7 @@ namespace pi3hat_hardware_interface
         std::vector<actuator_wrappers::ActuatorState> hw_actuator_states_;
 
         // Actuator commands
-        std::vector<actuator_wrappers::ActuatorState> hw_actuator_commands_;
+        std::vector<actuator_wrappers::ActuatorCommand> hw_actuator_commands_;
 
         /* Actuator Wrappers (here change to your own wrapper) */
         std::vector<actuator_wrappers::MoteusWrapper> moteus_wrappers;

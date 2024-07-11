@@ -57,7 +57,7 @@ class ActuatorWrapperBase
     public:
     
     /* Constructor: takes CanFrame for later editing*/
-    ActuatorWrapperBase(ActuatorParameters params): params_(params) {};
+    ActuatorWrapperBase(ActuatorParameters& params): params_(params) {};
 
     /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
     void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)

@@ -9,31 +9,36 @@
 
 using namespace actuator_wrappers;
 
-MoteusWrapper::MoteusWrapper(const mjbots::moteus::Controller::Options& options = {}, 
-    mjbots::pi3hat::CanFrame& tx_frame, mjbots::pi3hat::CanFrame& rx_frame,
-    ActuatorState& actuator_command, ActuatorState& actuator_state,
-    mjbots::moteus::PositionMode::Command command): 
-ActuatorWrapperBase<MoteusWrapper>(tx_frame, rx_frame, actuator_command, actuator_state), mjbots::moteus::Controller(options), position_command_(command)
-{
-    /* Prepare CAN tx frame*/
-    ActuatorWrapperBase<MoteusWrapper>::tx_frame_.id = options.id; 
-    ActuatorWrapperBase<MoteusWrapper>::tx_frame_.bus = options.bus;       // Copies values from options structure
+MoteusWrapper::MoteusWrapper(ActuatorParameters& params, 
+    mjbots::moteus::Controller::Options& options,
+    mjbots::moteus::PositionMode::Format& command_format,
+    mjbots::moteus::Query::Format& query_format,
+    mjbots::moteus::PositionMode::Command& command): 
+ActuatorWrapperBase<MoteusWrapper>(params), mjbots::moteus::Controller(options), 
+position_command_(command), command_format_(command_format), query_format_(query_format) { }
 
-    ActuatorWrapperBase<MoteusWrapper>::tx_frame_.expect_reply = true;     // Expect reply from the same bus
+
+void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, const ActuatorCommand& command)
+{
+    /* Change command values */
+    position_command_.position = command.position_;
+    position_command_.velocity = command.velocity_;
+    position_command_.feedforward_torque = command.torque_; //POPRAW
+
+    /* create CANFD frame*/
+    mjbots::moteus::CanFdFrame can_fd_frame = mjbots::moteus::Controller::MakePosition(position_command_,
+     &command_format_, &query_format_);
+    
+    /* Copy data from CANFD frame to CAN frame*/
+    tx_frame.size = can_fd_frame.size;
+    std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 }
 
 
-void MoteusWrapper::make_command(double position, double velocity, double feedforward_torque)
+void MoteusWrapper::rx_frame_to_state(const CanFrame& rx_frame, ActuatorState& state)
 {
-    /* Change command values */
-    position_command_.position = position;
-    position_command_.velocity = velocity;
-    position_command_.feedforward_torque = feedforward_torque; //POPRAW
-
-    /* create CANFD frame*/
-    mjbots::moteus::CanFdFrame can_fd_frame = mjbots::moteus::Controller::MakePosition(position_command_);
-    
-    /* Copy data from CANFD frame to CAN frame*/
-    tx_frame_.size = can_fd_frame.size;
-    std::memcpy(tx_frame_.data, can_fd_frame.data, can_fd_frame.size);
+    auto result = mjbots::moteus::Query::Parse(rx_frame.data, rx_frame.size);
+    state.position_ = result.position;
+    state.velocity_ = result.velocity;
+    state.torque_ = result.torque;
 }
