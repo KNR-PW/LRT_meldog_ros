@@ -52,7 +52,7 @@ int main(int argc, char** argv)
     input.attitude = &attitude;
     input.request_attitude = true;
 
-
+    std::cout << "Options for controller succesfully initialized!" << std::endl;
     mjbots::pi3hat::Pi3Hat pi3hat(pi3hat_configuration);
     
     // pi3hat output
