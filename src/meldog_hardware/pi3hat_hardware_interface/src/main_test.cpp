@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     // moteus options
     using mjbots::moteus::Controller;
     Controller::Options moteus_options;
-    moteus_options.bus = 0;
+    moteus_options.bus = 1;
     moteus_options.id = 1;
 
     // moteus command format (it will be copied to wrapper)
