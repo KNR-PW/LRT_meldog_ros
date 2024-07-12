@@ -1,4 +1,4 @@
-#include "../include/actuator_wrappers/MoteusWrapper.hpp"
+#include "../../include/actuator_wrappers/MoteusWrapper.hpp"
 
 
 /*

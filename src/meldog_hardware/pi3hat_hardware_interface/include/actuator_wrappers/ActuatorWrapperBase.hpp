@@ -1,7 +1,7 @@
 #ifndef _MOTOR_WRAPPER_BASE_
 #define _MOTOR_WRAPPER_BASE_
 
-#include "pi3hat/pi3hat.h"
+#include "../pi3hat/pi3hat.h"
 #include <cmath>
 
 /*  
@@ -62,13 +62,13 @@ class ActuatorWrapperBase
     /* Static virtual method for starting actuators */
     void init(CanFrame& tx_frame)
     {
-        derived().init(CanFrame& tx_frame);
+        derived().init(tx_frame);
     };
 
     /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
     void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
     {
-        command.position_ = params_.direction_* (fmax(command.position_, params_.position_min), params_.position_max_);
+        command.position_ = params_.direction_* (fmax(command.position_, params_.position_min_), params_.position_max_);
         command.velocity_ = params_.direction_* fmin(fmax(command.velocity_, -params_.velocity_max_), params_.velocity_max_);
         command.torque_ = params_.direction_* fmin(fmax(command.torque_, -params_.torque_max_), params_.torque_max_);
 

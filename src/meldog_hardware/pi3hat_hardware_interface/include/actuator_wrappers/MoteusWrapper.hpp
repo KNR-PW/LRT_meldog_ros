@@ -2,7 +2,7 @@
 #define _MOTEUS_ACTUATOR_WRAPPER_
 
 
-#include "moteus/moteus.h"
+#include "../moteus/moteus.h"
 #include "ActuatorWrapperBase.hpp"
 
 namespace actuator_wrappers
