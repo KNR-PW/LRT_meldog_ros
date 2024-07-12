@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cmath>
 #include <unistd.h>
+#include <string>
 
 static double GetNow() 
 {
@@ -63,9 +64,9 @@ int main(int argc, char** argv)
     // moteus wrapper
     actuator_wrappers::ActuatorParameters params;
     params.direction_ = 1;
-    params.position_max_ = 6;
-    params.position_min_ = -6;
-    params.velocity_max_ = 5;
+    params.position_max_ = 10;
+    params.position_min_ = -10;
+    params.velocity_max_ = 4;
     params.torque_max_ = 1;
 
     actuator_wrappers::MoteusWrapper moteus_wrapper(params, moteus_options, moteus_command);
@@ -91,19 +92,20 @@ int main(int argc, char** argv)
 
     auto prev = GetNow();
     double frequency;
+    std::string status_line;
     while(true)
     {   
         auto now = GetNow();
-        actuator_command.position_ = 3 * sin(now - prev);
+        actuator_command.position_ = 10 * sin(now - prev);
         moteus_wrapper.command_to_tx_frame(tx_frame, actuator_command);
         pi3hat_output = pi3hat.Cycle(input);
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
         moteus_wrapper.rx_frame_to_state(rx_frame, actuator_state);
-        std::cout << "Jestem tutaj" << std::endl;
         ::snprintf(buf, sizeof(buf) -1, "f/p/v/t=(%7.3f, %7.3f, %7.3f, %7.3f)",
         frequency, actuator_state.position_, actuator_state.velocity_, actuator_state.torque_);
-        ::printf("\r");
+        status_line += buf;
+        ::printf("%s \r", status_line.c_str());
         ::fflush(::stdout);
     }
 
