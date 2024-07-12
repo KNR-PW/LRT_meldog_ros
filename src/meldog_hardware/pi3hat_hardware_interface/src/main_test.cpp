@@ -16,7 +16,7 @@ static double GetNow()
       static_cast<double>(ts.tv_nsec) / 1e9;
 };
 
-int main(int argc, char argv[])
+int main(int argc, char** argv)
 {
     // moteus options
     using mjbots::moteus::Controller;
@@ -75,7 +75,7 @@ int main(int argc, char argv[])
 
     std::cout << "Options for controller succesfully initialized!" << std::endl;
 
-    
+
     mjbots::pi3hat::ConfigureRealtime(0);
     std::cout << "Realtime control activated!" << std::endl;
 
@@ -98,7 +98,7 @@ int main(int argc, char argv[])
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
         moteus_wrapper.rx_frame_to_state(rx_frame, actuator_state);
-        ::snprintf(buf, sizeof(buf) -1, "f/p/v/t=(%7.3f,%7.3f,%7.3f)",
+        ::snprintf(buf, sizeof(buf) -1, "f/p/v/t=(%7.3f, %7.3f, %7.3f, %7.3f)",
         frequency, actuator_state.position_, actuator_state.velocity_, actuator_state.torque_);
         ::printf("\r");
         ::fflush(::stdout);
