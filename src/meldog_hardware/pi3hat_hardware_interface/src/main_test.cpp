@@ -98,6 +98,7 @@ int main(int argc, char** argv)
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
         moteus_wrapper.rx_frame_to_state(rx_frame, actuator_state);
+        std::cout << "Jestem tutaj" << std::endl;
         ::snprintf(buf, sizeof(buf) -1, "f/p/v/t=(%7.3f, %7.3f, %7.3f, %7.3f)",
         frequency, actuator_state.position_, actuator_state.velocity_, actuator_state.torque_);
         ::printf("\r");
