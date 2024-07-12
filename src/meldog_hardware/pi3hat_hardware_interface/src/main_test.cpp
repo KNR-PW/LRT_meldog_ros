@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     tx_frame.bus = 1;
     tx_frame.expect_reply = true;
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_span(&tx_frame, 1);
-    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_span(&tx_frame, 1);
+    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_span(&rx_frame, 1);
     mjbots::pi3hat::Attitude attitude;
 
     mjbots::pi3hat::Pi3Hat::Input input;
@@ -102,10 +102,10 @@ int main(int argc, char** argv)
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
         moteus_wrapper.rx_frame_to_state(rx_frame, actuator_state);
-        ::snprintf(buf, sizeof(buf) -1, "f/p/v/t=(%7.3f, %7.3f, %7.3f, %7.3f)",
+        ::snprintf(buf, sizeof(buf) -1, "f/p/v/t=(%7.3f, %7.3f, %7.3f, %7.3f) ",
         frequency, actuator_state.position_, actuator_state.velocity_, actuator_state.torque_);
         status_line += buf;
-        ::printf("%s \r", status_line.c_str());
+        ::printf("%s\n  \r", status_line.c_str());
         ::fflush(::stdout);
     }
 
