@@ -40,7 +40,9 @@ int main(int argc, char** argv)
 
     mjbots::pi3hat::CanFrame tx_frame;
     mjbots::pi3hat::CanFrame rx_frame;
-
+    tx_frame.id = 1; // TO DODAJ DO WRAPPERA!!
+    tx_frame.bus = 1;
+    tx_frame.expect_reply = true;
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_span(&tx_frame, 1);
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_span(&tx_frame, 1);
     mjbots::pi3hat::Attitude attitude;
