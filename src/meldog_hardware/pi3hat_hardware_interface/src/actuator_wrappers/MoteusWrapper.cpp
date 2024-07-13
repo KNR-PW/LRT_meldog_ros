@@ -19,10 +19,9 @@ position_command_(command){ }
 
 void MoteusWrapper::init(CanFrame& tx_frame)
 {
+    /* create CANFD frame*/
     mjbots::moteus::CanFdFrame can_fd_frame = mjbots::moteus::Controller::MakeStop();
-    position_command_.position = 0;
-    position_command_.velocity = 1; // TEST
-    position_command_.feedforward_torque = 0;
+
     /* Copy data from CANFD frame to CAN frame*/
     tx_frame.size = can_fd_frame.size;
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
@@ -50,4 +49,6 @@ void MoteusWrapper::rx_frame_to_state(const CanFrame& rx_frame, ActuatorState& s
     state.position_ = result.position;
     state.velocity_ = result.velocity;
     state.torque_ = result.torque;
+    state.temperature_ = result.temperature;
+    state.fault = result.fault;
 }

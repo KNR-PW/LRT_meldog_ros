@@ -95,14 +95,18 @@ namespace pi3hat_hardware_interface
         /* Actuator states */
         std::vector<actuator_wrappers::ActuatorState> hw_actuator_states_;
 
-        // Actuator commands
+        //  Actuator commands
         std::vector<actuator_wrappers::ActuatorCommand> hw_actuator_commands_;
 
         /* Actuator Wrappers (here change to your own wrapper) */
         std::vector<actuator_wrappers::MoteusWrapper> moteus_wrappers;
 
+        /* Function for creating moteus wrappers (here u can add your own wrapper)
+           Remember to change this function in source code */
+        void add_actuator_wrapper(const hardware_interface::HardwareInfo &info, const WrapperType type);
+        
         template<class Wrapper>
-        void make_commands(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
+        void commands_to_tx_frames(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
         {
             // TODO: Uporządkuj wcześniej silniki względem id
             for(size_t i = 0; i < number_of_actuators; i++)
@@ -113,7 +117,7 @@ namespace pi3hat_hardware_interface
         };
 
         template<class Wrapper>
-        void get_states(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
+        void rx_frames_to_states(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
         {
             for(size_t i = 0; i < number_of_actuators; i++)
             {   
@@ -123,6 +127,13 @@ namespace pi3hat_hardware_interface
         }
     };
 
-} 
+/* Here add your actuator wrapper type */
+enum WrapperType
+{
+    Moteus = 0,
+
+};
+
+}; 
 
 #endif 

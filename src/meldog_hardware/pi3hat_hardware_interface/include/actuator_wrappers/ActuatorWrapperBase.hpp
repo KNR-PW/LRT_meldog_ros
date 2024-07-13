@@ -13,6 +13,7 @@
 namespace actuator_wrappers
 {
 
+/* Structure for basic actuator command */
 struct ActuatorCommand
 {
     double position_;
@@ -20,11 +21,14 @@ struct ActuatorCommand
     double torque_;
 };
 
+/* Structure for basic actuator state */
 struct ActuatorState
 {
     double position_;
     double velocity_;
     double torque_;
+    int temperature_;
+    bool fault = false;
 };
 
 struct ActuatorParameters
