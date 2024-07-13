@@ -38,12 +38,14 @@ int main(int argc, char** argv)
     // pi3hat 
     mjbots::pi3hat::Pi3Hat::Configuration pi3hat_configuration;
     pi3hat_configuration.attitude_rate_hz = 1000;
+    pi3hat_configuration.can[0].automatic_retransmission = false;
+    pi3hat_configuration.can[0].fdcan_frame = false;
+
 
     mjbots::pi3hat::CanFrame tx_frame;
     mjbots::pi3hat::CanFrame rx_frame;
     tx_frame.id = 1; // TO DODAJ DO WRAPPERA!!
     tx_frame.bus = 1;
-    tx_frame.expect_reply = true;
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_span(&tx_frame, 1);
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_span(&rx_frame, 1);
     mjbots::pi3hat::Attitude attitude;
@@ -96,7 +98,7 @@ int main(int argc, char** argv)
     while(true)
     {   
         auto now = GetNow();
-        actuator_command.position_ = 10 * sin(now - prev);
+        actuator_command.position_ = 5 * sin(now - prev);
         moteus_wrapper.command_to_tx_frame(tx_frame, actuator_command);
         pi3hat_output = pi3hat.Cycle(input);
         auto mesaure_time = GetNow() - now;
