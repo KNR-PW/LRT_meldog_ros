@@ -16,23 +16,25 @@ namespace actuator_wrappers
 /* Structure for basic actuator command */
 struct ActuatorCommand
 {
-    double position_;
-    double velocity_;
-    double torque_;
+    double position_;   /* [radians] */
+    double velocity_;   /* [radians/s] */
+    double torque_;     /* [Nm] */
 };
 
 /* Structure for basic actuator state */
 struct ActuatorState
 {
-    double position_;
-    double velocity_;
-    double torque_;
-    int temperature_;
+    double position_;   /* [radians] */
+    double velocity_;   /* [radians/s] */
+    double torque_;     /* [Nm] */
+    int temperature_;   /* [Celcius] */
     bool fault = false;
 };
 
 struct ActuatorParameters
 {
+    int id;
+    int bus;
     double position_max_;
     double position_min_;
     double velocity_max_;
@@ -72,6 +74,8 @@ class ActuatorWrapperBase
     /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
     void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
     {
+        tx_frame.id = params_.id;
+        tx_frame.bus  = params_.bus;
         command.position_ = params_.direction_* (fmax(command.position_, params_.position_min_), params_.position_max_);
         command.velocity_ = params_.direction_* fmin(fmax(command.velocity_, -params_.velocity_max_), params_.velocity_max_);
         command.torque_ = params_.direction_* fmin(fmax(command.torque_, -params_.torque_max_), params_.torque_max_);
@@ -82,6 +86,7 @@ class ActuatorWrapperBase
     /* Static virtual method for preparing ActuatorState form RX CAN frame */
     void rx_frame_to_state(CanFrame& rx_frame, ActuatorState& state)
     {
+        if(rx_frame.id != params_.id) return; /* This should not happen! (map frame to wrapper first) */
         derived().make_position(rx_frame, state);
         state.position_ = params_.direction_ * state.position_;
         state.velocity_ = params_.direction_ * state.velocity_;

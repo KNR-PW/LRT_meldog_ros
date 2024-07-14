@@ -10,6 +10,11 @@ namespace actuator_wrappers
 class MoteusWrapper: public ActuatorWrapperBase<MoteusWrapper>, protected mjbots::moteus::Controller
 {
     private:
+
+    /* Const coefficients for easy radians - rotations transform */
+    const double rotation_to_radians = 2 * M_PI;
+    const double radians_to_rotation = 1 / (2 * M_PI); /* Multiplying is faster than dividing */
+
     /* Command structure for moteus object*/
     mjbots::moteus::PositionMode::Command position_command_;
 
