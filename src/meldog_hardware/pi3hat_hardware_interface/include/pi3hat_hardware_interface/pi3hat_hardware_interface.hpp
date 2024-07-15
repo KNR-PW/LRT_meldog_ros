@@ -6,17 +6,30 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cmath>
+
+#include "rclcpp/clock.hpp"
+#include "rclcpp/duration.hpp"
+#include "rclcpp/macros.hpp"
+#include "rclcpp/time.hpp"
+#include "rclcpp/logger.hpp"
 
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
 #include "hardware_interface/system_interface.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
-#include "rclcpp/clock.hpp"
-#include "rclcpp/duration.hpp"
-#include "rclcpp/macros.hpp"
-#include "rclcpp/time.hpp"
+
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
+
+#include "transmission_interface/transmission.hpp"
+#include "transmission_interface/simple_transmission.hpp"
+#include "transmission_interface/four_bar_linkage_transmission.hpp"
+#include "transmission_interface/differential_transmission.hpp"
+#include "transmission_interface/simple_transmission_loader.hpp"
+#include "transmission_interface/four_bar_linkage_transmission_loader.hpp"
+#include "transmission_interface/differential_transmission_loader.hpp"
+#include "transmission_interface/transmission_interface_exception.hpp"
 
 #include "../actuator_wrappers/MoteusWrapper.hpp"
 #include "../imu/IMUTransform.hpp"
@@ -24,8 +37,6 @@
 #include "../pi3hat/realtime.h"
 
 #include "visibility_control.hpp"
-
-#include <cmath>
 
 namespace pi3hat_hardware_interface
 {
@@ -65,6 +76,9 @@ namespace pi3hat_hardware_interface
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
     private:
+        /* TYPICAL ROS2 OBJECTS: */
+        std::unique_ptr<rclcpp::Logger> logger_;
+
         /* PART FOR COMMUNICATION WITH HARDWARE: */
 
         /* number of actuators */
@@ -131,7 +145,24 @@ namespace pi3hat_hardware_interface
         }
 
         /* PART FOR CREATING TRANSMISSION OBJECTS:*/
-        
+
+        /* Transmission interfaces*/
+        std::vector<std::shared_ptr<transmission_interface::Transmission>> transmissions_;
+
+        /* Function for creating all transmissions */
+        void create_transmission_interface(const hardware_interface::HardwareInfo &info);
+
+        /* Functions for creating simple transmission */
+        void create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
+        transmission_interface::SimpleTransmissionLoader& loader);
+
+        /* Functions for creating four bar linkage transmission */
+        void create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
+        transmission_interface::FourBarLinkageTransmissionLoader& loader);
+
+        /* Functions for creating differential transmission */
+        void create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
+        transmission_interface::DifferentialTransmissionLoader& loader);
     };
 
 
