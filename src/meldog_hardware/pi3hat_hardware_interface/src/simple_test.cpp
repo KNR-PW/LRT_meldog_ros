@@ -17,7 +17,7 @@ int main(int argc, char** argv)
     using mjbots::moteus::Controller;
     Controller::Options moteus_options;
     moteus_options.bus = 1;
-    moteus_options.id = 1;
+    moteus_options.id = 2;
     Controller moteus_controller(moteus_options);
 
     mjbots::moteus::PositionMode::Command moteus_command;
@@ -26,13 +26,12 @@ int main(int argc, char** argv)
 
     mjbots::pi3hat::Pi3Hat::Configuration pi3hat_configuration;
     pi3hat_configuration.attitude_rate_hz = 1000;
-    pi3hat_configuration.can[0].automatic_retransmission = false;
-    pi3hat_configuration.can[0].fdcan_frame = false;
 
     mjbots::pi3hat::CanFrame tx_frame;
     mjbots::pi3hat::CanFrame rx_frame;
     tx_frame.id = 1; 
-    tx_frame.bus = 1;
+    tx_frame.bus = 2;
+    tx_frame.expect_reply = true;
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_span(&tx_frame, 1);
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_span(&rx_frame, 1);
     mjbots::pi3hat::Attitude attitude;
@@ -69,11 +68,8 @@ int main(int argc, char** argv)
         pi3hat_output = pi3hat.Cycle(input);
         mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame.data, rx_frame.size);
         double state_position = result.position;
-        ::snprintf(buf, sizeof(buf) -1, "f/p/v/t=(%7.3f, %7.3f) ",
-        frequency, state_position);
-        status_line += buf;
-        ::printf("%s\n  \r", status_line.c_str());
-        ::fflush(::stdout);
+        std::cout << "Attitude?: " << pi3hat_output.attitude_present << std::endl;
+        std::cout << "Data size?: " << pi3hat_output.rx_can_size << std::endl;
 
     };
     return 0;
