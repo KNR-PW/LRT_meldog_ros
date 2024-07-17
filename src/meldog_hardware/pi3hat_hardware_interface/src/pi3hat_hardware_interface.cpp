@@ -9,6 +9,8 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     {
         return hardware_interface::CallbackReturn::ERROR;
     }
+    logger_ = std::make_unique<rclcpp::Logger>(
+    rclcpp::get_logger("Pi3HatHardwareInterface"));
 
     hw_actuator_commands_.resize(info_.joints.size(), ActuatorState{std::numeric_limits<double>::quiet_NaN(),
      std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()});
@@ -69,5 +71,39 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
         auto moteus_wrapper = MoteusWrapper(options, tx_can_frames_[i], rx_can_frames_[i],
         hw_actuator_commands_[i], hw_actuator_states_[i], mjbots::moteus::PositionMode::Command());
         moteus_wrappers.push_back(moteus_wrapper);
+    }
+}
+
+
+hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_simple_transmissions(const hardware_interface::TransmissionInfo& transmission_info,
+        transmission_interface::SimpleTransmissionLoader& loader)
+{
+    for (const auto & transmission_info : info_.transmissions)
+    {
+        if (transmission_info.type != "transmission_interface/SimpleTransmission")
+        {
+            continue;
+        }
+        std::shared_ptr<transmission_interface::Transmission> transmission;
+        try
+        {
+            transmission = loader.load(transmission_info);
+        }
+        catch (const transmission_interface::TransmissionInterfaceException & exc)
+        {
+            RCLCPP_FATAL(*logger_, "Error while loading %s: %s", transmission_info.name.c_str(), exc.what());
+            return hardware_interface::CallbackReturn::ERROR;
+        }
+        std::vector<transmission_interface::JointHandle> joint_handles;
+        std::vector<transmission_interface::ActuatorHandle> actuator_handles;
+    
+        if(transmission_info.joints.size() != 1)
+        {
+            RCLCPP_FATAL(*logger_, "Invalid number of joints in SimpleTransmission!");
+            return hardware_interface::CallbackReturn::ERROR;
+        }
+        transmission_interface::JointHandle joint_handle(transmission_info.joints[0].name,
+        hardware_interface::HW_IF_POSITION, ); //pomysl jak tu dodac position odpowiedniego jointa!
+        joint_handles.push_back()
     }
 }

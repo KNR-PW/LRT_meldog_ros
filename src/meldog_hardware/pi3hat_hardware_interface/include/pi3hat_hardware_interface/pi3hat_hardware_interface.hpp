@@ -13,6 +13,7 @@
 #include "rclcpp/macros.hpp"
 #include "rclcpp/time.hpp"
 #include "rclcpp/logger.hpp"
+#include "rclcpp/logging.hpp"
 
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
@@ -103,7 +104,7 @@ namespace pi3hat_hardware_interface
         std::shared_ptr<mjbots::pi3hat::CanFrame[]> rx_can_frames_;
 
         /* Container for motor_id -> joint_index maping */
-        std::map<int, int> actuator_joint_map_;
+        std::vector<int> actuator_joint_map_;
 
         /* Actuator states and commands */
         std::vector<actuator_wrappers::ActuatorState> hw_actuator_states_;
@@ -150,18 +151,18 @@ namespace pi3hat_hardware_interface
         std::vector<std::shared_ptr<transmission_interface::Transmission>> transmissions_;
 
         /* Function for creating all transmissions */
-        void create_transmission_interface(const hardware_interface::HardwareInfo &info);
+        hardware_interface::CallbackReturn create_transmission_interface(const hardware_interface::HardwareInfo &info);
 
         /* Functions for creating simple transmission */
-        void create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
+        hardware_interface::CallbackReturn create_simple_transmissions(const hardware_interface::TransmissionInfo& transmission_info,
         transmission_interface::SimpleTransmissionLoader& loader);
 
         /* Functions for creating four bar linkage transmission */
-        void create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
+        hardware_interface::CallbackReturn create_fbl_transmissions(const hardware_interface::TransmissionInfo& transmission_info, 
         transmission_interface::FourBarLinkageTransmissionLoader& loader);
 
         /* Functions for creating differential transmission */
-        void create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
+        hardware_interface::CallbackReturn create_diff_transmissions(const hardware_interface::TransmissionInfo& transmission_info, 
         transmission_interface::DifferentialTransmissionLoader& loader);
     };
 
