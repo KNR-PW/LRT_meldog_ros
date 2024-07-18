@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include <algorithm>
 
 #include "rclcpp/clock.hpp"
 #include "rclcpp/duration.hpp"
@@ -77,7 +78,7 @@ namespace pi3hat_hardware_interface
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
     private:
-        /* TYPICAL ROS2 OBJECTS: */
+        /* UTILITY ROS2 OBJECTS: */
         std::unique_ptr<rclcpp::Logger> logger_;
 
         /* PART FOR COMMUNICATION WITH HARDWARE: */
@@ -110,6 +111,9 @@ namespace pi3hat_hardware_interface
         std::vector<actuator_wrappers::ActuatorState> hw_actuator_states_;
         std::vector<actuator_wrappers::ActuatorCommand> hw_actuator_commands_;
 
+        /* For transmission interface */
+        std::vector<actuator_wrappers::ActuatorCommand> hw_actuator_transmission_passthrough_;
+         
         /* Actuator Wrappers (HERE change to your own wrapper) */
         std::vector<actuator_wrappers::MoteusWrapper> moteus_wrappers;
 
@@ -120,6 +124,8 @@ namespace pi3hat_hardware_interface
         /* Joint states and commands (for transmissions)*/
         std::vector<JointState> hw_joint_states_;
         std::vector<JointCommand> hw_joint_commands_;
+        /* For transmission interface */
+        std::vector<JointCommand> hw_joint_transmission_passthrough_;
 
         /* Function for creating moteus wrappers (here u can add your own wrapper)
            Remember to change this function in source code */
@@ -155,17 +161,24 @@ namespace pi3hat_hardware_interface
 
         /* Functions for creating simple transmission */
         hardware_interface::CallbackReturn create_simple_transmissions(const hardware_interface::TransmissionInfo& transmission_info,
-        transmission_interface::SimpleTransmissionLoader& loader);
+        transmission_interface::SimpleTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
         /* Functions for creating four bar linkage transmission */
         hardware_interface::CallbackReturn create_fbl_transmissions(const hardware_interface::TransmissionInfo& transmission_info, 
-        transmission_interface::FourBarLinkageTransmissionLoader& loader);
+        transmission_interface::FourBarLinkageTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
         /* Functions for creating differential transmission */
         hardware_interface::CallbackReturn create_diff_transmissions(const hardware_interface::TransmissionInfo& transmission_info, 
-        transmission_interface::DifferentialTransmissionLoader& loader);
-    };
+        transmission_interface::DifferentialTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
+        /* Functions for checking, if data passed from urdf is correct */
+        void load_transmission_data(const hardware_interface::TransmissionInfo& transmission_info, 
+            transmission_interface::TransmissionSharedPtr& transmission,
+            transmission_interface::TransmissionLoader& loader);
+
+        /* Functions for creating joint and actuator handels */
+        void append_joint_handels(std::vector<transmission_interface::JointHandle>& joint_handles, std::string joint_name, int joint_index);
+        void append_actuator_handels(std::vector<transmission_interface::ActuatorHandle>& actuator_handles, std::string actuator_name, int actuator_index);
 
     /* Here add your actuator wrapper type */
     enum WrapperType

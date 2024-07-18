@@ -74,26 +74,71 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     }
 }
 
+void Pi3HatHardwareInterface::append_joint_handels(std::vector<transmission_interface::JointHandle>& joint_handles, std::string joint_name, int joint_index)
+{
+    transmission_interface::JointHandle joint_handle_position(joint_name, hardware_interface::HW_IF_POSITION, 
+     &hw_joint_transmission_passthrough_[joint_index].position_);
+    joint_handles.push_back(joint_handle_position);
+
+    transmission_interface::JointHandle joint_handle_velocity(joint_name, hardware_interface::HW_IF_VELOCITY, 
+     &hw_joint_transmission_passthrough_[joint_index].velocity_);
+    joint_handles.push_back(joint_handle_velocity);
+
+    transmission_interface::JointHandle joint_handle_torque(joint_name, hardware_interface::HW_IF_EFFORT,
+     &hw_joint_transmission_passthrough_[joint_index].torque_);
+    joint_handles.push_back(joint_handle_torque);
+}
+void Pi3HatHardwareInterface::append_actuator_handels(std::vector<transmission_interface::ActuatorHandle>& actuator_handles, std::string actuator_name, int actuator_index)
+{
+    transmission_interface::ActuatorHandle actuator_handle_position(actuator_name, hardware_interface::HW_IF_POSITION,
+     &hw_actuator_transmission_passthrough_[actuator_index].position_);
+    actuator_handles.push_back(actuator_handle_position);
+
+    transmission_interface::ActuatorHandle actuator_handle_velocity(actuator_name, hardware_interface::HW_IF_VELOCITY, 
+     &hw_actuator_transmission_passthrough_[actuator_index].velocity_);
+    actuator_handles.push_back(actuator_handle_velocity);
+
+    transmission_interface::ActuatorHandle actuator_handle_torque(actuator_name, hardware_interface::HW_IF_EFFORT,
+     &hw_actuator_transmission_passthrough_[actuator_index].torque_);
+    actuator_handles.push_back(actuator_handle_torque);
+}
+
+
+void Pi3HatHardwareInterface::load_transmission_data(const hardware_interface::TransmissionInfo& transmission_info, 
+        transmission_interface::TransmissionSharedPtr& transmission, transmission_interface::TransmissionLoader& loader)
+{
+    try
+    {
+        transmission = loader.load(transmission_info);
+    }
+    catch (const transmission_interface::TransmissionInterfaceException & exc)
+    {
+        RCLCPP_FATAL(*logger_, "Error while loading %s: %s", transmission_info.name.c_str(), exc.what());
+        return;
+    }
+}
+
+hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_transmission_interface(const hardware_interface::HardwareInfo &info)
+{
+
+    return hardware_interface::CallbackReturn::SUCCESS;
+}
 
 hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_simple_transmissions(const hardware_interface::TransmissionInfo& transmission_info,
-        transmission_interface::SimpleTransmissionLoader& loader)
+        transmission_interface::SimpleTransmissionLoader& loader, const std::vector<std::string>& joint_names)
 {
+    RCLCPP_INFO(*logger_, "Simple transmissions initialization starting!");
     for (const auto & transmission_info : info_.transmissions)
     {
+        std::shared_ptr<transmission_interface::Transmission> transmission;
+
         if (transmission_info.type != "transmission_interface/SimpleTransmission")
         {
             continue;
         }
-        std::shared_ptr<transmission_interface::Transmission> transmission;
-        try
-        {
-            transmission = loader.load(transmission_info);
-        }
-        catch (const transmission_interface::TransmissionInterfaceException & exc)
-        {
-            RCLCPP_FATAL(*logger_, "Error while loading %s: %s", transmission_info.name.c_str(), exc.what());
-            return hardware_interface::CallbackReturn::ERROR;
-        }
+
+        load_transmission_data(transmission_info, transmission, loader);
+
         std::vector<transmission_interface::JointHandle> joint_handles;
         std::vector<transmission_interface::ActuatorHandle> actuator_handles;
     
@@ -102,8 +147,19 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_simple_transm
             RCLCPP_FATAL(*logger_, "Invalid number of joints in SimpleTransmission!");
             return hardware_interface::CallbackReturn::ERROR;
         }
-        transmission_interface::JointHandle joint_handle(transmission_info.joints[0].name,
-        hardware_interface::HW_IF_POSITION, ); //pomysl jak tu dodac position odpowiedniego jointa!
-        joint_handles.push_back()
+
+        /* Find joint index for transmission handels by name*/
+        std::vector<std::string>::const_iterator joint_it = std::find(joint_names.begin(), 
+        joint_names.end(), transmission_info.joints[0].name);
+        int joint_index = std::distance(joint_names.begin(), joint_it);
+
+        /* Joint handels */
+
+        /* Actuator handels */
+
+        transmission->configure(joint_handles, actuator_handles);
     }
+    RCLCPP_INFO(*logger_, "Simple transmissions initialized!");
+
+    return hardware_interface::CallbackReturn::SUCCESS;
 }

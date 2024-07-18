@@ -2,13 +2,13 @@
 #define _MOTOR_WRAPPER_BASE_
 
 #include "../pi3hat/pi3hat.h"
-#include <cmath>
-
+#include <algorithm>
 /*  
     Base Actuator Wrapper class, used for wrapping actuator API with simple CRTP interface 
     to create CAN frames for pi3hat Input structure. Note that it uses static polymorphism, 
     so remember to change instance of your derived class in pi3hat hardware interface files 
-    (only for creation of an object).
+    (only for creation of an object). Converting values (like rotations to radians) should 
+    be done in your wrapper.
 */
 namespace actuator_wrappers
 {
@@ -76,9 +76,9 @@ class ActuatorWrapperBase
     {
         tx_frame.id = params_.id;
         tx_frame.bus  = params_.bus;
-        command.position_ = params_.direction_* (fmax(command.position_, params_.position_min_), params_.position_max_);
-        command.velocity_ = params_.direction_* fmin(fmax(command.velocity_, -params_.velocity_max_), params_.velocity_max_);
-        command.torque_ = params_.direction_* fmin(fmax(command.torque_, -params_.torque_max_), params_.torque_max_);
+        command.position_ = params_.direction_* std::clamp(command.position_, params_.position_min_, params_.position_max_);
+        command.velocity_ = params_.direction_* std::clamp(command.velocity_, -params_.velocity_max_, params_.velocity_max_);
+        command.torque_ = params_.direction_* std::clamp(command.torque_, -params_.torque_max_, params_.torque_max_);
 
         derived().make_position(tx_frame, command);
     };
