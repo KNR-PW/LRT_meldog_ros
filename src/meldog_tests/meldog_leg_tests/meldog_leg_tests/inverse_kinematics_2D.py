@@ -5,7 +5,6 @@ from meldog_interfaces_tests.msg import MultiMoteusControl
 from meldog_interfaces_tests.msg import MoteusControl
 from geometry_msgs.msg import Vector3
 import math
-import matplotlib.pyplot as plt
 
 class Leg_Inverse_Kinematics_Solver(Node):
 

@@ -3,7 +3,6 @@ from rclpy.node import Node
 from meldog_interfaces_tests.msg import MultiMoteusState
 from geometry_msgs.msg import Vector3
 import math
-import matplotlib.pyplot as plt
 
 class Leg_Forward_Kinematics_Solver(Node):
 
