@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     char buf[4096] = {};
 
     auto prev = GetNow();
-    double frequency;
+    int frequency;
     std::string status_line;
     while(true)
     {
@@ -69,12 +69,11 @@ int main(int argc, char** argv)
         tx_frame.id = can_fd_frame.arbitration_id; // DZIEKI TEMU DZIALAAA
         tx_frame.size = can_fd_frame.size;
         std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
-
-
-        auto mesaure_time = GetNow() - now;
-        frequency = 1/mesaure_time;
-        pi3hat_output = pi3hat->Cycle(input);
+    
         ::usleep(1000);
+        auto mesaure_time = GetNow() - now;
+        frequency = (int) 1/mesaure_time;
+        pi3hat_output = pi3hat->Cycle(input);
         mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame[0].data, rx_frame[0].size);
         double state_position = result.position;
         ::printf("f, pos_c, pos_s=(%d, %7.3f, %7.3f)\r",

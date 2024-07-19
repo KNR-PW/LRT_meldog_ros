@@ -48,8 +48,6 @@ int main(int argc, char** argv)
     // pi3hat 
     mjbots::pi3hat::Pi3Hat::Configuration pi3hat_configuration;
     pi3hat_configuration.attitude_rate_hz = 1000;
-    pi3hat_configuration.can[0].automatic_retransmission = false;
-    pi3hat_configuration.can[0].fdcan_frame = false;
 
 
     mjbots::pi3hat::CanFrame tx_frame;
@@ -101,7 +99,7 @@ int main(int argc, char** argv)
     std::cout << "Controller successfully started!" << std::endl;
 
     auto prev = GetNow();
-    double frequency;
+    int frequency;
     while(true)
     {   
         auto now = GetNow();
@@ -110,7 +108,7 @@ int main(int argc, char** argv)
         pi3hat_output = pi3hat.Cycle(input);
         ::usleep(100);
         auto mesaure_time = GetNow() - now;
-        frequency = 1/mesaure_time;
+        frequency = (int) 1/mesaure_time;
         state(moteus_wrapper, rx_frame, actuator_state);
         ::printf("f, pos_c, pos_s=(%d, %7.3f, %7.3f)\r",
         frequency, actuator_command.position_, actuator_state.position_);
