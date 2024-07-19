@@ -65,6 +65,8 @@ int main(int argc, char** argv)
         mjbots::moteus::CanFdFrame can_fd_frame = moteus_controller.MakePosition(moteus_command);
 
         /* Copy data from CANFD frame to CAN frame*/
+        tx_frame.bus = can_fd_frame.bus;
+        tx_frame.id = can_fd_frame.arbitration_id;
         tx_frame.size = can_fd_frame.size;
         std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 
