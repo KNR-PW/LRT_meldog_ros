@@ -28,7 +28,7 @@ void MoteusWrapper::init(CanFrame& tx_frame)
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 }
 
-void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, const ActuatorCommand& command)
+void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
 {
     /* Change command values */
     position_command_.position = command.position_ * radians_to_rotation;
@@ -49,7 +49,7 @@ void MoteusWrapper::rx_frame_to_state(const CanFrame& rx_frame, ActuatorState& s
 {
     /* Parse data from RX CAN frame to Result object */
     if(((rx_frame.id >> 8) & 0x7f) != params_.id) return; /* This should not happen! (map frame to wrapper first) */
-    
+
     mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame.data, rx_frame.size);
     state.position_ = result.position * rotation_to_radians;
     state.velocity_ = result.velocity * rotation_to_radians;

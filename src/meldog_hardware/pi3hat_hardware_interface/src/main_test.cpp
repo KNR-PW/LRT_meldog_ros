@@ -18,7 +18,7 @@ static double GetNow()
 };
 
 template <class Derived>
-void command(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper, mjbots::pi3hat::CanFrame& tx_frame, const actuator_wrappers::ActuatorCommand& command)
+void command(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper, mjbots::pi3hat::CanFrame& tx_frame, actuator_wrappers::ActuatorCommand& command)
 {
     wrapper.command_to_tx_frame(tx_frame, command);
 };

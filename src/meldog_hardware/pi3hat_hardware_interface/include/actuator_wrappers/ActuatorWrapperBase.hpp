@@ -71,7 +71,7 @@ class ActuatorWrapperBase
     };
 
     /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
-    void command_to_tx_frame(CanFrame& tx_frame, const ActuatorCommand& command)
+    void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
     {
         tx_frame.id = params_.id;
         tx_frame.bus  = params_.bus;

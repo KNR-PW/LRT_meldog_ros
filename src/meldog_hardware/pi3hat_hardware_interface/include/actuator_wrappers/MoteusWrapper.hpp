@@ -26,7 +26,7 @@ class MoteusWrapper: public ActuatorWrapperBase<MoteusWrapper>, protected mjbots
 
     /* Static override */
     void init(CanFrame& tx_frame);
-    void command_to_tx_frame(CanFrame& tx_frame, const ActuatorCommand& command);
+    void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command);
     void rx_frame_to_state(const CanFrame& rx_frame, ActuatorState& state);
 };
 };
