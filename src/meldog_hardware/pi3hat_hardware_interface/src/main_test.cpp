@@ -17,6 +17,16 @@ static double GetNow()
       static_cast<double>(ts.tv_nsec) / 1e9;
 };
 
+template <class Derived>
+void command(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper, mjbots::pi3hat::CanFrame& tx_frame, const actuator_wrappers::ActuatorCommand& command)
+{
+    wrapper.command_to_tx_frame(tx_frame, command);
+};
+template <class Derived>
+void state(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper,const mjbots::pi3hat::CanFrame& rx_frame, actuator_wrappers::ActuatorState& state)
+{
+    wrapper.rx_frame_to_state(rx_frame, state);
+}
 int main(int argc, char** argv)
 {
     // moteus options
@@ -44,7 +54,7 @@ int main(int argc, char** argv)
 
     mjbots::pi3hat::CanFrame tx_frame;
     mjbots::pi3hat::CanFrame rx_frame;
-    
+
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_span(&tx_frame, 1);
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_span(&rx_frame, 1);
     mjbots::pi3hat::Attitude attitude;
@@ -56,7 +66,6 @@ int main(int argc, char** argv)
     input.attitude = &attitude;
     input.request_attitude = true;
 
-    std::cout << "Options for controller succesfully initialized!" << std::endl;
     mjbots::pi3hat::Pi3Hat pi3hat(pi3hat_configuration);
     
     // pi3hat output
@@ -96,11 +105,12 @@ int main(int argc, char** argv)
     {   
         auto now = GetNow();
         actuator_command.position_ = 5 * sin(now - prev);
-        moteus_wrapper.command_to_tx_frame(tx_frame, actuator_command);
+        command(moteus_wrapper, tx_frame, actuator_command);
         pi3hat_output = pi3hat.Cycle(input);
+        ::usleep(100);
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
-        moteus_wrapper.rx_frame_to_state(rx_frame, actuator_state);
+        state(moteus_wrapper, rx_frame, actuator_state);
         ::printf("f/p/v/t=(%7.3f, %7.3f, %7.3f, %7.3f)\r",
         frequency, actuator_state.position_, actuator_state.velocity_, actuator_state.torque_);
         ::fflush(::stdout);
