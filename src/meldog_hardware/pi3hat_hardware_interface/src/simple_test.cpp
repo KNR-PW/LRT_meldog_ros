@@ -77,8 +77,9 @@ int main(int argc, char** argv)
         ::usleep(1000);
         mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame[0].data, rx_frame[0].size);
         double state_position = result.position;
-        std::cout << "Attitude?: " << pi3hat_output.attitude_present << std::endl;
-        std::cout << "Data size?: " << pi3hat_output.rx_can_size << std::endl;
+        ::printf("f, pos_c, pos_s=(%7.3f, %7.3f, %7.3f)\r",
+        frequency, position_, state_position );
+        ::fflush(::stdout);
 
     };
     return 0;
