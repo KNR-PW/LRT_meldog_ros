@@ -47,8 +47,6 @@ class ActuatorWrapperBase
 {
     private:
 
-    ActuatorParameters params_;
-
     /* Used for CRTP interface */
     Derived& derived()
     {
@@ -56,6 +54,7 @@ class ActuatorWrapperBase
     };
 
     protected:
+    ActuatorParameters params_;
     
     /* pi3hat CAN frames */
     using CanFrame = mjbots::pi3hat::CanFrame;
@@ -86,8 +85,7 @@ class ActuatorWrapperBase
     /* Static virtual method for preparing ActuatorState form RX CAN frame */
     void rx_frame_to_state(CanFrame& rx_frame, ActuatorState& state)
     {
-        if(rx_frame.id != params_.id) return; /* This should not happen! (map frame to wrapper first) */
-        derived().make_position(rx_frame, state);
+        derived().rx_frame_to_state(rx_frame, state);
         state.position_ = params_.direction_ * state.position_;
         state.velocity_ = params_.direction_ * state.velocity_;
         state.torque_ = params_.direction_ * state.torque_; 

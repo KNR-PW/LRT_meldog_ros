@@ -44,8 +44,7 @@ int main(int argc, char** argv)
 
     mjbots::pi3hat::CanFrame tx_frame;
     mjbots::pi3hat::CanFrame rx_frame;
-    tx_frame.id = 1; // TO DODAJ DO WRAPPERA!!
-    tx_frame.bus = 1;
+    
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_span(&tx_frame, 1);
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_span(&rx_frame, 1);
     mjbots::pi3hat::Attitude attitude;
@@ -70,6 +69,8 @@ int main(int argc, char** argv)
     params.position_min_ = -10;
     params.velocity_max_ = 4;
     params.torque_max_ = 1;
+    params.bus = 1;
+    params.id = 1;
 
     actuator_wrappers::MoteusWrapper moteus_wrapper(params, moteus_options, moteus_command);
     actuator_wrappers::ActuatorCommand actuator_command;
@@ -89,12 +90,8 @@ int main(int argc, char** argv)
     pi3hat_output = pi3hat.Cycle(input);
     std::cout << "Controller successfully started!" << std::endl;
 
-    // Buffer for printing info
-    char buf[4096] = {};
-
     auto prev = GetNow();
     double frequency;
-    std::string status_line;
     while(true)
     {   
         auto now = GetNow();
@@ -104,10 +101,8 @@ int main(int argc, char** argv)
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
         moteus_wrapper.rx_frame_to_state(rx_frame, actuator_state);
-        ::snprintf(buf, sizeof(buf) -1, "f/p/v/t=(%7.3f, %7.3f, %7.3f, %7.3f) ",
+        ::printf("f/p/v/t=(%7.3f, %7.3f, %7.3f, %7.3f)\r",
         frequency, actuator_state.position_, actuator_state.velocity_, actuator_state.torque_);
-        status_line += buf;
-        ::printf("%s\n  \r", status_line.c_str());
         ::fflush(::stdout);
     }
 
