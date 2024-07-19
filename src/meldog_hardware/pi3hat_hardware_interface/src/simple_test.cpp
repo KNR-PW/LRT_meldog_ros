@@ -77,7 +77,7 @@ int main(int argc, char** argv)
         ::usleep(1000);
         mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame[0].data, rx_frame[0].size);
         double state_position = result.position;
-        ::printf("f, pos_c, pos_s=(%7.3f, %7.3f, %7.3f)\r",
+        ::printf("f, pos_c, pos_s=(%d, %7.3f, %7.3f)\r",
         frequency, position_, state_position );
         ::fflush(::stdout);
 

@@ -112,7 +112,7 @@ int main(int argc, char** argv)
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
         state(moteus_wrapper, rx_frame, actuator_state);
-        ::printf("f, pos_c, pos_s=(%7.3f, %7.3f, %7.3f)\r",
+        ::printf("f, pos_c, pos_s=(%d, %7.3f, %7.3f)\r",
         frequency, actuator_command.position_, actuator_state.position_);
         ::fflush(::stdout);
     }
