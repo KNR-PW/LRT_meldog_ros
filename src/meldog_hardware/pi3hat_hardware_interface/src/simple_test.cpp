@@ -74,6 +74,7 @@ int main(int argc, char** argv)
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
         pi3hat_output = pi3hat->Cycle(input);
+        ::usleep(1000);
         mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame[0].data, rx_frame[0].size);
         double state_position = result.position;
         std::cout << "Attitude?: " << pi3hat_output.attitude_present << std::endl;
