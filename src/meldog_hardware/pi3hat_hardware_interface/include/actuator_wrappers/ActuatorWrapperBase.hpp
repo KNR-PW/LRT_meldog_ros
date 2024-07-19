@@ -79,7 +79,7 @@ class ActuatorWrapperBase
         command.velocity_ = params_.direction_* std::clamp(command.velocity_, -params_.velocity_max_, params_.velocity_max_);
         command.torque_ = params_.direction_* std::clamp(command.torque_, -params_.torque_max_, params_.torque_max_);
 
-        derived().make_position(tx_frame, command);
+        derived().command_to_tx_frame(tx_frame, command);
     };
 
     /* Static virtual method for preparing ActuatorState form RX CAN frame */
