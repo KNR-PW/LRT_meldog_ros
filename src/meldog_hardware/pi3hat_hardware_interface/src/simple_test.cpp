@@ -45,12 +45,12 @@ int main(int argc, char** argv)
 
     std::unique_ptr<mjbots::pi3hat::Pi3Hat> pi3hat = std::make_unique<mjbots::pi3hat::Pi3Hat>(pi3hat_configuration);
 
-    // mjbots::moteus::CanFdFrame can_fd_frame = moteus_controller.MakeStop();
-    // tx_frame.size = can_fd_frame.size;
-    // std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
+    mjbots::moteus::CanFdFrame can_fd_frame = moteus_controller.MakeStop();
+    tx_frame.size = can_fd_frame.size;
+    std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 
-    // pi3hat_output = pi3hat->Cycle(input);
-    // std::cout << "Started: " << pi3hat_output.rx_can_size << std::endl;
+    pi3hat_output = pi3hat->Cycle(input);
+    std::cout << "Started: " << pi3hat_output.rx_can_size << std::endl;
     // Buffer for printing info
     char buf[4096] = {};
 
