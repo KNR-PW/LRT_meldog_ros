@@ -106,7 +106,7 @@ int main(int argc, char** argv)
         actuator_command.position_ = 5 * sin(now - prev);
         command(moteus_wrapper, tx_frame, actuator_command);
         pi3hat_output = pi3hat.Cycle(input);
-        ::usleep(100);
+        ::usleep(1000);
         auto mesaure_time = GetNow() - now;
         frequency = (int) 1/mesaure_time;
         state(moteus_wrapper, rx_frame, actuator_state);

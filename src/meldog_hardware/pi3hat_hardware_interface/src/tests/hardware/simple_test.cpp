@@ -1,6 +1,6 @@
-#include "../include/pi3hat/pi3hat.h"
-#include "../include/pi3hat/realtime.h"
-#include "../include/moteus/moteus.h"
+#include "../../../include/pi3hat/pi3hat.h"
+#include "../../../include/pi3hat/realtime.h"
+#include "../../../include/moteus/moteus.h"
 
 
 static double GetNow() 
