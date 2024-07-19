@@ -71,7 +71,7 @@ class ActuatorWrapperBase
     };
 
     /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
-    void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
+    void command_to_tx_frame(CanFrame& tx_frame, const ActuatorCommand& command)
     {
         tx_frame.id = params_.id;
         tx_frame.bus  = params_.bus;
@@ -83,7 +83,7 @@ class ActuatorWrapperBase
     };
 
     /* Static virtual method for preparing ActuatorState form RX CAN frame */
-    void rx_frame_to_state(CanFrame& rx_frame, ActuatorState& state)
+    void rx_frame_to_state(const CanFrame& rx_frame, ActuatorState& state)
     {
         derived().rx_frame_to_state(rx_frame, state);
         state.position_ = params_.direction_ * state.position_;
