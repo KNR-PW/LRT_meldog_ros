@@ -43,12 +43,13 @@ int main(int argc, char** argv)
     input.attitude = &attitude;
     input.request_attitude = true;
 
-    mjbots::pi3hat::Pi3Hat pi3hat(pi3hat_configuration);
+    std::unique_ptr<mjbots::pi3hat::Pi3Hat> pi3hat = std::make_unique<mjbots::pi3hat::Pi3Hat>(pi3hat_configuration);
 
     mjbots::moteus::CanFdFrame can_fd_frame = moteus_controller.MakeStop();
     tx_frame.size = can_fd_frame.size;
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
-    pi3hat_output = pi3hat.Cycle(input);
+
+    pi3hat_output = pi3hat->Cycle(input);
     std::cout << "Started: " << pi3hat_output.rx_can_size << std::endl;
     // Buffer for printing info
     char buf[4096] = {};
@@ -70,7 +71,7 @@ int main(int argc, char** argv)
 
         auto mesaure_time = GetNow() - now;
         frequency = 1/mesaure_time;
-        pi3hat_output = pi3hat.Cycle(input);
+        pi3hat_output = pi3hat->Cycle(input);
         mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame[0].data, rx_frame[0].size);
         double state_position = result.position;
         std::cout << "Attitude?: " << pi3hat_output.attitude_present << std::endl;
