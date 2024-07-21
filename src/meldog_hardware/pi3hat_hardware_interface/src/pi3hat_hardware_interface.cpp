@@ -80,7 +80,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
 
 
 
- /* UTILITY FUNCTIONS */
+/* TRANSMISSION FUNCTIONS */
 void Pi3HatHardwareInterface::append_joint_handles(std::vector<transmission_interface::JointHandle>& joint_handles, const std::string joint_name, const int joint_index)
 {
     transmission_interface::JointHandle joint_handle_position(joint_name, hardware_interface::HW_IF_POSITION, 
@@ -128,7 +128,55 @@ void Pi3HatHardwareInterface::load_transmission_data(const hardware_interface::T
 
 hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_transmission_interface(const hardware_interface::HardwareInfo &info)
 {
+    /* Prepare loaders */
+    transmission_interface::SimpleTransmissionLoader simple_loader;
+    transmission_interface::FourBarLinkageTransmissionLoader fbl_loader;
+    transmission_interface::DifferentialTransmissionLoader diff_loader;
 
+    /* Prepare joint names */
+    std::vector<std::string> joint_names;
+    for(const auto& joint: info.joints)
+    {
+        joint_names.push_back(joint.name);
+    }
+
+    /* For fast computation, transmissions will be sorted by type */
+
+    /* Simple transmissions */
+    for(const auto& transmission_info: info.transmissions)
+    {
+        if(transmission_info.type == "transmission_interface/SimpleTransmission")
+        {
+            if(create_simple_transmission(transmission_info, simple_loader, joint_names) == hardware_interface::CallbackReturn::ERROR)
+            {
+                return hardware_interface::CallbackReturn::ERROR;
+            }
+        }
+    }
+
+    /* FourBarLinkage transmissions */
+    for(const auto& transmission_info: info.transmissions)
+    {
+        if(transmission_info.type == "transmission_interface/FourBarLinkageTransmission")
+        {
+            if(create_fbl_transmission(transmission_info, fbl_loader, joint_names) == hardware_interface::CallbackReturn::ERROR)
+            {
+                return hardware_interface::CallbackReturn::ERROR;;
+            }
+        }
+    }
+
+    /* Differential transmissions */
+    for(const auto& transmission_info: info.transmissions)
+    {
+        if(transmission_info.type == "transmission_interface/DifferentialTransmission")
+        {
+            if(create_diff_transmission(transmission_info, diff_loader, joint_names) == hardware_interface::CallbackReturn::ERROR)
+            {
+                return hardware_interface::CallbackReturn::ERROR;
+            }
+        }
+    }
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 

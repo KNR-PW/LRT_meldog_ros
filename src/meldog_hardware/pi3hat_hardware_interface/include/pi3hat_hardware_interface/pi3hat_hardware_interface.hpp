@@ -182,6 +182,8 @@ namespace pi3hat_hardware_interface
         void append_actuator_handles(std::vector<transmission_interface::ActuatorHandle>& actuator_handles, 
          const std::string actuator_name, const int actuator_index);
 
+
+
     /* Here add your actuator wrapper type */
     enum WrapperType
     {
