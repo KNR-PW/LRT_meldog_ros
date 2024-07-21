@@ -160,15 +160,15 @@ namespace pi3hat_hardware_interface
         hardware_interface::CallbackReturn create_transmission_interface(const hardware_interface::HardwareInfo &info);
 
         /* Functions for creating simple transmission */
-        hardware_interface::CallbackReturn create_simple_transmissions(const hardware_interface::TransmissionInfo& transmission_info,
+        hardware_interface::CallbackReturn create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
         transmission_interface::SimpleTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
         /* Functions for creating four bar linkage transmission */
-        hardware_interface::CallbackReturn create_fbl_transmissions(const hardware_interface::TransmissionInfo& transmission_info, 
+        hardware_interface::CallbackReturn create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
         transmission_interface::FourBarLinkageTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
         /* Functions for creating differential transmission */
-        hardware_interface::CallbackReturn create_diff_transmissions(const hardware_interface::TransmissionInfo& transmission_info, 
+        hardware_interface::CallbackReturn create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
         transmission_interface::DifferentialTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
         /* Functions for checking, if data passed from urdf is correct */
@@ -177,8 +177,10 @@ namespace pi3hat_hardware_interface
             transmission_interface::TransmissionLoader& loader);
 
         /* Functions for creating joint and actuator handels */
-        void append_joint_handels(std::vector<transmission_interface::JointHandle>& joint_handles, std::string joint_name, int joint_index);
-        void append_actuator_handels(std::vector<transmission_interface::ActuatorHandle>& actuator_handles, std::string actuator_name, int actuator_index);
+        void append_joint_handles(std::vector<transmission_interface::JointHandle>& joint_handles, 
+         const std::string joint_name, const int joint_index);
+        void append_actuator_handles(std::vector<transmission_interface::ActuatorHandle>& actuator_handles, 
+         const std::string actuator_name, const int actuator_index);
 
     /* Here add your actuator wrapper type */
     enum WrapperType
