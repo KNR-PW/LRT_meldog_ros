@@ -77,8 +77,8 @@ int main(int argc, char** argv)
     params.position_min_ = -10;
     params.velocity_max_ = 4;
     params.torque_max_ = 1;
-    params.bus = 1;
-    params.id = 1;
+    params.bus_ = 1;
+    params.id_ = 1;
 
     actuator_wrappers::MoteusWrapper moteus_wrapper(params, moteus_options, moteus_command);
     actuator_wrappers::ActuatorCommand actuator_command;

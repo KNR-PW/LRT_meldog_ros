@@ -65,8 +65,8 @@ int main(int argc, char** argv)
     pi3hat_configuration.attitude_rate_hz = 1000;
 
 
-    std::vector<mjbots::pi3hat::CanFrame> tx_frame;
-    std::vector<mjbots::pi3hat::CanFrame> rx_frame;
+    std::vector<mjbots::pi3hat::CanFrame> tx_frame(2);
+    std::vector<mjbots::pi3hat::CanFrame> rx_frame(2);
     tx_frame[0].expect_reply = true;
     tx_frame[1].expect_reply = true;
 
