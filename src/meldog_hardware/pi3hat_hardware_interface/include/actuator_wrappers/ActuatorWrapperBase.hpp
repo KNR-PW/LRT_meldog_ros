@@ -33,8 +33,8 @@ struct ActuatorState
 
 struct ActuatorParameters
 {
-    int id;
-    int bus;
+    int id_;             /* Usage in your wrapper (check moteus wrapper)*/
+    int bus_;            /* Usage in your wrapper (check moteus wrapper)*/
     double position_max_;
     double position_min_;
     double velocity_max_;
@@ -73,8 +73,6 @@ class ActuatorWrapperBase
     /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
     void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
     {
-        tx_frame.id = params_.id;
-        tx_frame.bus  = params_.bus;
         command.position_ = params_.direction_* std::clamp(command.position_, params_.position_min_, params_.position_max_);
         command.velocity_ = params_.direction_* std::clamp(command.velocity_, -params_.velocity_max_, params_.velocity_max_);
         command.torque_ = params_.direction_* std::clamp(command.torque_, -params_.torque_max_, params_.torque_max_);

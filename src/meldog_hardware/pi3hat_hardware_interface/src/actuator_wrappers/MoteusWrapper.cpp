@@ -48,7 +48,7 @@ void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& com
 void MoteusWrapper::rx_frame_to_state(const CanFrame& rx_frame, ActuatorState& state)
 {
     /* Parse data from RX CAN frame to Result object */
-    if(((rx_frame.id >> 8) & 0x7f) != params_.id) return; /* This should not happen! (map frame to wrapper first) */
+    if(((rx_frame.id >> 8) & 0x7f) != params_.id_) return; /* This should not happen! (map frame to wrapper first) */
 
     mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame.data, rx_frame.size);
     state.position_ = result.position * rotation_to_radians;
