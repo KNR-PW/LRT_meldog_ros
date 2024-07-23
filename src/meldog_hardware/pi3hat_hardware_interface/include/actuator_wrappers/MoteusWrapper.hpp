@@ -20,7 +20,7 @@ class MoteusWrapper: public ActuatorWrapperBase<MoteusWrapper>, protected mjbots
 
     public:
     /* Create Moteus Wrapper from existing frames */
-    MoteusWrapper(ActuatorParameters& params, 
+    MoteusWrapper(const ActuatorParameters& params, 
     mjbots::moteus::Controller::Options& options,
     mjbots::moteus::PositionMode::Command& command);
 

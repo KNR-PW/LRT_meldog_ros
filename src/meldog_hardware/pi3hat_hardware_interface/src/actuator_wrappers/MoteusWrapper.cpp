@@ -8,7 +8,7 @@
 
 using namespace actuator_wrappers;
 
-MoteusWrapper::MoteusWrapper(ActuatorParameters& params, 
+MoteusWrapper::MoteusWrapper(const ActuatorParameters& params, 
     mjbots::moteus::Controller::Options& options,
     mjbots::moteus::PositionMode::Command& command): 
 ActuatorWrapperBase<MoteusWrapper>(params), mjbots::moteus::Controller(options), 

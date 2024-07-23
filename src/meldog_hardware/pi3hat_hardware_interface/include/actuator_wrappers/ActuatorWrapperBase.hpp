@@ -37,9 +37,10 @@ struct ActuatorParameters
     int bus_;            /* Usage in your wrapper (check moteus wrapper)*/
     double position_max_;
     double position_min_;
+    double position_offset_;
     double velocity_max_;
     double torque_max_;
-    int direction_;
+    int direction_ = 1;
 };
 
 template<class Derived>
@@ -62,7 +63,7 @@ class ActuatorWrapperBase
     public:
     
     /* Constructor: takes CanFrame for later editing*/
-    ActuatorWrapperBase(ActuatorParameters& params): params_(params) {};
+    ActuatorWrapperBase(const ActuatorParameters& params): params_(params) {};
 
     /* Static virtual method for starting actuators */
     void init(CanFrame& tx_frame)
@@ -73,7 +74,8 @@ class ActuatorWrapperBase
     /* Static virtual method for preparing TX CAN frame from ActuatorCommand */
     void command_to_tx_frame(CanFrame& tx_frame, ActuatorCommand& command)
     {
-        command.position_ = params_.direction_* std::clamp(command.position_, params_.position_min_, params_.position_max_);
+        command.position_ = params_.direction_* std::clamp(command.position_,
+         params_.position_min_, params_.position_max_) + params_.position_offset_;
         command.velocity_ = params_.direction_* std::clamp(command.velocity_, -params_.velocity_max_, params_.velocity_max_);
         command.torque_ = params_.direction_* std::clamp(command.torque_, -params_.torque_max_, params_.torque_max_);
 
