@@ -78,6 +78,13 @@ namespace pi3hat_hardware_interface
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
     private:
+
+        /* Here add your actuator wrapper type */
+        enum WrapperType
+        {
+            Moteus = 0,
+        };
+        
         /* UTILITY ROS2 OBJECTS: */
         std::unique_ptr<rclcpp::Logger> logger_;
 
@@ -127,9 +134,12 @@ namespace pi3hat_hardware_interface
         /* For transmission interface */
         std::vector<JointCommand> hw_joint_transmission_passthrough_;
 
-        /* Function for creating moteus wrappers (here u can add your own wrapper)
-           Remember to change this function in source code */
-        void add_actuator_wrapper(const hardware_interface::HardwareInfo &info, const WrapperType type);
+        /* Function for choosing wrappers (here u can add your own wrapper)
+            Remember to change this function in source code */
+        WrapperType choose_actuator_wrapper(const std::string& type);
+
+        /* Function for creating moteus wrappers (here u can add your own wrapper) */
+        void add_actuator_wrapper(const actuator_wrappers::ActuatorParameters& params, const WrapperType type);
 
         template<class Wrapper>
         void commands_to_tx_frames(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
@@ -181,16 +191,7 @@ namespace pi3hat_hardware_interface
          const std::string joint_name, const int joint_index);
         void append_actuator_handles(std::vector<transmission_interface::ActuatorHandle>& actuator_handles, 
          const std::string actuator_name, const int actuator_index);
-
-
-
-    /* Here add your actuator wrapper type */
-    enum WrapperType
-    {
-        Moteus = 0,
-
-    };
-
-}; 
+    }; 
+};
 
 #endif 

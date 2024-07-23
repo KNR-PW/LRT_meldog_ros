@@ -4,30 +4,56 @@ using namespace pi3hat_hardware_interface;
 using namespace actuator_wrappers;
 
 /* MAIN FUNCTIONS */
+
 hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardware_interface::HardwareInfo &info)
 {
     if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS)
     {
         return hardware_interface::CallbackReturn::ERROR;
     }
+
     logger_ = std::make_unique<rclcpp::Logger>(
     rclcpp::get_logger("Pi3HatHardwareInterface"));
 
-    hw_actuator_commands_.resize(info_.joints.size(), ActuatorState{std::numeric_limits<double>::quiet_NaN(),
-     std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()});
+    hw_actuator_commands_.resize(info_.joints.size());
+    hw_actuator_states_.resize(info_.joints.size());
+    hw_actuator_transmission_passthrough_.resize(info_.joints.size());
 
-    hw_actuator_states_.resize(info_.joints.size(), ActuatorState{std::numeric_limits<double>::quiet_NaN(),
-     std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN()});
+
+    hw_joint_commands_.resize(info_.joints.size());
+    hw_joint_states_.resize(info_.joints.size());
+    hw_joint_transmission_passthrough_.resize(info_.joints.size());
     
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
-        hw_actuator_can_buses_.push_back(std::stoi(joint.parameters.at("can_channel")));
-        hw_actuator_can_ids_.push_back(std::stoi(joint.parameters.at("can_id")));  
-        hw_actuator_position_mins_.push_back(std::stod(joint.parameters.at("position_min")));
-        hw_actuator_position_maxs_.push_back(std::stod(joint.parameters.at("position_max")));
-        hw_actuator_velocity_maxs_.push_back(std::stod(joint.parameters.at("velocity_max")));
-        hw_actuator_effort_maxs_.push_back(std::stod(joint.parameters.at("effort_max")));
-        hw_actuator_position_offsets_.push_back(std::stod(joint.parameters.at("position_offset")));
+        actuator_wrappers::ActuatorParameters params;
+        params.bus_ = std::stoi(joint.parameters.at("can_bus"));
+        params.id_ = std::stoi(joint.parameters.at("can_id"));
+        params.direction_ = std::stoi(joint.parameters.at("direction"));
+        params.position_offset_ = std::stod(joint.parameters.at("position_offset"));
+        std::string type_string = joint.parameters.at("motor_type");
+
+        WrapperType type = choose_actuator_wrapper(type_string);
+
+        for(const auto& command_interface: joint.command_interfaces)
+        {
+            if(command_interface.name == hardware_interface::HW_IF_POSITION)
+            {
+                params.position_max_ = std::stod(command_interface.max);
+                params.position_min_ = std::stod(command_interface.min);
+
+            }
+            else if(command_interface.name == hardware_interface::HW_IF_VELOCITY)
+            {
+                params.velocity_max_ = std::stod(command_interface.max);
+            }
+            else if(command_interface.name == hardware_interface::HW_IF_EFFORT)
+            {
+                params.torque_max_ = std::stod(command_interface.max);
+            }
+        }
+        add_actuator_wrapper(params, type);
+
     }
     
     /* Standard CAN config */
@@ -360,4 +386,38 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_diff_transmis
     RCLCPP_INFO(*logger_, "Differential transmissions initialized!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
+}
+
+void Pi3HatHardwareInterface::add_actuator_wrapper(const ActuatorParameters& params, const WrapperType type)
+{
+    switch(type)
+    {
+        case Moteus:
+            /* moteus options */ 
+            using mjbots::moteus::Controller;
+            Controller::Options moteus_options;
+            moteus_options.bus = params.bus_;
+            moteus_options.id = params.id_;
+
+            // moteus command format (it will be copied to wrapper)
+            mjbots::moteus::PositionMode::Format format;
+            format.feedforward_torque = mjbots::moteus::kFloat;
+            format.maximum_torque = mjbots::moteus::kFloat;
+            format.velocity_limit= mjbots::moteus::kFloat;
+            moteus_options.position_format = format;
+
+            //moteus command (it will be copied to wrapper)
+            mjbots::moteus::PositionMode::Command moteus_command;
+
+            moteus_wrappers.push_back(MoteusWrapper(params, moteus_options, moteus_command));
+        break;
+    }   
+}
+
+Pi3HatHardwareInterface::WrapperType Pi3HatHardwareInterface::choose_actuator_wrapper(const std::string& type)
+{
+    if(type == "moteus")
+    {
+        return WrapperType::Moteus;
+    };
 }
