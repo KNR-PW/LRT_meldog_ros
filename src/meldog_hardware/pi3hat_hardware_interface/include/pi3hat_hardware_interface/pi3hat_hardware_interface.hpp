@@ -115,11 +115,11 @@ namespace pi3hat_hardware_interface
         std::vector<int> actuator_joint_map_;
 
         /* Actuator states and commands */
-        std::vector<actuator_wrappers::ActuatorState> hw_actuator_states_;
-        std::vector<actuator_wrappers::ActuatorCommand> hw_actuator_commands_;
+        std::vector<actuator_wrappers::ActuatorState> actuator_states_;
+        std::vector<actuator_wrappers::ActuatorCommand> actuator_commands_;
 
         /* For transmission interface */
-        std::vector<actuator_wrappers::ActuatorCommand> hw_actuator_transmission_passthrough_;
+        std::vector<actuator_wrappers::ActuatorCommand> actuator_transmission_passthrough_;
          
         /* Actuator Wrappers (HERE change to your own wrapper) */
         std::vector<actuator_wrappers::MoteusWrapper> moteus_wrappers;
@@ -129,10 +129,10 @@ namespace pi3hat_hardware_interface
         using JointCommand = actuator_wrappers::ActuatorCommand;
 
         /* Joint states and commands (for transmissions)*/
-        std::vector<JointState> hw_joint_states_;
-        std::vector<JointCommand> hw_joint_commands_;
+        std::vector<JointState> joint_states_;
+        std::vector<JointCommand> joint_commands_;
         /* For transmission interface */
-        std::vector<JointCommand> hw_joint_transmission_passthrough_;
+        std::vector<JointCommand> joint_transmission_passthrough_;
 
         /* Function for choosing wrappers (here u can add your own wrapper)
             Remember to change this function in source code */
@@ -147,7 +147,7 @@ namespace pi3hat_hardware_interface
             // TODO: Uporządkuj wcześniej silniki względem id
             for(int i = 0; i < number_of_actuators; i++)
             {   
-                actuator_wrappers[i].command_to_tx_frame(tx_can_frames_[i], hw_actuator_commands_[i]);
+                actuator_wrappers[i].command_to_tx_frame(tx_can_frames_[i], actuator_commands_[i]);
             }
         };
 
@@ -157,7 +157,7 @@ namespace pi3hat_hardware_interface
             for(int i = 0; i < number_of_actuators; i++)
             {   
                 int joint_index = actuator_joint_map_[rx_can_frames_[i].id];
-                actuator_wrappers[joint_index].rx_frame_to_state(rx_can_frames_[i], hw_actuator_states_[joint_index]);
+                actuator_wrappers[joint_index].rx_frame_to_state(rx_can_frames_[i], actuator_states_[joint_index]);
             }
         }
 

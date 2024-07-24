@@ -4,11 +4,15 @@
 #include <array>
 #include "../pi3hat/pi3hat.h"
 #include <algorithm>
+#include <cmath>
 
 namespace IMU
 {
     class IMUTransform
     {
+        private:
+        static const double degrees_to_radians = 2 * M_PI / 360.0;
+
         public:
 
         /* Function for transforming transforming IMU data */

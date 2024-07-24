@@ -33,4 +33,9 @@ void IMUTransform::transform_attitude(mjbots::pi3hat::Attitude& attitude)
 
     attitude.attitude.y = -attitude.attitude.z;
     attitude.attitude.z = temp_y;
+
+    /* degrees/s to radians/s conversion */
+    attitude.rate_dps.x *= degrees_to_radians;
+    attitude.rate_dps.y *= degrees_to_radians;
+    attitude.rate_dps.z *= degrees_to_radians;
 }   
