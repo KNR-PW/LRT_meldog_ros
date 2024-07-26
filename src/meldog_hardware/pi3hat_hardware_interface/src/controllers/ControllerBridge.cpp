@@ -4,9 +4,10 @@ using namespace controller_interface;
 using mjbots::pi3hat::CanFrame;
 
 
-ControllerBridge::ControllerBridge(std::unique_ptr<ControllerWrapper> wrapper, 
+ControllerBridge::ControllerBridge(
+     std::unique_ptr<ControllerWrapper> wrapper, 
      const ControllerParameters& params): 
-     wrapper_(std::move(wrapper)), params_(params) {}
+     wrapper_(std::move(wrapper)), params_(params){}
      
 
 void ControllerBridge::make_command(CanFrame& tx_frame, ControllerCommand& command) const

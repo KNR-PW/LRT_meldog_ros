@@ -83,9 +83,11 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_can_frames_span_(tx_can_frames_.get(), info_.joints.size()); 
     pi3hat_input_.tx_can = tx_can_frames_span_;
 
-    // Set up the CAN configuration
+    /* Set up CAN TX frames */
     for (size_t i = 0; i < info_.joints.size(); i++) 
     {
+        pi3hat_input_.tx_can[i].id = controller_bridges[i].get_can_id();
+        pi3hat_input_.tx_can[i].bus = controller_bridges[i].get_can_bus();
         pi3hat_input_.tx_can[i].expect_reply = true; 
     }
 

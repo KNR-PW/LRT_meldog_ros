@@ -53,7 +53,7 @@ class ControllerBridge
     ControllerBridge(std::unique_ptr<ControllerWrapper> wrapper, 
      const ControllerParameters& params);
 
-    void make_command(CanFrame& tx_frame, ControllerCommand& command) const;
+    void make_command(CanFrame& tx_frame, ControllerCommand& command) const; //POMYSL JESZCZE O TYM
     void get_state(const CanFrame& rx_frame, ControllerState& state) const;
     void make_stop(CanFrame& tx_frame) const;
 

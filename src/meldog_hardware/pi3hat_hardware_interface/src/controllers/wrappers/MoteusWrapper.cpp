@@ -21,7 +21,7 @@ void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, const ControllerComm
     /* Create CANFD frame*/
     mjbots::moteus::CanFdFrame can_fd_frame = moteus_controller_.MakePosition(position_command_);
     
-    /* Copy data from CANFD frame to CAN frame*/
+    /* Copy data from CANFD frame to CAN frame */
     tx_frame.id = can_fd_frame.arbitration_id;
     tx_frame.bus = can_fd_frame.bus;
     tx_frame.size = can_fd_frame.size;

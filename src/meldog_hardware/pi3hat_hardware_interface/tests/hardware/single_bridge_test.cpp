@@ -72,7 +72,8 @@ int main(int argc, char** argv)
 
     controller_interface::MoteusWrapper moteus_wrapper(moteus_options, moteus_command);
     std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
-    controller_interface::ControllerBridge controller(std::move(moteus_wrapper_ptr), params); 
+    controller_interface::ControllerBridge controller(std::move(moteus_wrapper_ptr), params);
+
 
     controller_interface::ControllerCommand controller_command;
     controller_command.velocity_ = 0;
