@@ -2,8 +2,8 @@
 
 
 
-#include "../../include/pi3hat/pi3hat.h"
-#include "../../include/pi3hat/realtime.h"
+#include "../../include/3rd_libs/pi3hat/pi3hat.h"
+#include "../../include/3rd_libs/pi3hat/realtime.h"
 #include <iostream>
 #include <cmath>
 #include <unistd.h>
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
     params.id_ = 1;
 
     controller_interface::MoteusWrapper moteus_wrapper(moteus_options, moteus_command);
-    std::unique_ptr<controller_interface::MoteusWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
     controller_interface::ControllerBridge controller(std::move(moteus_wrapper_ptr), params); 
 
     controller_interface::ControllerCommand controller_command;

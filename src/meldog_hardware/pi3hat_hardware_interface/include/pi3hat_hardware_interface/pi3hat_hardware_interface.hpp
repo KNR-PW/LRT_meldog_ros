@@ -33,8 +33,8 @@
 #include "transmission_interface/differential_transmission_loader.hpp"
 #include "transmission_interface/transmission_interface_exception.hpp"
 
-#include "../actuator_wrappers/MoteusWrapper.hpp"
-#include "../imu/IMUTransform.hpp"
+#include "../controllers/Controllers.hpp"
+#include "../imu_transform/IMUTransform.hpp"
 #include "../pi3hat/pi3hat.h"
 #include "../pi3hat/realtime.h"
 
@@ -79,7 +79,7 @@ namespace pi3hat_hardware_interface
 
     private:
 
-        /* Here add your actuator wrapper type */
+        /* Here add your controller wrapper type */
         enum WrapperType
         {
             Moteus = 0,
@@ -90,8 +90,8 @@ namespace pi3hat_hardware_interface
 
         /* PART FOR COMMUNICATION WITH HARDWARE: */
 
-        /* number of actuators */
-        size_t number_of_actuators;
+        /* number of controllers */
+        size_t number_of_controllers;
 
         /* Pi3hat */
         std::shared_ptr<mjbots::pi3hat::Pi3Hat> pi3hat_;
@@ -112,21 +112,21 @@ namespace pi3hat_hardware_interface
         std::shared_ptr<mjbots::pi3hat::CanFrame[]> rx_can_frames_;
 
         /* Container for motor_id -> joint_index maping */
-        std::vector<int> actuator_joint_map_;
+        std::vector<int> controller_joint_map_;
 
-        /* Actuator states and commands */
-        std::vector<actuator_wrappers::ActuatorState> actuator_states_;
-        std::vector<actuator_wrappers::ActuatorCommand> actuator_commands_;
+        /* Controller states and commands */
+        std::vector<controller_interface::ControllerState> controller_states_;
+        std::vector<controller_interface::ControllerCommand> controller_commands_;
 
         /* For transmission interface */
-        std::vector<actuator_wrappers::ActuatorCommand> actuator_transmission_passthrough_;
+        std::vector<controller_interface::ControllerCommand> controller_transmission_passthrough_;
          
-        /* Actuator Wrappers (HERE change to your own wrapper) */
-        std::vector<actuator_wrappers::MoteusWrapper> moteus_wrappers;
+        /* Controller Wrappers (HERE change to your own wrapper) */
+        std::vector<controller_interface::ControllerBridge> controller_bridges;
 
 
-        using JointState = actuator_wrappers::ActuatorState;
-        using JointCommand = actuator_wrappers::ActuatorCommand;
+        using JointState = controller_interface::ControllerState;
+        using JointCommand = controller_interface::ControllerCommand;
 
         /* Joint states and commands (for transmissions)*/
         std::vector<JointState> joint_states_;
@@ -134,34 +134,26 @@ namespace pi3hat_hardware_interface
         /* For transmission interface */
         std::vector<JointCommand> joint_transmission_passthrough_;
 
+
+        /* FUNCTION FOR INITIALIZATION */
+
         /* Function for choosing wrappers (here u can add your own wrapper)
             Remember to change this function in source code */
-        WrapperType choose_actuator_wrapper(const std::string& type);
+        WrapperType choose_wrapper_type(const std::string& type);
 
         /* Function for creating moteus wrappers (here u can add your own wrapper) */
-        void add_actuator_wrapper(const actuator_wrappers::ActuatorParameters& params, const WrapperType type);
+        void add_controller_bridge(const controller_interface::ControllerParameters& params, const WrapperType type);
 
-        template<class Wrapper>
-        void commands_to_tx_frames(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
-        {
-            // TODO: Uporządkuj wcześniej silniki względem id
-            for(int i = 0; i < number_of_actuators; i++)
-            {   
-                actuator_wrappers[i].command_to_tx_frame(tx_can_frames_[i], actuator_commands_[i]);
-            }
-        };
+        ControllerParameters get_controller_parameters(const hardware_interface::ComponentInfo& joint_info);
 
-        template<class Wrapper>
-        void rx_frames_to_states(std::vector<actuator_wrappers::ActuatorWrapperBase<Wrapper>> actuator_wrappers)
-        {
-            for(int i = 0; i < number_of_actuators; i++)
-            {   
-                int joint_index = actuator_joint_map_[rx_can_frames_[i].id];
-                actuator_wrappers[joint_index].rx_frame_to_state(rx_can_frames_[i], actuator_states_[joint_index]);
-            }
-        }
 
-        /* PART FOR CREATING TRANSMISSION OBJECTS:*/
+        /* FUNCTION FOR MAKING COMMANDS/READING STATES */
+
+        void prepare_commands();
+
+        void get_states();
+
+        /* FUNCTIONS FOR CREATING TRANSMISSION OBJECTS:*/
 
         /* Transmission interfaces*/
         std::vector<std::shared_ptr<transmission_interface::Transmission>> transmissions_;
@@ -189,8 +181,13 @@ namespace pi3hat_hardware_interface
         /* Functions for creating joint and actuator handels */
         void append_joint_handles(std::vector<transmission_interface::JointHandle>& joint_handles, 
          const std::string joint_name, const int joint_index);
+        
         void append_actuator_handles(std::vector<transmission_interface::ActuatorHandle>& actuator_handles, 
          const std::string actuator_name, const int actuator_index);
+
+        
+        /* FUNCTIONS FOR INITIALIZING PI3HAT/CAN INTERFACE */
+        
     }; 
 };
 

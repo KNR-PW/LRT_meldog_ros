@@ -1,7 +1,7 @@
 #include "../include/pi3hat_hardware_interface/pi3hat_hardware_interface.hpp"
 
 using namespace pi3hat_hardware_interface;
-using namespace actuator_wrappers;
+using namespace controller_interface;
 
 /* MAIN FUNCTIONS */
 
@@ -15,39 +15,38 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     logger_ = std::make_unique<rclcpp::Logger>(
     rclcpp::get_logger("Pi3HatHardwareInterface"));
 
-    actuator_commands_.resize(info_.joints.size());
-    actuator_states_.resize(info_.joints.size());
-    actuator_transmission_passthrough_.resize(info_.joints.size());
+    controller_commands_.resize(info_.joints.size());
+    controller_states_.resize(info_.joints.size());
+    controller_transmission_passthrough_.resize(info_.joints.size());
 
 
     joint_commands_.resize(info_.joints.size());
     joint_states_.resize(info_.joints.size());
     joint_transmission_passthrough_.resize(info_.joints.size());
 
-    actuator_joint_map_.resize(info_.joints.size());
+    controller_joint_map_.resize(info_.joints.size());
     
-    /* Prepare wrappers */
+    /* Prepare controller bridges */
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
-        actuator_wrappers::ActuatorParameters params;
+        controller_interface::ControllerParameters params;
+        WrapperType type;
+        try
+        {
+            params = get_controller_parameters(joint);
+            controller_joint_map_.insert(controller_joint_map_.begin() + params.id_,
+            controller_bridges.size());
 
-        params.bus_ = std::stoi(joint.parameters.at("motor_can_bus"));
-        params.id_ = std::stoi(joint.parameters.at("motor_can_id"));
-
-        params.direction_ = std::stoi(joint.parameters.at("motor_direction"));
-        params.position_offset_ = std::stod(joint.parameters.at("motor_position_offset"));
-        params.position_max_ = std::stod(joint.parameters.at("motor_position_max"));
-        params.position_min_ = std::stod(joint.parameters.at("motor_position_min"));
-        params.velocity_max_ = std::stod(joint.parameters.at("motor_velocity_max"));
-        params.torque_max_ = std::stod(joint.parameters.at("motor_torque_max"));
-
-        actuator_joint_map_.insert(actuator_joint_map_.begin() + params.id_,
-         moteus_wrappers.size());
-
-        std::string type_string = joint.parameters.at("motor_type");
-        WrapperType type = choose_actuator_wrapper(type_string);
-        add_actuator_wrapper(params, type);
-
+            std::string type_string = joint.parameters.at("motor_type");
+            type = choose_wrapper_type(type_string);
+        }
+        catch(const std::exception& e)
+        {
+            RCLCPP_FATAL(*logger_, "Error reading motor/controller parameters!");
+            return hardware_interface::CallbackReturn::ERROR;
+        }
+        
+        add_controller_bridge(params, type);
     }
 
     /* Prepare transmissions */
@@ -60,9 +59,18 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     mjbots::pi3hat::Pi3Hat::Configuration config;
     config.attitude_rate_hz = 1000;
     /* Set the mounting orientation of the IMU */
-    config.mounting_deg.yaw = std::stod(info_.hardware_parameters.at("imu_mounting_deg.yaw"));
-    config.mounting_deg.pitch = std::stod(info_.hardware_parameters.at("imu_mounting_deg.pitch"));
-    config.mounting_deg.roll = std::stod(info_.hardware_parameters.at("imu_mounting_deg.roll"));
+    try
+    {
+        config.mounting_deg.yaw = std::stod(info_.hardware_parameters.at("imu_mounting_deg.yaw"));
+        config.mounting_deg.pitch = std::stod(info_.hardware_parameters.at("imu_mounting_deg.pitch"));
+        config.mounting_deg.roll = std::stod(info_.hardware_parameters.at("imu_mounting_deg.roll"));
+    }
+    catch(const std::exception& e)
+    {
+        RCLCPP_FATAL(*logger_, "Error reading IMU parameters!");
+        return hardware_interface::CallbackReturn::ERROR;
+    }
+    
     /* Initialize the Pi3Hat input */ 
     pi3hat_input_ = mjbots::pi3hat::Pi3Hat::Input();
     pi3hat_input_.attitude = &attitude_;
@@ -76,26 +84,19 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     pi3hat_input_.tx_can = tx_can_frames_span_;
 
     // Set up the CAN configuration
-    for (size_t i = 0; i < info_.joints.size(); i++) // TUTAJ POMYSL O CO CMN
+    for (size_t i = 0; i < info_.joints.size(); i++) 
     {
-        config.can[actuator_can_buses_[i] - 1] = can_config;
-        pi3hat_input_.tx_can[i].id = actuator_can_ids_[i];
-        pi3hat_input_.tx_can[i].bus = actuator_can_buses_[i];
-        pi3hat_input_.tx_can[i].expect_reply = true;
+        pi3hat_input_.tx_can[i].expect_reply = true; 
     }
+
+    config.can[0] = can_config;
+    config.can[1] = can_config;
+    config.can[2] = can_config;
+    config.can[3] = can_config;
+    config.can[4] = can_config;
+
     // Initialize the Pi3Hat
     pi3hat_ =  std::make_shared<mjbots::pi3hat::Pi3Hat>(config);
-
-    /* Create actuator wrappers*/
-    for(size_t i = 0; i < info_.joints.size(); i++)
-    {
-        auto options = mjbots::moteus::Controller::Options();
-        options.id = actuator_can_ids_[i];
-        options.bus = actuator_can_buses_[i];
-        auto moteus_wrapper = MoteusWrapper(options, tx_can_frames_[i], rx_can_frames_[i],
-        actuator_commands_[i], actuator_states_[i], mjbots::moteus::PositionMode::Command());
-        moteus_wrappers.push_back(moteus_wrapper);
-    }
 }
 
 
@@ -122,15 +123,15 @@ void Pi3HatHardwareInterface::append_joint_handles(std::vector<transmission_inte
 void Pi3HatHardwareInterface::append_actuator_handles(std::vector<transmission_interface::ActuatorHandle>& actuator_handles, const std::string actuator_name, const int actuator_index)
 {
     transmission_interface::ActuatorHandle actuator_handle_position(actuator_name, hardware_interface::HW_IF_POSITION,
-     &actuator_transmission_passthrough_[actuator_index].position_);
+     &controller_transmission_passthrough_[actuator_index].position_);
     actuator_handles.push_back(actuator_handle_position);
 
     transmission_interface::ActuatorHandle actuator_handle_velocity(actuator_name, hardware_interface::HW_IF_VELOCITY, 
-     &actuator_transmission_passthrough_[actuator_index].velocity_);
+     &controller_transmission_passthrough_[actuator_index].velocity_);
     actuator_handles.push_back(actuator_handle_velocity);
 
     transmission_interface::ActuatorHandle actuator_handle_torque(actuator_name, hardware_interface::HW_IF_EFFORT,
-     &actuator_transmission_passthrough_[actuator_index].torque_);
+     &controller_transmission_passthrough_[actuator_index].torque_);
     actuator_handles.push_back(actuator_handle_torque);
 }
 
@@ -385,36 +386,63 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_diff_transmis
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-void Pi3HatHardwareInterface::add_actuator_wrapper(const ActuatorParameters& params, const WrapperType type)
+void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& params, const WrapperType type)
 {
+    std::unique_ptr<ControllerWrapper> wrapper_ptr; 
     switch(type)
     {
         case Moteus:
             /* moteus options */ 
             using mjbots::moteus::Controller;
+            using controller_interface::MoteusWrapper;
             Controller::Options moteus_options;
             moteus_options.bus = params.bus_;
             moteus_options.id = params.id_;
 
-            // moteus command format (it will be copied to wrapper)
+            /* moteus command format (it will be copied to wrapper) */
             mjbots::moteus::PositionMode::Format format;
             format.feedforward_torque = mjbots::moteus::kFloat;
             format.maximum_torque = mjbots::moteus::kFloat;
             format.velocity_limit= mjbots::moteus::kFloat;
             moteus_options.position_format = format;
 
-            //moteus command (it will be copied to wrapper)
+            /* moteus command (it will be copied to wrapper) */
             mjbots::moteus::PositionMode::Command moteus_command;
+ 
+            wrapper_ptr = std::make_unique<MoteusWrapper>(moteus_options, moteus_command);
 
-            moteus_wrappers.push_back(MoteusWrapper(params, moteus_options, moteus_command));
         break;
-    }   
+    }
+
+    controller_bridges.push_back(controller_interface::ControllerBridge(std::move(wrapper_ptr), params));
 }
 
-Pi3HatHardwareInterface::WrapperType Pi3HatHardwareInterface::choose_actuator_wrapper(const std::string& type)
+Pi3HatHardwareInterface::WrapperType Pi3HatHardwareInterface::choose_wrapper_type(const std::string& type)
 {
     if(type == "moteus")
     {
         return WrapperType::Moteus;
     };
+}
+
+ControllerParameters Pi3HatHardwareInterface::get_controller_parameters(const hardware_interface::ComponentInfo& joint_info)
+{
+    ControllerParameters params;
+    try
+    {
+        params.bus_ = std::stoi(joint_info.parameters.at("controller_can_bus"));
+        params.id_ = std::stoi(joint_info.parameters.at("controller_can_id"));
+        params.direction_ = std::stoi(joint_info.parameters.at("motor_direction"));
+        params.position_offset_ = std::stod(joint_info.parameters.at("motor_position_offset"));
+        params.position_max_ = std::stod(joint_info.parameters.at("motor_position_max"));
+        params.position_min_ = std::stod(joint_info.parameters.at("motor_position_min"));
+        params.velocity_max_ = std::stod(joint_info.parameters.at("motor_velocity_max"));
+        params.torque_max_ = std::stod(joint_info.parameters.at("motor_torque_max"));
+    }
+    catch(const std::exception& e)
+    {
+        throw;
+    }
+
+    return params;
 }
