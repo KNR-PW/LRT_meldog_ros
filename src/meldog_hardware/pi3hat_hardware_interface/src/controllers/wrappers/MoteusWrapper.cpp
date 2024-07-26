@@ -1,18 +1,18 @@
-#include "../../../include/controllers/bridges/MoteusBridge.hpp"
+#include "../../../include/controllers/wrappers/MoteusWrapper.hpp"
 
 using namespace controller_interface;
 
-MoteusBridge::MoteusBridge(
+MoteusWrapper::MoteusWrapper(
         const ControllerParameters& params, 
         const mjbots::moteus::Controller::Options& options,
         const mjbots::moteus::PositionMode::Command& command):
 
-        ControllerBridge(params), 
+        ControllerWrapper(params), 
         position_command_(command),
         moteus_controller_(mjbots::moteus::Controller(options)) {} 
 
 
-void MoteusBridge::command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) 
+void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) 
 {
     /* Change command values */
     position_command_.position = command.position_ * radians_to_rotation;
@@ -29,7 +29,7 @@ void MoteusBridge::command_to_tx_frame(CanFrame& tx_frame, const ControllerComma
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 }
 
-void MoteusBridge::rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) 
+void MoteusWrapper::rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) 
 {
     /* Parse data from RX CAN frame to Result object */
     if(((rx_frame.id >> 8) & 0x7f) != params_.id_) return; /* This should not happen! (map frame to wrapper first) */
@@ -42,7 +42,7 @@ void MoteusBridge::rx_frame_to_state(const CanFrame& rx_frame, ControllerState& 
     state.fault = result.fault;
 }
 
-void MoteusBridge::stop_to_tx_frame(CanFrame& tx_frame) 
+void MoteusWrapper::stop_to_tx_frame(CanFrame& tx_frame) 
 {
     /* create CANFD frame*/
     mjbots::moteus::CanFdFrame can_fd_frame = moteus_controller_.MakeStop();

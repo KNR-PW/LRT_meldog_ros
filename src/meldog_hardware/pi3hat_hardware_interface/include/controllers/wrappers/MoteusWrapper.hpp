@@ -1,13 +1,13 @@
 #ifndef _MOTEUS_BRIDGE_H_
 #define _MOTEUS_BRIDGE_H_
 
-#include "ControllerBridge.hpp"
+#include "ControllerWrapper.hpp"
 #include "../../moteus/moteus.h"
 
 namespace controller_interface
 {
 
-class MoteusBridge: public ControllerBridge
+class MoteusWrapper: public ControllerWrapper
 {
     private:
 
@@ -22,14 +22,14 @@ class MoteusBridge: public ControllerBridge
     public:
     using CanFrame = mjbots::pi3hat::CanFrame;
 
-    MoteusBridge(
+    MoteusWrapper(
         const ControllerParameters& params, 
         const mjbots::moteus::Controller::Options& options,
         const mjbots::moteus::PositionMode::Command& command);
     void command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
     void rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) override;
     void stop_to_tx_frame(CanFrame& tx_frame) override;
-    ~MoteusBridge() override = default;
+    ~MoteusWrapper() override = default;
 
 };
 

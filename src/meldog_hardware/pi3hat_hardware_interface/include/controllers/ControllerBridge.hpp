@@ -2,7 +2,7 @@
 #define _CONTROLLER_H_
 
 #include "../pi3hat/pi3hat.h"
-#include "bridges/ControllerBridge.hpp"
+#include "wrappers/ControllerWrapper.hpp"
 #include <memory>
 #include <algorithm>
 
@@ -39,18 +39,18 @@ struct ControllerParameters
     int bus_;            /* Usage in your bridge (check moteus bridge)*/
 };
 
-class Controller
+class ControllerBridge
 {
     private:
 
     using CanFrame = mjbots::pi3hat::CanFrame;
 
-    const std::unique_ptr<ControllerBridge> implementation_;
+    const std::unique_ptr<ControllerWrapper> wrapper_;
     ControllerParameters params_;
 
 
     public:
-    Controller(std::unique_ptr<ControllerBridge> implementation, 
+    ControllerBridge(std::unique_ptr<ControllerWrapper> wrapper, 
      const ControllerParameters& params);
 
     void make_command(CanFrame& tx_frame, ControllerCommand& command) const;
