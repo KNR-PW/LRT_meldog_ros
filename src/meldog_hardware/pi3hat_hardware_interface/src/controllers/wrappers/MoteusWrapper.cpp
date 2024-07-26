@@ -3,11 +3,10 @@
 using namespace controller_interface;
 
 MoteusWrapper::MoteusWrapper(
-        const ControllerParameters& params, 
         const mjbots::moteus::Controller::Options& options,
         const mjbots::moteus::PositionMode::Command& command):
 
-        ControllerWrapper(params), 
+        ControllerWrapper(), 
         position_command_(command),
         moteus_controller_(mjbots::moteus::Controller(options)) {} 
 
@@ -32,7 +31,7 @@ void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, const ControllerComm
 void MoteusWrapper::rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) 
 {
     /* Parse data from RX CAN frame to Result object */
-    if(((rx_frame.id >> 8) & 0x7f) != params_.id_) return; /* This should not happen! (map frame to wrapper first) */
+    if(((rx_frame.id >> 8) & 0x7f) != moteus_controller_.options().id) return; /* This should not happen! (map frame to wrapper first) */
 
     mjbots::moteus::Query::Result result = mjbots::moteus::Query::Parse(rx_frame.data, rx_frame.size);
     state.position_ = result.position * rotation_to_radians;

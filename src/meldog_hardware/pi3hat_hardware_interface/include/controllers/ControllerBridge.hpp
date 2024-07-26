@@ -1,5 +1,5 @@
-#ifndef _CONTROLLER_H_
-#define _CONTROLLER_H_
+#ifndef _CONTROLLER_BRIDGE_HPP_
+#define _CONTROLLER_BRIDGE_HPP_
 
 #include "../pi3hat/pi3hat.h"
 #include "wrappers/ControllerWrapper.hpp"

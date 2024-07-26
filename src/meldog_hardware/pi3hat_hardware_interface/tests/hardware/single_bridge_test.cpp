@@ -1,4 +1,4 @@
-#include "../../include/actuator_wrappers/MoteusWrapper.hpp"
+#include "../../include/controllers/Controllers.hpp"
 
 
 
@@ -17,16 +17,6 @@ static double GetNow()
       static_cast<double>(ts.tv_nsec) / 1e9;
 };
 
-template <class Derived>
-void command(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper, mjbots::pi3hat::CanFrame& tx_frame, actuator_wrappers::ActuatorCommand& command)
-{
-    wrapper.command_to_tx_frame(tx_frame, command);
-};
-template <class Derived>
-void state(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper,const mjbots::pi3hat::CanFrame& rx_frame, actuator_wrappers::ActuatorState& state)
-{
-    wrapper.rx_frame_to_state(rx_frame, state);
-}
 int main(int argc, char** argv)
 {
     // moteus options
@@ -71,7 +61,7 @@ int main(int argc, char** argv)
     mjbots::pi3hat::Pi3Hat::Output pi3hat_output;
 
     // moteus wrapper
-    actuator_wrappers::ActuatorParameters params;
+    controller_interface::ControllerParameters params;
     params.direction_ = 1;
     params.position_max_ = 10;
     params.position_min_ = -10;
@@ -80,12 +70,15 @@ int main(int argc, char** argv)
     params.bus_ = 1;
     params.id_ = 1;
 
-    actuator_wrappers::MoteusWrapper moteus_wrapper(params, moteus_options, moteus_command);
-    actuator_wrappers::ActuatorCommand actuator_command;
-    actuator_command.velocity_ = 0;
-    actuator_command.torque_ = 0;
+    controller_interface::MoteusWrapper moteus_wrapper(moteus_options, moteus_command);
+    std::unique_ptr<controller_interface::MoteusWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
+    controller_interface::ControllerBridge controller(std::move(moteus_wrapper_ptr), params); 
 
-    actuator_wrappers::ActuatorState actuator_state;
+    controller_interface::ControllerCommand controller_command;
+    controller_command.velocity_ = 0;
+    controller_command.torque_ = 0;
+
+    controller_interface::ControllerState controller_state;
 
     std::cout << "Options for controller succesfully initialized!" << std::endl;
 
@@ -94,7 +87,7 @@ int main(int argc, char** argv)
     std::cout << "Realtime control activated!" << std::endl;
 
     // set stop to moteus
-    moteus_wrapper.init(tx_frame);
+    controller.make_stop(tx_frame);
     pi3hat_output = pi3hat.Cycle(input);
     std::cout << "Controller successfully started!" << std::endl;
 
@@ -103,15 +96,15 @@ int main(int argc, char** argv)
     while(true)
     {   
         auto now = GetNow();
-        actuator_command.position_ = 5 * sin(now - prev);
-        command(moteus_wrapper, tx_frame, actuator_command);
+        controller_command.position_ = 5 * sin(now - prev);
+        controller.make_command(tx_frame, controller_command);
         pi3hat_output = pi3hat.Cycle(input);
         ::usleep(1000);
         auto mesaure_time = GetNow() - now;
         frequency = (int) 1/mesaure_time;
-        state(moteus_wrapper, rx_frame, actuator_state);
+        controller.get_state(rx_frame, controller_state);
         ::printf("f, pos_c, pos_s=(%d, %7.3f, %7.3f)\r",
-        frequency, actuator_command.position_, actuator_state.position_);
+        frequency, controller_command.position_, controller_state.position_);
         ::fflush(::stdout);
     }
 

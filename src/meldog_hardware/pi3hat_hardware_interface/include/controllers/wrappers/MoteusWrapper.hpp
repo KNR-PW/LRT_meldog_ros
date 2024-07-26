@@ -1,5 +1,5 @@
-#ifndef _MOTEUS_BRIDGE_H_
-#define _MOTEUS_BRIDGE_H_
+#ifndef _MOTEUS_WRAPPER_HPP_
+#define _MOTEUS_WRAPPER_HPP_
 
 #include "ControllerWrapper.hpp"
 #include "../../moteus/moteus.h"
@@ -22,8 +22,7 @@ class MoteusWrapper: public ControllerWrapper
     public:
     using CanFrame = mjbots::pi3hat::CanFrame;
 
-    MoteusWrapper(
-        const ControllerParameters& params, 
+    MoteusWrapper( 
         const mjbots::moteus::Controller::Options& options,
         const mjbots::moteus::PositionMode::Command& command);
     void command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;

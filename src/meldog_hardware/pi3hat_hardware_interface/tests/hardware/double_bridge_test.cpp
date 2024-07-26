@@ -1,4 +1,4 @@
-#include "../../include/actuator_wrappers/MoteusWrapper.hpp"
+#include "../../include/controllers/Controllers.hpp"
 
 
 
@@ -18,23 +18,6 @@ static double GetNow()
   return static_cast<double>(ts.tv_sec) +
       static_cast<double>(ts.tv_nsec) / 1e9;
 };
-
-template <class Derived>
-void init(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper, mjbots::pi3hat::CanFrame& tx_frame)
-{
-    wrapper.init(tx_frame);
-};
-
-template <class Derived>
-void command(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper, mjbots::pi3hat::CanFrame& tx_frame, actuator_wrappers::ActuatorCommand& command)
-{
-    wrapper.command_to_tx_frame(tx_frame, command);
-};
-template <class Derived>
-void state(actuator_wrappers::ActuatorWrapperBase<Derived>& wrapper,const mjbots::pi3hat::CanFrame& rx_frame, actuator_wrappers::ActuatorState& state)
-{
-    wrapper.rx_frame_to_state(rx_frame, state);
-}
 
 
 int main(int argc, char** argv)
@@ -87,7 +70,7 @@ int main(int argc, char** argv)
     mjbots::pi3hat::Pi3Hat::Output pi3hat_output;
 
     // moteus wrapper
-    actuator_wrappers::ActuatorParameters params_1;
+    controller_interface::ControllerParameters params_1;
     params_1.direction_ = 1;
     params_1.position_max_ = 30;
     params_1.position_min_ = -30;
@@ -96,7 +79,7 @@ int main(int argc, char** argv)
     params_1.bus_ = 1;
     params_1.id_ = 1;
 
-    actuator_wrappers::ActuatorParameters params_2;
+    controller_interface::ControllerParameters params_2;
     params_2.direction_ = 1;
     params_2.position_max_ = 10;
     params_2.position_min_ = -10;
@@ -105,18 +88,27 @@ int main(int argc, char** argv)
     params_2.bus_ = 2;
     params_2.id_ = 2;
 
-    std::vector<actuator_wrappers::MoteusWrapper> actuator_wrappers;
-    std::vector<actuator_wrappers::ActuatorCommand> actuator_commands;
-    std::vector<actuator_wrappers::ActuatorState> actuator_states;
 
-    actuator_wrappers.push_back(actuator_wrappers::MoteusWrapper(params_1, moteus_1_options, moteus_command));
-    actuator_wrappers.push_back(actuator_wrappers::MoteusWrapper(params_2, moteus_2_options, moteus_command));
+    std::vector<controller_interface::ControllerBridge> controllers;
+    std::vector<controller_interface::ControllerCommand> controller_commands;
+    std::vector<controller_interface::ControllerState> controller_states;
+
+    controller_interface::MoteusWrapper moteus_wrapper_1(moteus_1_options, moteus_command);
+    std::unique_ptr<controller_interface::MoteusWrapper> moteus_wrapper_ptr_1 = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper_1);
+    controller_interface::ControllerBridge controller_1(std::move(moteus_wrapper_ptr_1), params_1); 
+
+    controller_interface::MoteusWrapper moteus_wrapper_2(moteus_2_options, moteus_command);
+    std::unique_ptr<controller_interface::MoteusWrapper> moteus_wrapper_ptr_2 = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper_2);
+    controller_interface::ControllerBridge controller_2(std::move(moteus_wrapper_ptr_2), params_2); 
+
+    controllers.push_back(std::move(controller_1));
+    controllers.push_back(std::move(controller_2));
     
-    actuator_commands.push_back(actuator_wrappers::ActuatorCommand());
-    actuator_commands.push_back(actuator_wrappers::ActuatorCommand());
+    controller_commands.push_back(controller_interface::ControllerCommand());
+    controller_commands.push_back(controller_interface::ControllerCommand());
     
-    actuator_states.push_back(actuator_wrappers::ActuatorState());
-    actuator_states.push_back(actuator_wrappers::ActuatorState());
+    controller_states.push_back(controller_interface::ControllerState());
+    controller_states.push_back(controller_interface::ControllerState());
 
 
     std::cout << "Options for controllers succesfully initialized!" << std::endl;
@@ -126,9 +118,9 @@ int main(int argc, char** argv)
     std::cout << "Realtime control activated!" << std::endl;
 
     // set stop to moteus
-    for(int i = 0; i < actuator_wrappers.size(); i++)
+    for(int i = 0; i < controllers.size(); ++i)
     {
-        init(actuator_wrappers[i],tx_frame[i]);
+        controllers[i].make_stop(tx_frame[i]);
     }
     pi3hat_output = pi3hat.Cycle(input);
     std::cout << "Controllers successfully started!" << std::endl;
@@ -138,22 +130,22 @@ int main(int argc, char** argv)
     while(true)
     {   
         auto now = GetNow();
-        actuator_commands[0].position_ = 20 * cos(now - prev);
-        actuator_commands[1].position_ = 10 * sin(now - prev);
-        for(int i = 0; i < actuator_wrappers.size(); i++)
+        controller_commands[0].position_ = 20 * cos(now - prev);
+        controller_commands[1].position_ = 10 * sin(now - prev);
+        for(int i = 0; i < controllers.size(); ++i)
         {
-            command(actuator_wrappers[i],tx_frame[i],actuator_commands[i]);
+            controllers[i].make_command(tx_frame[i], controller_commands[i]);
         }
         pi3hat_output = pi3hat.Cycle(input);
         ::usleep(1000);
         auto mesaure_time = GetNow() - now;
         frequency = (int) 1/mesaure_time;
-        for(int i = 0; i < actuator_wrappers.size(); i++)
+        for(int i = 0; i < controllers.size(); ++i)
         {
-            state(actuator_wrappers[i],rx_frame[i],actuator_states[i]);
+            controllers[i].get_state(rx_frame[i], controller_states[i]);
         }
         ::printf("f = %d\n pos_1_command = %7.3f, pos_1_state = %7.3f)\n pos_2_command = %7.3f, pos_2_state = %7.3f)\r",
-        frequency, actuator_commands[0].position_, actuator_states[0].position_, actuator_commands[1].position_, actuator_states[1].position_);
+        frequency, controller_commands[0].position_, controller_states[0].position_, controller_commands[1].position_, controller_states[1].position_);
         ::fflush(::stdout);
     }
 
