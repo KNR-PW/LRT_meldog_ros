@@ -2,7 +2,7 @@
 #define _IMU_
 
 #include <array>
-#include "../pi3hat/pi3hat.h"
+#include "../3rd_libs/pi3hat/pi3hat.h"
 #include <algorithm>
 #include <cmath>
 
