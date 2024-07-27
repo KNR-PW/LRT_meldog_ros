@@ -55,8 +55,8 @@ class ControllerBridge
 
     void make_command(CanFrame& tx_frame, ControllerCommand& command) const; //POMYSL JESZCZE O TYM
     void get_state(const CanFrame& rx_frame, ControllerState& state) const;
-    void make_stop(CanFrame& tx_frame) const;
-
+    void initialize(CanFrame& tx_frame) const;
+    void start_up(CanFrame& tx_frame, ControllerCommand& command) const;
 };
 
 };
