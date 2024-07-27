@@ -24,8 +24,8 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     joint_states_.resize(info_.joints.size());
     joint_transmission_passthrough_.resize(info_.joints.size());
 
-    controller_joint_map_.resize(info_.joints.size());
-    
+    joint_controller_number_ = info_.joints.size();
+
     /* Prepare controller bridges */
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
@@ -34,8 +34,6 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
         try
         {
             params = get_controller_parameters(joint);
-            controller_joint_map_.insert(controller_joint_map_.begin() + params.id_,
-            controller_bridges.size());
 
             std::string type_string = joint.parameters.at("motor_type");
             type = choose_wrapper_type(type_string);
@@ -50,7 +48,15 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     }
 
     /* Prepare transmissions */
-    create_transmission_interface(info_);
+    try
+    {
+        create_transmission_interface(info_);
+    }
+    catch(const std::exception& e)
+    {
+        RCLCPP_FATAL(*logger_, "%s", e.what());
+        return hardware_interface::CallbackReturn::ERROR;
+    }
 
     /* Standard CAN config */
     mjbots::pi3hat::Pi3Hat::CanConfiguration can_config;
@@ -58,6 +64,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     /* Configure the Pi3Hat for 1000hz IMU sampling */ 
     mjbots::pi3hat::Pi3Hat::Configuration config;
     config.attitude_rate_hz = 1000;
+    
     /* Set the mounting orientation of the IMU */
     try
     {
@@ -83,24 +90,77 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_can_frames_span_(tx_can_frames_.get(), info_.joints.size()); 
     pi3hat_input_.tx_can = tx_can_frames_span_;
 
-    /* Set up CAN TX frames */
-    for (size_t i = 0; i < info_.joints.size(); i++) 
-    {
-        pi3hat_input_.tx_can[i].id = controller_bridges[i].get_can_id();
-        pi3hat_input_.tx_can[i].bus = controller_bridges[i].get_can_bus();
-        pi3hat_input_.tx_can[i].expect_reply = true; 
-    }
-
     config.can[0] = can_config;
     config.can[1] = can_config;
     config.can[2] = can_config;
     config.can[3] = can_config;
     config.can[4] = can_config;
 
-    // Initialize the Pi3Hat
+    /* Initialize the Pi3Hat and realtime options */
     pi3hat_ =  std::make_shared<mjbots::pi3hat::Pi3Hat>(config);
+    mjbots::pi3hat::ConfigureRealtime(0);
+
+    /* Initialize all motors/remove all flags */
+    controllers_init();
+    pi3hat_->Cycle(pi3hat_input_);
+
+    /* Create rx_frame.id -> joint map */
+    try
+    {
+        create_controller_joint_map();
+    }
+    catch(const std::exception& e)
+    {
+        RCLCPP_FATAL(*logger_, "%s", e.what());
+        return hardware_interface::CallbackReturn::ERROR;
+    }
+    /* Get states with prepared controller -> joint map */
+    controllers_get_states();
+    
+    return hardware_interface::CallbackReturn::SUCCESS;
 }
 
+hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const rclcpp_lifecycle::State &previous_state)
+{
+    /* Set all commands, states and transmission passthrough to 0 */
+    for(int i = 0; i < controller_bridges.size(); ++i)
+    {
+        controller_commands_[i].position_ = 0;
+        controller_commands_[i].velocity_ = 0;
+        controller_commands_[i].torque_ = 0;
+
+        controller_states_[i].position_ = 0;
+        controller_states_[i].velocity_ = 0;
+        controller_states_[i].torque_ = 0;
+        controller_states_[i].fault = 0;
+        controller_states_[i].temperature_ = 0;
+
+        controller_transmission_passthrough_[i].position_ = 0;
+        controller_transmission_passthrough_[i].velocity_ = 0;
+        controller_transmission_passthrough_[i].torque_ = 0;
+
+
+        joint_commands_[i].position_;
+        joint_commands_[i].velocity_ = 0;
+        joint_commands_[i].torque_ = 0;
+
+        joint_states_[i].position_ = 0;
+        joint_states_[i].velocity_ = 0;
+        joint_states_[i].torque_ = 0;
+        joint_states_[i].fault = 0;
+        joint_states_[i].temperature_ = 0;  
+
+        joint_transmission_passthrough_[i].position_ = 0;
+        joint_transmission_passthrough_[i].velocity_ = 0;
+        joint_transmission_passthrough_[i].torque_ = 0;
+    }
+
+    /* Start motors */
+    controllers_start_up();
+    pi3hat_->Cycle(pi3hat_input_);
+    ::usleep(1000);
+    controllers_get_states();
+}
 
 
 
@@ -152,7 +212,7 @@ void Pi3HatHardwareInterface::load_transmission_data(const hardware_interface::T
     }
 }
 
-hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_transmission_interface(const hardware_interface::HardwareInfo &info)
+void Pi3HatHardwareInterface::create_transmission_interface(const hardware_interface::HardwareInfo &info)
 {
     /* Prepare loaders */
     transmission_interface::SimpleTransmissionLoader simple_loader;
@@ -173,10 +233,15 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_transmission_
     {
         if(transmission_info.type == "transmission_interface/SimpleTransmission")
         {
-            if(create_simple_transmission(transmission_info, simple_loader, joint_names) == hardware_interface::CallbackReturn::ERROR)
+            try
             {
-                return hardware_interface::CallbackReturn::ERROR;
+                create_simple_transmission(transmission_info, simple_loader, joint_names);
             }
+            catch(const transmission_interface::TransmissionInterfaceException& e)
+            {
+                throw;
+            }
+            
         }
     }
 
@@ -185,10 +250,15 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_transmission_
     {
         if(transmission_info.type == "transmission_interface/FourBarLinkageTransmission")
         {
-            if(create_fbl_transmission(transmission_info, fbl_loader, joint_names) == hardware_interface::CallbackReturn::ERROR)
+            try
             {
-                return hardware_interface::CallbackReturn::ERROR;;
+                create_fbl_transmission(transmission_info, fbl_loader, joint_names);
             }
+            catch(const transmission_interface::TransmissionInterfaceException& e)
+            {
+                throw;
+            }
+            
         }
     }
 
@@ -197,16 +267,19 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_transmission_
     {
         if(transmission_info.type == "transmission_interface/DifferentialTransmission")
         {
-            if(create_diff_transmission(transmission_info, diff_loader, joint_names) == hardware_interface::CallbackReturn::ERROR)
+            try
             {
-                return hardware_interface::CallbackReturn::ERROR;
+                create_diff_transmission(transmission_info, diff_loader, joint_names);
+            }
+            catch(const transmission_interface::TransmissionInterfaceException& e)
+            {
+                throw;
             }
         }
     }
-    return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
+void Pi3HatHardwareInterface::create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
         transmission_interface::SimpleTransmissionLoader& loader, const std::vector<std::string>& joint_names)
 {
     RCLCPP_INFO(*logger_, "Simple transmission initialization starting!");
@@ -215,7 +288,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_simple_transm
     if (transmission_info.type != "transmission_interface/SimpleTransmission")
     {
         RCLCPP_FATAL(*logger_, "This is not SimpleTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("This is not SimpleTransmission!"); // this should not happen!
     }
 
     load_transmission_data(transmission_info, transmission, loader);
@@ -223,13 +296,13 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_simple_transm
     if(transmission_info.joints.size() != 1)
     {
         RCLCPP_FATAL(*logger_, "Invalid number of joints in SimpleTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("Invalid number of joints in SimpleTransmission!"); // this should not happen!
     }
 
     if(transmission_info.actuators.size() != 1)
     {
         RCLCPP_FATAL(*logger_, "Invalid number of actuators in SimpleTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("Invalid number of actuators in SimpleTransmission!"); // this should not happen!
     }
 
     /* Find joint index for transmission handels by name*/
@@ -252,17 +325,15 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_simple_transm
     catch (const transmission_interface::TransmissionInterfaceException & exc)
     {
         RCLCPP_FATAL(*logger_, "Error while loading %s: %s", transmission_info.name.c_str(), exc.what());
-        return hardware_interface::CallbackReturn::ERROR;
+        throw;
     }
 
     transmissions_.push_back(transmission);
     
     RCLCPP_INFO(*logger_, "Simple transmissions initialized!");
-
-    return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
+void Pi3HatHardwareInterface::create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
         transmission_interface::FourBarLinkageTransmissionLoader& loader, const std::vector<std::string>& joint_names)
 {
     RCLCPP_INFO(*logger_, "FourBarLinkage transmissions initialization starting!");
@@ -271,7 +342,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_fbl_transmiss
     if (transmission_info.type != "transmission_interface/FourBarLinkageTransmission")
     {
         RCLCPP_FATAL(*logger_, "This is not FourBarLinkageTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("This is not FourBarLinkageTransmission!"); // this should not happen!
     }
 
     load_transmission_data(transmission_info, transmission, loader);
@@ -281,12 +352,12 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_fbl_transmiss
     if(transmission_info.joints.size() != 2)
     {
         RCLCPP_FATAL(*logger_, "Invalid number of joints in FourBarLinkageTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("Invalid number of joints in FourBarLinkageTransmission!"); // this should not happen!
     }
     if(transmission_info.actuators.size() != 2)
     {
         RCLCPP_FATAL(*logger_, "Invalid number of actuators in FourBarLinkageTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("Invalid number of actuators in FourBarLinkageTransmission!"); // this should not happen!
     }
 
     /* Find joints indexes for transmission handels by name*/
@@ -315,17 +386,15 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_fbl_transmiss
     catch (const transmission_interface::TransmissionInterfaceException & exc)
     {
         RCLCPP_FATAL(*logger_, "Error while loading %s: %s", transmission_info.name.c_str(), exc.what());
-        return hardware_interface::CallbackReturn::ERROR;
+        throw;
     }
 
     transmissions_.push_back(transmission);
     
     RCLCPP_INFO(*logger_, "FourBarLinkage transmissions initialized!");
-
-    return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
+void Pi3HatHardwareInterface::create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
         transmission_interface::DifferentialTransmissionLoader& loader, const std::vector<std::string>& joint_names)
 {
     RCLCPP_INFO(*logger_, "Differential transmissions initialization starting!");
@@ -334,7 +403,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_diff_transmis
     if (transmission_info.type != "transmission_interface/DifferentialTransmission")
     {
         RCLCPP_FATAL(*logger_, "This is not DifferentialTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("This is not DifferentialTransmission!"); // this should not happen!
     }
     
     load_transmission_data(transmission_info, transmission, loader);
@@ -344,12 +413,12 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_diff_transmis
     if(transmission_info.joints.size() != 2)
     {
         RCLCPP_FATAL(*logger_, "Invalid number of joints in DifferentialTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("Invalid number of joints in DifferentialTransmission!");; // this should not happen!
     }
     if(transmission_info.actuators.size() != 2)
     {
         RCLCPP_FATAL(*logger_, "Invalid number of actuators in DifferentialTransmission!");
-        return hardware_interface::CallbackReturn::ERROR; // this should not happen!
+        throw transmission_interface::TransmissionInterfaceException("Invalid number of actuators in DifferentialTransmission!"); // this should not happen!
     }
 
     /* Find joints indexes for transmission handels by name*/
@@ -378,14 +447,12 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::create_diff_transmis
     catch (const transmission_interface::TransmissionInterfaceException & exc)
     {
         RCLCPP_FATAL(*logger_, "Error while loading %s: %s", transmission_info.name.c_str(), exc.what());
-        return hardware_interface::CallbackReturn::ERROR;
+        throw;
     }
 
     transmissions_.push_back(transmission);
     
     RCLCPP_INFO(*logger_, "Differential transmissions initialized!");
-
-    return hardware_interface::CallbackReturn::SUCCESS;
 }
 
 void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& params, const WrapperType type)
@@ -394,29 +461,35 @@ void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& 
     switch(type)
     {
         case Moteus:
-            /* moteus options */ 
-            using mjbots::moteus::Controller;
-            using controller_interface::MoteusWrapper;
-            Controller::Options moteus_options;
-            moteus_options.bus = params.bus_;
-            moteus_options.id = params.id_;
-
-            /* moteus command format (it will be copied to wrapper) */
-            mjbots::moteus::PositionMode::Format format;
-            format.feedforward_torque = mjbots::moteus::kFloat;
-            format.maximum_torque = mjbots::moteus::kFloat;
-            format.velocity_limit= mjbots::moteus::kFloat;
-            moteus_options.position_format = format;
-
-            /* moteus command (it will be copied to wrapper) */
-            mjbots::moteus::PositionMode::Command moteus_command;
- 
-            wrapper_ptr = std::make_unique<MoteusWrapper>(moteus_options, moteus_command);
-
-        break;
+            wrapper_ptr = create_moteus_wrapper(params);
+            break;
     }
 
     controller_bridges.push_back(controller_interface::ControllerBridge(std::move(wrapper_ptr), params));
+}
+
+std::unique_ptr<ControllerWrapper> Pi3HatHardwareInterface::create_moteus_wrapper(const ControllerParameters& params)
+{
+    /* moteus options */ 
+    using mjbots::moteus::Controller;
+    using controller_interface::MoteusWrapper;
+    Controller::Options moteus_options;
+    moteus_options.bus = params.bus_;
+    moteus_options.id = params.id_;
+
+    /* moteus command format (it will be copied to wrapper) */
+    mjbots::moteus::PositionMode::Format format;
+    format.feedforward_torque = mjbots::moteus::kFloat;
+    format.maximum_torque = mjbots::moteus::kFloat;
+    format.velocity_limit= mjbots::moteus::kFloat;
+    moteus_options.position_format = format;
+
+    /* moteus command (it will be copied to wrapper) */
+    mjbots::moteus::PositionMode::Command moteus_command;
+    moteus_command.maximum_torque = params.torque_max_;
+    moteus_command.velocity_limit = params.velocity_max_;
+    
+    return std::make_unique<MoteusWrapper>(moteus_options, moteus_command);
 }
 
 Pi3HatHardwareInterface::WrapperType Pi3HatHardwareInterface::choose_wrapper_type(const std::string& type)
@@ -447,4 +520,62 @@ ControllerParameters Pi3HatHardwareInterface::get_controller_parameters(const ha
     }
 
     return params;
+}
+
+void Pi3HatHardwareInterface::controllers_init()
+{
+    int size = controller_bridges.size();
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        controller_bridges[i].initialize(tx_can_frames_[i]);
+    }
+}
+
+void Pi3HatHardwareInterface::controllers_start_up()
+{
+    int size = controller_bridges.size();
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        controller_bridges[i].start_up(tx_can_frames_[i],controller_commands_[i]);
+    }
+}
+
+void Pi3HatHardwareInterface::controllers_make_commands()
+{
+    int size = controller_bridges.size();
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        controller_bridges[i].make_command(tx_can_frames_[i], controller_commands_[i]);
+    }
+}
+
+void Pi3HatHardwareInterface::controllers_get_states()
+{
+    int size = controller_bridges.size();
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        int joint_id = controller_joint_map_.at(rx_can_frames_[i].id);
+        controller_bridges[joint_id].get_state(rx_can_frames_[i], controller_states_[joint_id]);
+    }
+}
+
+void Pi3HatHardwareInterface::create_controller_joint_map()
+{
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        int joint_id = i;
+        int controller_id = tx_can_frames_[i].id;
+        for(int j = 0; j < joint_controller_number_; ++j)
+        {
+            if(controller_id == rx_can_frames_[j].id)
+            {
+                std::pair<int, int> controller_joint_pair(controller_id, joint_id);
+                controller_joint_map_.emplace(controller_joint_pair);
+            }
+        }
+    }
+    if(controller_joint_map_.size() != joint_controller_number_)
+    {
+        throw std::logic_error("Controller -> Joint map has diffrent length!");
+    }
 }

@@ -88,10 +88,10 @@ namespace pi3hat_hardware_interface
         /* UTILITY ROS2 OBJECTS: */
         std::unique_ptr<rclcpp::Logger> logger_;
 
-        /* PART FOR COMMUNICATION WITH HARDWARE: */
+        /* Number of controllers/joints */
+        int joint_controller_number_;
 
-        /* number of controllers */
-        size_t number_of_controllers;
+        /* PART FOR COMMUNICATION WITH HARDWARE: */
 
         /* Pi3hat */
         std::shared_ptr<mjbots::pi3hat::Pi3Hat> pi3hat_;
@@ -111,8 +111,8 @@ namespace pi3hat_hardware_interface
         /* RX CAN frames */ 
         std::shared_ptr<mjbots::pi3hat::CanFrame[]> rx_can_frames_;
 
-        /* Container for motor_id -> joint_index maping */
-        std::vector<int> controller_joint_map_;
+        /* Container for rx_frame_id (diffrent for diffrent controller type) to joint_index maping */
+        std::unordered_map<int, int> controller_joint_map_;
 
         /* Controller states and commands */
         std::vector<controller_interface::ControllerState> controller_states_;
@@ -121,7 +121,7 @@ namespace pi3hat_hardware_interface
         /* For transmission interface */
         std::vector<controller_interface::ControllerCommand> controller_transmission_passthrough_;
          
-        /* Controller Wrappers (HERE change to your own wrapper) */
+        /* Controller Bridges */
         std::vector<controller_interface::ControllerBridge> controller_bridges;
 
 
@@ -131,6 +131,7 @@ namespace pi3hat_hardware_interface
         /* Joint states and commands (for transmissions)*/
         std::vector<JointState> joint_states_;
         std::vector<JointCommand> joint_commands_;
+
         /* For transmission interface */
         std::vector<JointCommand> joint_transmission_passthrough_;
 
@@ -141,17 +142,24 @@ namespace pi3hat_hardware_interface
             Remember to change this function in source code */
         WrapperType choose_wrapper_type(const std::string& type);
 
+        std::unique_ptr<ControllerWrapper> create_moteus_wrapper(const ControllerParameters& params);
+
         /* Function for creating moteus wrappers (here u can add your own wrapper) */
         void add_controller_bridge(const controller_interface::ControllerParameters& params, const WrapperType type);
 
         ControllerParameters get_controller_parameters(const hardware_interface::ComponentInfo& joint_info);
 
 
-        /* FUNCTION FOR MAKING COMMANDS/READING STATES */
+        /* FUNCTION FOR CONTROLLERS */
+        void controllers_init();
 
-        void prepare_commands();
+        void controllers_start_up();
 
-        void get_states();
+        void controllers_make_commands();
+
+        void controllers_get_states();
+
+        void create_controller_joint_map();
 
         /* FUNCTIONS FOR CREATING TRANSMISSION OBJECTS:*/
 
@@ -159,18 +167,18 @@ namespace pi3hat_hardware_interface
         std::vector<std::shared_ptr<transmission_interface::Transmission>> transmissions_;
 
         /* Function for creating all transmissions */
-        hardware_interface::CallbackReturn create_transmission_interface(const hardware_interface::HardwareInfo &info);
+        void create_transmission_interface(const hardware_interface::HardwareInfo &info);
 
         /* Functions for creating simple transmission */
-        hardware_interface::CallbackReturn create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
+        void create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
         transmission_interface::SimpleTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
         /* Functions for creating four bar linkage transmission */
-        hardware_interface::CallbackReturn create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
+        void create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
         transmission_interface::FourBarLinkageTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
         /* Functions for creating differential transmission */
-        hardware_interface::CallbackReturn create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
+        void create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
         transmission_interface::DifferentialTransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
         /* Functions for checking, if data passed from urdf is correct */
