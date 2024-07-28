@@ -19,22 +19,6 @@ static double GetNow()
 
 int main(int argc, char** argv)
 {
-    // moteus options
-    using mjbots::moteus::Controller;
-    Controller::Options moteus_options;
-    moteus_options.bus = 1;
-    moteus_options.id = 1;
-
-    // moteus command format (it will be copied to wrapper)
-    mjbots::moteus::PositionMode::Format format;
-    format.feedforward_torque = mjbots::moteus::kFloat;
-    format.maximum_torque = mjbots::moteus::kFloat;
-    moteus_options.position_format = format;
-
-    //moteus command (it will be copied to wrapper)
-    mjbots::moteus::PositionMode::Command moteus_command;
-
-
     // pi3hat 
     mjbots::pi3hat::Pi3Hat::Configuration pi3hat_configuration;
     pi3hat_configuration.attitude_rate_hz = 1000;
@@ -70,6 +54,23 @@ int main(int argc, char** argv)
     params.bus_ = 1;
     params.id_ = 1;
 
+    // moteus options
+    using mjbots::moteus::Controller;
+    Controller::Options moteus_options;
+    moteus_options.bus = 1;
+    moteus_options.id = 1;
+
+    // moteus command format (it will be copied to wrapper)
+    mjbots::moteus::PositionMode::Format format;
+    format.feedforward_torque = mjbots::moteus::kFloat;
+    format.maximum_torque = mjbots::moteus::kFloat;
+    moteus_options.position_format = format;
+
+    //moteus command (it will be copied to wrapper)
+    mjbots::moteus::PositionMode::Command moteus_command;
+    moteus_command.maximum_torque = params.torque_max_;
+    moteus_command.velocity_limit = params.velocity_max_;
+
     controller_interface::MoteusWrapper moteus_wrapper(moteus_options, moteus_command);
     std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
     controller_interface::ControllerBridge controller(std::move(moteus_wrapper_ptr), params);
@@ -88,8 +89,15 @@ int main(int argc, char** argv)
     std::cout << "Realtime control activated!" << std::endl;
 
     // set stop to moteus
-    controller.make_stop(tx_frame);
+    controller.initialize(tx_frame);
     pi3hat_output = pi3hat.Cycle(input);
+    ::usleep(1000);
+    
+    controller_command.position_ = 0;
+    controller.start_up(tx_frame, controller_command);
+    pi3hat_output = pi3hat.Cycle(input);
+    ::usleep(1000000);
+
     std::cout << "Controller successfully started!" << std::endl;
 
     auto prev = GetNow();
