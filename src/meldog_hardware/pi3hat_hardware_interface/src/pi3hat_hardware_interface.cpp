@@ -36,6 +36,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
             params = get_controller_parameters(joint);
 
             std::string type_string = joint.parameters.at("motor_type");
+            controller_start_positions_.push_back(std::stod(joint.parameters.at("motor_start_position")));
             type = choose_wrapper_type(type_string);
         }
         catch(const std::exception& e)
@@ -80,6 +81,8 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     
     /* Initialize the Pi3Hat input */ 
     pi3hat_input_ = mjbots::pi3hat::Pi3Hat::Input();
+    pi3hat_input_.request_attitude = true;
+    pi3hat_input_.wait_for_attitude = true;
     pi3hat_input_.attitude = &attitude_;
 
     tx_can_frames_ = std::make_shared<mjbots::pi3hat::CanFrame[]>(new mjbots::pi3hat::CanFrame[info_.joints.size()]);
@@ -99,10 +102,18 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     /* Initialize the Pi3Hat and realtime options */
     pi3hat_ =  std::make_shared<mjbots::pi3hat::Pi3Hat>(config);
     mjbots::pi3hat::ConfigureRealtime(0);
+    
+    RCLCPP_INFO(*logger_, "Hardware Interface successfully initialized!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+}
+
+hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const rclcpp_lifecycle::State &previous_state)
+{
 
     /* Initialize all motors/remove all flags */
     controllers_init();
     pi3hat_->Cycle(pi3hat_input_);
+    ::usleep(1000);
 
     /* Create rx_frame.id -> joint map */
     try
@@ -114,18 +125,20 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
         RCLCPP_FATAL(*logger_, "%s", e.what());
         return hardware_interface::CallbackReturn::ERROR;
     }
+
     /* Get states with prepared controller -> joint map */
     controllers_get_states();
-    
+
+    RCLCPP_INFO(*logger_, "Hardware Interface successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const rclcpp_lifecycle::State &previous_state)
+hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_activate(const rclcpp_lifecycle::State &previous_state)
 {
-    /* Set all commands, states and transmission passthrough to 0 */
-    for(int i = 0; i < controller_bridges.size(); ++i)
+    /* Set all commands, states and transmission passthrough to start state */
+    for(int i = 0; i < controller_bridges_.size(); ++i)
     {
-        controller_commands_[i].position_ = 0;
+        controller_commands_[i].position_ = controller_start_positions_[i];
         controller_commands_[i].velocity_ = 0;
         controller_commands_[i].torque_ = 0;
 
@@ -140,7 +153,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const r
         controller_transmission_passthrough_[i].torque_ = 0;
 
 
-        joint_commands_[i].position_;
+        joint_commands_[i].position_ = 0;
         joint_commands_[i].velocity_ = 0;
         joint_commands_[i].torque_ = 0;
 
@@ -155,16 +168,223 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const r
         joint_transmission_passthrough_[i].torque_ = 0;
     }
 
-    /* Start motors */
+    
+    /* Send start command to motors */
     controllers_start_up();
     pi3hat_->Cycle(pi3hat_input_);
-    ::usleep(1000);
+    ::usleep(1000000);
     controllers_get_states();
+
+    RCLCPP_INFO(*logger_, "Hardware Interface successfully activated!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+}
+
+hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state)
+{
+    /* Set all commands, states and transmission passthrough to end state */
+    for(int i = 0; i < controller_bridges_.size(); ++i)
+    {
+        controller_commands_[i].position_ = controller_start_positions_[i];
+        controller_commands_[i].velocity_ = 0;
+        controller_commands_[i].torque_ = 0;
+
+        controller_states_[i].position_ = 0;
+        controller_states_[i].velocity_ = 0;
+        controller_states_[i].torque_ = 0;
+        controller_states_[i].fault = 0;
+        controller_states_[i].temperature_ = 0;
+
+        controller_transmission_passthrough_[i].position_ = 0;
+        controller_transmission_passthrough_[i].velocity_ = 0;
+        controller_transmission_passthrough_[i].torque_ = 0;
+
+
+        joint_commands_[i].position_ = 0;
+        joint_commands_[i].velocity_ = 0;
+        joint_commands_[i].torque_ = 0;
+
+        joint_states_[i].position_ = 0;
+        joint_states_[i].velocity_ = 0;
+        joint_states_[i].torque_ = 0;
+        joint_states_[i].fault = 0;
+        joint_states_[i].temperature_ = 0;  
+
+        joint_transmission_passthrough_[i].position_ = 0;
+        joint_transmission_passthrough_[i].velocity_ = 0;
+        joint_transmission_passthrough_[i].torque_ = 0;
+    }
+
+    
+    /* Send end commands to motors */
+    controllers_start_up();
+    pi3hat_->Cycle(pi3hat_input_);
+    ::usleep(1000000);
+    controllers_get_states();
+
+    RCLCPP_INFO(*logger_, "Hardware Interface successfully deactivated!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+}
+
+hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_cleanup(const rclcpp_lifecycle::State &previous_state)
+{
+
+    /* Deinitialize all motors/remove all flags */
+    controllers_init();
+    pi3hat_->Cycle(pi3hat_input_);
+    ::usleep(1000);
+
+    /* Get states with prepared controller -> joint map */
+    controllers_get_states();
+
+    RCLCPP_INFO(*logger_, "Hardware Interface successfully cleanuped!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+}
+
+std::vector<hardware_interface::CommandInterface> Pi3HatHardwareInterface::export_command_interfaces()
+{
+    std::vector<hardware_interface::CommandInterface> command_interfaces;
+
+    /* Joint commands (before joint -> controller transformation)*/
+    for (auto i = 0u; i < info_.joints.size(); i++)
+    {
+        command_interfaces.emplace_back(hardware_interface::CommandInterface(
+            info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_commands_[i].position_)));
+        command_interfaces.emplace_back(hardware_interface::CommandInterface(
+            info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &(joint_commands_[i].velocity_)));
+        command_interfaces.emplace_back(hardware_interface::CommandInterface(
+            info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &(joint_commands_[i].torque_)));
+    }
+
+    return command_interfaces;
+}
+
+std::vector<hardware_interface::StateInterface> Pi3HatHardwareInterface::export_state_interfaces()
+{
+    std::vector<hardware_interface::StateInterface> state_interfaces;
+
+    /* Joint states (after controller -> joint transformation)*/
+    for (auto i = 0u; i < info_.joints.size(); i++)
+    {
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_states_[i].position_)));
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &(joint_states_[i].velocity_)));
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &(joint_states_[i].torque_)));
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                info_.joints[i].name, "temp", &(joint_states_[i].temperature_)));
+    }
+
+    /* IMU states (after IMUTransform transformation) */
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "orientation.x", &attitude_.attitude.x));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "orientation.y", &attitude_.attitude.y));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "orientation.z", &attitude_.attitude.z));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "orientation.w", &attitude_.attitude.w));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "angular_velocity.x", &attitude_.rate_dps.x));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "angular_velocity.y", &attitude_.rate_dps.y));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "angular_velocity.z", &attitude_.rate_dps.z));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "linear_acceleration.x", &attitude_.accel_mps2.x));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "linear_acceleration.y", &attitude_.accel_mps2.y));
+        state_interfaces.emplace_back(hardware_interface::StateInterface(
+            "imu_sensor", "linear_acceleration.z", &attitude_.accel_mps2.z));
+
+    return state_interfaces;
 }
 
 
+hardware_interface::return_type Pi3HatHardwareInterface::write(const rclcpp::Time &time, const rclcpp::Duration &period)
+{
+    for (int i = 0; i < joint_controller_number_; ++i)
+    {
+        if (std::isnan(joint_commands_[i].position_) || std::isnan(joint_commands_[i].velocity_) || std::isnan(joint_commands_[i].torque_))
+        {
+            RCLCPP_WARN(rclcpp::get_logger("Pi3HatHardwareInterface"), "NaN command for actuator");
+            break;
+        }
+    }
 
+    joint_to_controller_transform();
 
+    controllers_make_commands();
+    
+    mjbots::pi3hat::Pi3Hat::Output result = pi3hat_->Cycle(pi3hat_input_);
+
+    if (result.error)
+    {
+        RCLCPP_ERROR(rclcpp::get_logger("Pi3HatHardwareInterface"), "Pi3Hat::Cycle() failed!");
+        return hardware_interface::return_type::ERROR;
+    }
+
+    if (result.attitude_present)
+    {
+        imu_transform_.transform_attitude(attitude_);
+    }
+
+    if(result.rx_can_size > 0)
+    {
+        controllers_get_states();
+    }
+
+    controller_to_joint_transform();
+    
+    return hardware_interface::return_type::OK;
+}
+
+hardware_interface::return_type Pi3HatHardwareInterface::read(const rclcpp::Time &time, const rclcpp::Duration &period)
+{
+    return hardware_interface::return_type::OK;
+}
+
+void Pi3HatHardwareInterface::joint_to_controller_transform()
+{
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        joint_transmission_passthrough_[i].position_ = joint_commands_[i].position_;
+        joint_transmission_passthrough_[i].velocity_ = joint_commands_[i].velocity_;
+        joint_transmission_passthrough_[i].torque_ = joint_commands_[i].torque_;
+    }
+
+    std::for_each(
+    transmissions_.begin(), transmissions_.end(),
+    [](auto & transmission) { transmission->joint_to_actuator(); });
+
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        controller_commands_[i].position_ = controller_transmission_passthrough_[i].position_;
+        controller_commands_[i].velocity_ = controller_transmission_passthrough_[i].velocity_;
+        controller_commands_[i].torque_ = controller_transmission_passthrough_[i].torque_;
+    }
+}
+
+void Pi3HatHardwareInterface::controller_to_joint_transform()
+{
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        controller_transmission_passthrough_[i].position_ = controller_states_[i].position_;
+        controller_transmission_passthrough_[i].velocity_ = controller_states_[i].velocity_;
+        controller_transmission_passthrough_[i].torque_ = controller_states_[i].torque_;
+    }
+
+    std::for_each(
+    transmissions_.begin(), transmissions_.end(),
+    [](auto & transmission) { transmission->jactuator_to_joint(); });
+
+    for(int i = 0; i < joint_controller_number_; ++i)
+    {
+        joint_states_[i].position_ = joint_transmission_passthrough_[i].position_;
+        joint_states_[i].velocity_ = joint_transmission_passthrough_[i].velocity_;
+        joint_states_[i].torque_ = joint_transmission_passthrough_[i].torque_;
+    }
+}
 
 /* TRANSMISSION FUNCTIONS */
 void Pi3HatHardwareInterface::append_joint_handles(std::vector<transmission_interface::JointHandle>& joint_handles, const std::string joint_name, const int joint_index)
@@ -465,7 +685,7 @@ void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& 
             break;
     }
 
-    controller_bridges.push_back(controller_interface::ControllerBridge(std::move(wrapper_ptr), params));
+    controller_bridges_.push_back(controller_interface::ControllerBridge(std::move(wrapper_ptr), params));
 }
 
 std::unique_ptr<ControllerWrapper> Pi3HatHardwareInterface::create_moteus_wrapper(const ControllerParameters& params)
@@ -524,38 +744,38 @@ ControllerParameters Pi3HatHardwareInterface::get_controller_parameters(const ha
 
 void Pi3HatHardwareInterface::controllers_init()
 {
-    int size = controller_bridges.size();
+    int size = controller_bridges_.size();
     for(int i = 0; i < joint_controller_number_; ++i)
     {
-        controller_bridges[i].initialize(tx_can_frames_[i]);
+        controller_bridges_[i].initialize(tx_can_frames_[i]);
     }
 }
 
 void Pi3HatHardwareInterface::controllers_start_up()
 {
-    int size = controller_bridges.size();
+    int size = controller_bridges_.size();
     for(int i = 0; i < joint_controller_number_; ++i)
     {
-        controller_bridges[i].start_up(tx_can_frames_[i],controller_commands_[i]);
+        controller_bridges_[i].start_up(tx_can_frames_[i],controller_commands_[i]);
     }
 }
 
 void Pi3HatHardwareInterface::controllers_make_commands()
 {
-    int size = controller_bridges.size();
+    int size = controller_bridges_.size();
     for(int i = 0; i < joint_controller_number_; ++i)
     {
-        controller_bridges[i].make_command(tx_can_frames_[i], controller_commands_[i]);
+        controller_bridges_[i].make_command(tx_can_frames_[i], controller_commands_[i]);
     }
 }
 
 void Pi3HatHardwareInterface::controllers_get_states()
 {
-    int size = controller_bridges.size();
+    int size = controller_bridges_.size();
     for(int i = 0; i < joint_controller_number_; ++i)
     {
         int joint_id = controller_joint_map_.at(rx_can_frames_[i].id);
-        controller_bridges[joint_id].get_state(rx_can_frames_[i], controller_states_[joint_id]);
+        controller_bridges_[joint_id].get_state(rx_can_frames_[i], controller_states_[joint_id]);
     }
 }
 

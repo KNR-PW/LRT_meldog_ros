@@ -23,7 +23,7 @@ struct ControllerState
     double position_;   /* [radians] */
     double velocity_;   /* [radians/s] */
     double torque_;     /* [Nm] */
-    int temperature_;   /* [Celcius] */
+    double temperature_;   /* [Celcius] */
     bool fault = false;
 };
 

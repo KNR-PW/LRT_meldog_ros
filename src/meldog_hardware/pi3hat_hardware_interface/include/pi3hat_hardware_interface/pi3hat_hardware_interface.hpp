@@ -56,6 +56,10 @@ namespace pi3hat_hardware_interface
             const rclcpp_lifecycle::State &previous_state) override;
 
         ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
+        hardware_interface::CallbackReturn on_cleanup(
+            const rclcpp_lifecycle::State &previous_state) override;
+
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
         
         ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
@@ -118,11 +122,14 @@ namespace pi3hat_hardware_interface
         std::vector<controller_interface::ControllerState> controller_states_;
         std::vector<controller_interface::ControllerCommand> controller_commands_;
 
+        /* Controller start positions after initialization */
+        std::vector<double> controller_start_positions_;
+
         /* For transmission interface */
         std::vector<controller_interface::ControllerCommand> controller_transmission_passthrough_;
          
         /* Controller Bridges */
-        std::vector<controller_interface::ControllerBridge> controller_bridges;
+        std::vector<controller_interface::ControllerBridge> controller_bridges_;
 
 
         using JointState = controller_interface::ControllerState;
@@ -165,6 +172,10 @@ namespace pi3hat_hardware_interface
 
         /* Transmission interfaces*/
         std::vector<std::shared_ptr<transmission_interface::Transmission>> transmissions_;
+
+        void joint_to_controller_transform();
+
+        void controller_to_joint_transform();
 
         /* Function for creating all transmissions */
         void create_transmission_interface(const hardware_interface::HardwareInfo &info);
