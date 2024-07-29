@@ -91,12 +91,17 @@ int main(int argc, char** argv)
     // set stop to moteus
     controller.initialize(tx_frame);
     pi3hat_output = pi3hat.Cycle(input);
-    ::usleep(1000);
+    ::usleep(10000);
     
     controller_command.position_ = 0;
-    controller.start_up(tx_frame, controller_command);
-    pi3hat_output = pi3hat.Cycle(input);
-    ::usleep(1000000);
+    controller_state.position_ = NaN;
+    while(std::abs(controller_state.position_) > 0.1)
+    {
+        controller.start_up(tx_frame, controller_command);
+        pi3hat_output = pi3hat.Cycle(input);
+        ::usleep(2000);
+        controller.get_state(rx_frame, controller_state);
+    }
 
     std::cout << "Controller successfully started!" << std::endl;
 
