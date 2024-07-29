@@ -16,7 +16,7 @@ class ControllerBridge
 
     using CanFrame = mjbots::pi3hat::CanFrame;
 
-    const std::unique_ptr<ControllerWrapper> wrapper_;
+    std::unique_ptr<ControllerWrapper> wrapper_;
     ControllerParameters params_;
 
 
@@ -24,7 +24,13 @@ class ControllerBridge
     ControllerBridge(std::unique_ptr<ControllerWrapper> wrapper, 
      const ControllerParameters& params);
 
-    void make_command(CanFrame& tx_frame, ControllerCommand& command) const; //POMYSL JESZCZE O TYM
+    ControllerBridge(const ControllerBridge& other_controller) = delete;
+    ControllerBridge& operator=(const ControllerBridge& other_controller) = delete;
+    ControllerBridge(ControllerBridge&& other_controller);
+    ControllerBridge& operator=(ControllerBridge&& other_controller);
+
+
+    void make_command(CanFrame& tx_frame, ControllerCommand& command) const;
     void get_state(const CanFrame& rx_frame, ControllerState& state) const;
     void initialize(CanFrame& tx_frame) const;
     void start_up(CanFrame& tx_frame, ControllerCommand& command) const;

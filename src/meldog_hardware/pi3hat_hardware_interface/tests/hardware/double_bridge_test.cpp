@@ -1,7 +1,4 @@
 #include "../../include/controllers/Controllers.hpp"
-
-
-
 #include "../../include/3rd_libs/pi3hat/pi3hat.h"
 #include "../../include/3rd_libs/pi3hat/realtime.h"
 #include <iostream>

@@ -9,6 +9,18 @@ ControllerBridge::ControllerBridge(
      const ControllerParameters& params): 
      wrapper_(std::move(wrapper)), params_(params){}
      
+ControllerBridge::ControllerBridge(ControllerBridge&& other_controller):
+    wrapper_(std::move(other_controller.wrapper_)), params_(other_controller.params_) {}
+
+ControllerBridge& ControllerBridge::operator=(ControllerBridge&& other_controller)
+{
+    if (this != &other_controller)
+    {
+        this->wrapper_ = std::move(other_controller.wrapper_);
+        this->params_ = other_controller.params_;
+    }
+    return *this;
+}
 
 void ControllerBridge::make_command(CanFrame& tx_frame, ControllerCommand& command) const
 {
