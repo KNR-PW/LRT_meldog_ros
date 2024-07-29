@@ -36,8 +36,8 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
         {
             params = get_controller_parameters(joint);
 
-            std::string type_string = joint.parameters.at("motor_type");
-            controller_start_positions_.push_back(std::stod(joint.parameters.at("motor_start_position")));
+            std::string type_string = joint.parameters.at("controller_type");
+            controller_start_positions_.push_back(std::stod(joint.parameters.at("motor_position_start")));
             type = choose_wrapper_type(type_string);
         }
         catch(const std::exception& e)
@@ -333,7 +333,7 @@ std::vector<hardware_interface::StateInterface> Pi3HatHardwareInterface::export_
         RCLCPP_WARN(*logger_, "IMU: state interface was not configured!");
         return state_interfaces;
     }
-    
+
     if(info_.sensors[0].state_interfaces.size() != 10)
     {
         RCLCPP_WARN(*logger_, "IMU: some states were not configured!");

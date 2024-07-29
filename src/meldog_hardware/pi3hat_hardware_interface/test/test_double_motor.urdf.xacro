@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="test_single_motor">
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="3.0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+    <visual name="Cube">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.24 0.14 0.22"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="link_1">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="3.0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+    <visual name="Cube">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.24 0.14 0.22"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="link_2">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="3.0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+    <visual name="Cube">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.24 0.14 0.22"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="joint_1" type="revolute">
+    <origin xyz="0 -0.1 0" rpy="1.5708 1.5708 0"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1.0"/>
+    <limit lower="-1.39626" upper="-0.5236" effort="35.0" velocity="26.0"/>
+  </joint>
+
+  <joint name="joint_2" type="revolute">
+    <origin xyz="0 -0.1 0" rpy="1.5708 1.5708 0"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 0 1.0"/>
+    <limit lower="-1.39626" upper="-0.5236" effort="35.0" velocity="26.0"/>
+  </joint>
+
+  <link name="imu">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.001"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="imu" type="fixed">
+    <origin xyz="0 0 0" rpy="1.5708 0 1.5708"/>
+    <parent link="base_link"/>
+    <child link="imu"/>
+  </joint>
+
+  <ros2_control name="pi3hat_hardware_interface" type="system">
+    <hardware>
+          <plugin>pi3hat_hardware_interface/Pi3HatHardwareInterface</plugin>
+          <param name="imu_mounting_deg.yaw">0</param>
+          <param name="imu_mounting_deg.pitch">0</param>
+          <param name="imu_mounting_deg.roll">0</param>
+      </hardware>
+
+      <joint name="joint_1">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">1</param>
+          <param name="controller_can_id">1</param>
+
+
+          <param name="motor_direction">1</param>
+          <param name="motor_position_start">0.0</param>
+          <param name="motor_position_offset">1.0</param>
+          <param name="motor_position_max">30.0</param>
+          <param name="motor_position_min">-30.0</param>
+          <param name="motor_velocity_max">10.0</param>
+          <param name="motor_torque_max">1</paramm>
+
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+      </joint>
+
+      <joint name="joint_2">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">2</param>
+          <param name="controller_can_id">2</param>
+
+
+          <param name="motor_direction">1</param>
+          <param name="motor_position_start">0.0</param>
+          <param name="motor_position_offset">1.0</param>
+          <param name="motor_position_max">30.0</param>
+          <param name="motor_position_min">-30.0</param>
+          <param name="motor_velocity_max">10.0</param>
+          <param name="motor_torque_max">1</paramm>
+
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+      </joint>
+      <transmission name="fbl_transmission">
+          <plugin>transmission_interface/FourBarLinkageTransmission</plugin>
+          <actuator name="joint_1_motor" role="actuator1">
+            <mechanical_reduction>10</mechanical_reduction>
+          </actuator>
+          <actuator name="joint_2_motor" role="actuator2">
+            <mechanical_reduction>10</mechanical_reduction>
+          </actuator>
+          <joint name="joint_1" role="joint1">
+            <offset>0.0</offset>
+            <mechanical_reduction>0.0</mechanical_reduction>
+          </joint>
+          <joint name="joint_2" role="joint2">
+            <offset>0.0</offset>
+            <mechanical_reduction>1.0</mechanical_reduction>
+          </joint>
+        </transmission>
+
+      <sensor name="imu_sensor">
+          <state_interface name = "orientation.x"/>
+          <state_interface name = "orientation.y"/>
+          <state_interface name = "orientation.z"/>
+          <state_interface name = "orientation.w"/>
+          <state_interface name = "angular_velocity.x"/>
+          <state_interface name = "angular_velocity.y"/>
+          <state_interface name = "angular_velocity.z"/>
+          <state_interface name = "linear_acceleration.x"/>
+          <state_interface name = "linear_acceleration.y"/>
+          <state_interface name = "linear_acceleration.z"/>
+      </sensor>
+  </ros2_control>
+
+</robot>
