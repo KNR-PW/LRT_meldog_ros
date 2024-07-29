@@ -11,7 +11,7 @@ namespace IMU
     class IMUTransform
     {
         private:
-        static const double degrees_to_radians = 2 * M_PI / 360.0;
+        constexpr static double degrees_to_radians = 2 * M_PI / 360.0;
 
         public:
 
