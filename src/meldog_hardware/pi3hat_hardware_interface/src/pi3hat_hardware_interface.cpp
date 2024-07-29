@@ -254,7 +254,7 @@ std::vector<hardware_interface::CommandInterface> Pi3HatHardwareInterface::expor
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
     /* Joint commands (before joint -> controller transformation)*/
-    for (auto i = 0u; i < joint_controller_number_; i++)
+    for (int i = ; i < joint_controller_number_; i++)
     {
         command_interfaces.emplace_back(hardware_interface::CommandInterface(
             info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_commands_[i].position_)));
@@ -272,7 +272,7 @@ std::vector<hardware_interface::StateInterface> Pi3HatHardwareInterface::export_
     std::vector<hardware_interface::StateInterface> state_interfaces;
 
     /* Joint states (after controller -> joint transformation)*/
-    for (auto i = 0u; i < joint_controller_number_; i++)
+    for (int i = 0; i < joint_controller_number_; i++)
     {
             state_interfaces.emplace_back(hardware_interface::StateInterface(
                 info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_states_[i].position_)));
@@ -385,7 +385,7 @@ void Pi3HatHardwareInterface::controller_to_joint_transform()
 
     std::for_each(
     transmissions_.begin(), transmissions_.end(),
-    [](auto & transmission) { transmission->jactuator_to_joint(); });
+    [](auto & transmission) { transmission->actuator_to_joint(); });
 
     for(int i = 0; i < joint_controller_number_; ++i)
     {
