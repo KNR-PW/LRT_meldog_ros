@@ -1,4 +1,4 @@
-#include "../include/pi3hat_hardware_interface/pi3hat_hardware_interface.hpp"
+#include "pi3hat_hardware_interface/pi3hat_hardware_interface.hpp"
 
 using namespace pi3hat_hardware_interface;
 using namespace controller_interface;
@@ -15,16 +15,17 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     logger_ = std::make_unique<rclcpp::Logger>(
     rclcpp::get_logger("Pi3HatHardwareInterface"));
 
-    controller_commands_.resize(info_.joints.size());
-    controller_states_.resize(info_.joints.size());
-    controller_transmission_passthrough_.resize(info_.joints.size());
-
-
-    joint_commands_.resize(info_.joints.size());
-    joint_states_.resize(info_.joints.size());
-    joint_transmission_passthrough_.resize(info_.joints.size());
-
     joint_controller_number_ = info_.joints.size();
+
+    controller_commands_.resize(joint_controller_number_);
+    controller_states_.resize(joint_controller_number_);
+    controller_transmission_passthrough_.resize(joint_controller_number_);
+
+
+    joint_commands_.resize(joint_controller_number_);
+    joint_states_.resize(joint_controller_number_);
+    joint_transmission_passthrough_.resize(joint_controller_number_);
+
 
     /* Prepare controller bridges */
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
@@ -93,12 +94,12 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     pi3hat_input_.wait_for_attitude = true;
     pi3hat_input_.attitude = &attitude_;
 
-    tx_can_frames_ = std::make_shared<mjbots::pi3hat::CanFrame[]>(new mjbots::pi3hat::CanFrame[info_.joints.size()]);
-    rx_can_frames_ = std::make_shared<mjbots::pi3hat::CanFrame[]>(new mjbots::pi3hat::CanFrame[info_.joints.size()]);
+    tx_can_frames_ = std::make_shared<mjbots::pi3hat::CanFrame[]>(new mjbots::pi3hat::CanFrame[joint_controller_number_]);
+    rx_can_frames_ = std::make_shared<mjbots::pi3hat::CanFrame[]>(new mjbots::pi3hat::CanFrame[joint_controller_number_]);
     
-    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_can_frames_span_(rx_can_frames_.get(), info_.joints.size()); 
+    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_can_frames_span_(rx_can_frames_.get(), joint_controller_number_); 
     pi3hat_input_.rx_can = rx_can_frames_span_;
-    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_can_frames_span_(tx_can_frames_.get(), info_.joints.size()); 
+    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_can_frames_span_(tx_can_frames_.get(), joint_controller_number_); 
     pi3hat_input_.tx_can = tx_can_frames_span_;
 
     config.can[0] = can_config;
@@ -144,7 +145,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const r
 hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_activate(const rclcpp_lifecycle::State &previous_state)
 {
     /* Set all commands, states and transmission passthrough to start state */
-    for(int i = 0; i < controller_bridges_.size(); ++i)
+    for(int i = 0; i < joint_controller_number_; ++i)
     {
         controller_commands_[i].position_ = controller_start_positions_[i];
         controller_commands_[i].velocity_ = 0;
@@ -190,7 +191,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_activate(const rc
 hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state)
 {
     /* Set all commands, states and transmission passthrough to end state */
-    for(int i = 0; i < controller_bridges_.size(); ++i)
+    for(int i = 0; i < joint_controller_number_; ++i)
     {
         controller_commands_[i].position_ = controller_start_positions_[i];
         controller_commands_[i].velocity_ = 0;
@@ -253,7 +254,7 @@ std::vector<hardware_interface::CommandInterface> Pi3HatHardwareInterface::expor
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
     /* Joint commands (before joint -> controller transformation)*/
-    for (auto i = 0u; i < info_.joints.size(); i++)
+    for (auto i = 0u; i < joint_controller_number_; i++)
     {
         command_interfaces.emplace_back(hardware_interface::CommandInterface(
             info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_commands_[i].position_)));
@@ -271,7 +272,7 @@ std::vector<hardware_interface::StateInterface> Pi3HatHardwareInterface::export_
     std::vector<hardware_interface::StateInterface> state_interfaces;
 
     /* Joint states (after controller -> joint transformation)*/
-    for (auto i = 0u; i < info_.joints.size(); i++)
+    for (auto i = 0u; i < joint_controller_number_; i++)
     {
             state_interfaces.emplace_back(hardware_interface::StateInterface(
                 info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_states_[i].position_)));
@@ -442,6 +443,8 @@ void Pi3HatHardwareInterface::load_transmission_data(const hardware_interface::T
 
 void Pi3HatHardwareInterface::create_transmission_interface(const hardware_interface::HardwareInfo &info)
 {
+    if(info.transmissions.size() == 0) return;
+
     /* Prepare loaders */
     transmission_interface::SimpleTransmissionLoader simple_loader;
     transmission_interface::FourBarLinkageTransmissionLoader fbl_loader;
@@ -696,7 +699,8 @@ void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& 
             break;
     }
 
-    controller_bridges_.push_back(controller_interface::ControllerBridge(std::move(wrapper_ptr), params));
+    controller_interface::ControllerBridge bridge = controller_interface::ControllerBridge(std::move(wrapper_ptr), params);
+    controller_bridges_.push_back(std::move(bridge));
 }
 
 std::unique_ptr<ControllerWrapper> Pi3HatHardwareInterface::create_moteus_wrapper(const ControllerParameters& params)
@@ -755,7 +759,6 @@ ControllerParameters Pi3HatHardwareInterface::get_controller_parameters(const ha
 
 void Pi3HatHardwareInterface::controllers_init()
 {
-    int size = controller_bridges_.size();
     for(int i = 0; i < joint_controller_number_; ++i)
     {
         controller_bridges_[i].initialize(tx_can_frames_[i]);
@@ -764,7 +767,6 @@ void Pi3HatHardwareInterface::controllers_init()
 
 void Pi3HatHardwareInterface::controllers_start_up()
 {
-    int size = controller_bridges_.size();
     for(int i = 0; i < joint_controller_number_; ++i)
     {
         controller_bridges_[i].start_up(tx_can_frames_[i],controller_commands_[i]);
@@ -773,7 +775,6 @@ void Pi3HatHardwareInterface::controllers_start_up()
 
 void Pi3HatHardwareInterface::controllers_make_commands()
 {
-    int size = controller_bridges_.size();
     for(int i = 0; i < joint_controller_number_; ++i)
     {
         controller_bridges_[i].make_command(tx_can_frames_[i], controller_commands_[i]);
@@ -782,7 +783,6 @@ void Pi3HatHardwareInterface::controllers_make_commands()
 
 void Pi3HatHardwareInterface::controllers_get_states()
 {
-    int size = controller_bridges_.size();
     for(int i = 0; i < joint_controller_number_; ++i)
     {
         int joint_id = controller_joint_map_.at(rx_can_frames_[i].id);
