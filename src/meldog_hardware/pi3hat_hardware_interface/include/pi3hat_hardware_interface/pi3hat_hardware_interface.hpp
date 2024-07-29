@@ -35,8 +35,8 @@
 
 #include "../controllers/Controllers.hpp"
 #include "../imu_transform/IMUTransform.hpp"
-#include "../pi3hat/pi3hat.h"
-#include "../pi3hat/realtime.h"
+#include "../3rd_libs/pi3hat/pi3hat.h"
+#include "../3rd_libs/pi3hat/realtime.h"
 
 #include "visibility_control.hpp"
 
