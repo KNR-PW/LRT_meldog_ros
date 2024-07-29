@@ -44,8 +44,16 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
             RCLCPP_FATAL(*logger_, "Error reading motor/controller parameters!");
             return hardware_interface::CallbackReturn::ERROR;
         }
-        
-        add_controller_bridge(params, type);
+
+        try
+        {
+            add_controller_bridge(params, type);
+        }
+        catch(const std::exception& e)
+        {
+            RCLCPP_FATAL(*logger_, "Error creating motor controller!");
+            return hardware_interface::CallbackReturn::ERROR;
+        }
     }
 
     /* Prepare transmissions */
@@ -682,6 +690,9 @@ void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& 
     {
         case Moteus:
             wrapper_ptr = create_moteus_wrapper(params);
+            break;
+        default:
+            throw std::invalid_argument("Motor type doesn't exist!");
             break;
     }
 

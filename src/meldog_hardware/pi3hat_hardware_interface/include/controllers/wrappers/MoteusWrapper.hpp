@@ -12,9 +12,9 @@ class MoteusWrapper: public ControllerWrapper
     private:
 
     /* Const coefficients for easy radians - rotations transform */
-    static const double rotation_to_radians_ = 2 * M_PI;
-    static const double radians_to_rotation_ = 1 / (2 * M_PI); /* Multiplying is faster than dividing */
-    static const double startup_coefficient_ = 0.05; /* For slow start-up */
+    constexpr static double rotation_to_radians_ = 2 * M_PI;
+    constexpr static double radians_to_rotation_ = 1 / (2 * M_PI); /* Multiplying is faster than dividing */
+    constexpr static double startup_coefficient_ = 0.05; /* For slow start-up */
 
     /* Command structure for moteus object*/
     mjbots::moteus::PositionMode::Command position_command_;
@@ -31,7 +31,7 @@ class MoteusWrapper: public ControllerWrapper
     void init_to_tx_frame(CanFrame& tx_frame) override;
     void start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
 
-    ~MoteusWrapper() override = default;
+    // ~MoteusWrapper() override = default;
 
 };
 

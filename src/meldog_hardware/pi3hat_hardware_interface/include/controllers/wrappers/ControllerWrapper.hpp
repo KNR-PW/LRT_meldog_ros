@@ -1,7 +1,7 @@
 #ifndef _CONTROLLER_WRAPPER_HPP_
 #define _CONTROLLER_WRAPPER_HPP_
 
-#include "../ControllerBridge.hpp"
+#include "../ControllerStructures.hpp"
 
 
 namespace controller_interface
@@ -20,7 +20,7 @@ class ControllerWrapper
     virtual void init_to_tx_frame(CanFrame& tx_frame) = 0;
     virtual void start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) = 0;
 
-    virtual ~ControllerWrapper() = 0;
+    virtual ~ControllerWrapper() = default;
 
 };
 
