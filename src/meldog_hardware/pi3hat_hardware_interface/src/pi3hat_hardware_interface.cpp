@@ -255,13 +255,33 @@ std::vector<hardware_interface::CommandInterface> Pi3HatHardwareInterface::expor
 
     /* Joint commands (before joint -> controller transformation)*/
     for (int i = 0; i < joint_controller_number_; i++)
-    {
-        command_interfaces.emplace_back(hardware_interface::CommandInterface(
-            info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_commands_[i].position_)));
-        command_interfaces.emplace_back(hardware_interface::CommandInterface(
-            info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &(joint_commands_[i].velocity_)));
-        command_interfaces.emplace_back(hardware_interface::CommandInterface(
-            info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &(joint_commands_[i].torque_)));
+    {   
+        if(!(info_.joints[i].command_interfaces.size() > 0))
+        {
+            RCLCPP_WARN(*logger_, "Zero command interfaces for joint %s!", info_.joints[i].name);
+        }
+        for(const auto& command_interface: info_.joints[i].command_interfaces)
+        {
+            if(command_interface.name == hardware_interface::HW_IF_POSITION)
+            {
+                command_interfaces.emplace_back(hardware_interface::CommandInterface(
+                    info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_commands_[i].position_)));
+            }
+            else if(command_interface.name == hardware_interface::HW_IF_VELOCITY)
+            {
+                command_interfaces.emplace_back(hardware_interface::CommandInterface(
+                    info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &(joint_commands_[i].velocity_)));
+            }
+            else if(command_interface.name == hardware_interface::HW_IF_EFFORT)
+            {
+                command_interfaces.emplace_back(hardware_interface::CommandInterface(
+                    info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &(joint_commands_[i].torque_)));
+            }
+            else
+            {
+                RCLCPP_WARN(*logger_, "%s is wrong type of command interface, omitted!", command_interface.name);
+            }
+        }
     }
 
     return command_interfaces;
@@ -274,37 +294,70 @@ std::vector<hardware_interface::StateInterface> Pi3HatHardwareInterface::export_
     /* Joint states (after controller -> joint transformation)*/
     for (int i = 0; i < joint_controller_number_; i++)
     {
-            state_interfaces.emplace_back(hardware_interface::StateInterface(
-                info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_states_[i].position_)));
-            state_interfaces.emplace_back(hardware_interface::StateInterface(
-                info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &(joint_states_[i].velocity_)));
-            state_interfaces.emplace_back(hardware_interface::StateInterface(
-                info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &(joint_states_[i].torque_)));
-            state_interfaces.emplace_back(hardware_interface::StateInterface(
-                info_.joints[i].name, "temp", &(joint_states_[i].temperature_)));
+        if(!(info_.joints[i].state_interfaces.size() > 0))
+        {
+            RCLCPP_WARN(*logger_, "Zero state interfaces for joint %s!", info_.joints[i].name);
+        }
+        for(const auto& state_interface: info_.joints[i].state_interfaces)
+        {
+            if(state_interface.name == hardware_interface::HW_IF_POSITION)
+            {
+                state_interfaces.emplace_back(hardware_interface::StateInterface(
+                    info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_states_[i].position_)));
+            }
+            if(state_interface.name == hardware_interface::HW_IF_VELOCITY)
+            {
+                state_interfaces.emplace_back(hardware_interface::StateInterface(
+                    info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &(joint_states_[i].velocity_)));
+            }
+            if(state_interface.name == hardware_interface::HW_IF_EFFORT)
+            {
+                state_interfaces.emplace_back(hardware_interface::StateInterface(
+                    info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &(joint_states_[i].torque_)));
+            }
+            if(state_interface.name == "temperature")
+            {
+                state_interfaces.emplace_back(hardware_interface::StateInterface(
+                    info_.joints[i].name, "temperature", &(joint_states_[i].temperature_)));
+            }
+            else
+            {
+                RCLCPP_WARN(*logger_, "%s is wrong type of state interface, omitted!", state_interface.name);
+            }
+        }
     }
 
     /* IMU states (after IMUTransform transformation) */
+    if(info_.sensors.size() == 0)
+    {
+        RCLCPP_WARN(*logger_, "IMU: state interface was not configured!");
+        return state_interfaces;
+    }
+    
+    if(info_.sensors[0].state_interfaces.size() != 10)
+    {
+        RCLCPP_WARN(*logger_, "IMU: some states were not configured!");
+    }
     state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "orientation.x", &attitude_.attitude.x));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "orientation.y", &attitude_.attitude.y));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "orientation.z", &attitude_.attitude.z));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "orientation.w", &attitude_.attitude.w));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "angular_velocity.x", &attitude_.rate_dps.x));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "angular_velocity.y", &attitude_.rate_dps.y));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "angular_velocity.z", &attitude_.rate_dps.z));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "linear_acceleration.x", &attitude_.accel_mps2.x));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "linear_acceleration.y", &attitude_.accel_mps2.y));
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            "imu_sensor", "linear_acceleration.z", &attitude_.accel_mps2.z));
+        "imu_sensor", "orientation.x", &attitude_.attitude.x));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "orientation.y", &attitude_.attitude.y));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "orientation.z", &attitude_.attitude.z));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "orientation.w", &attitude_.attitude.w));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "angular_velocity.x", &attitude_.rate_dps.x));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "angular_velocity.y", &attitude_.rate_dps.y));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "angular_velocity.z", &attitude_.rate_dps.z));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "linear_acceleration.x", &attitude_.accel_mps2.x));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "linear_acceleration.y", &attitude_.accel_mps2.y));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "linear_acceleration.z", &attitude_.accel_mps2.z));
 
     return state_interfaces;
 }
