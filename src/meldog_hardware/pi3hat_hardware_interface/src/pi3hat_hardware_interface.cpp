@@ -94,12 +94,12 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     pi3hat_input_.wait_for_attitude = true;
     pi3hat_input_.attitude = &attitude_;
 
-    tx_can_frames_ = std::make_shared<mjbots::pi3hat::CanFrame[]>(new mjbots::pi3hat::CanFrame[joint_controller_number_]);
-    rx_can_frames_ = std::make_shared<mjbots::pi3hat::CanFrame[]>(new mjbots::pi3hat::CanFrame[joint_controller_number_]);
+    tx_can_frames_.resize(joint_controller_number_);
+    rx_can_frames_.resize(joint_controller_number_);
     
-    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_can_frames_span_(rx_can_frames_.get(), joint_controller_number_); 
+    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> rx_can_frames_span_(&rx_can_frames_[0], joint_controller_number_); 
     pi3hat_input_.rx_can = rx_can_frames_span_;
-    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_can_frames_span_(tx_can_frames_.get(), joint_controller_number_); 
+    mjbots::pi3hat::Span<mjbots::pi3hat::CanFrame> tx_can_frames_span_(&tx_can_frames_[0], joint_controller_number_); 
     pi3hat_input_.tx_can = tx_can_frames_span_;
 
     config.can[0] = can_config;
@@ -254,7 +254,7 @@ std::vector<hardware_interface::CommandInterface> Pi3HatHardwareInterface::expor
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
     /* Joint commands (before joint -> controller transformation)*/
-    for (int i = ; i < joint_controller_number_; i++)
+    for (int i = 0; i < joint_controller_number_; i++)
     {
         command_interfaces.emplace_back(hardware_interface::CommandInterface(
             info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_commands_[i].position_)));
@@ -577,8 +577,6 @@ void Pi3HatHardwareInterface::create_fbl_transmission(const hardware_interface::
     }
 
     load_transmission_data(transmission_info, transmission, loader);
-    std::vector<transmission_interface::JointHandle> joint_handles;
-    std::vector<transmission_interface::ActuatorHandle> actuator_handles;
 
     if(transmission_info.joints.size() != 2)
     {
@@ -638,8 +636,6 @@ void Pi3HatHardwareInterface::create_diff_transmission(const hardware_interface:
     }
     
     load_transmission_data(transmission_info, transmission, loader);
-    std::vector<transmission_interface::JointHandle> joint_handles;
-    std::vector<transmission_interface::ActuatorHandle> actuator_handles;
 
     if(transmission_info.joints.size() != 2)
     {

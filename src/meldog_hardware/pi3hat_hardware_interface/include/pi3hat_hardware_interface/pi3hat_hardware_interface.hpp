@@ -110,10 +110,10 @@ namespace pi3hat_hardware_interface
         IMU::IMUTransform imu_transform_;
 
         /* TX CAN frames */
-        std::shared_ptr<mjbots::pi3hat::CanFrame[]> tx_can_frames_;
+        std::vector<mjbots::pi3hat::CanFrame> tx_can_frames_;
 
         /* RX CAN frames */ 
-        std::shared_ptr<mjbots::pi3hat::CanFrame[]> rx_can_frames_;
+        std::vector<mjbots::pi3hat::CanFrame> rx_can_frames_;
 
         /* Container for rx_frame_id (diffrent for diffrent controller type) to joint_index maping */
         std::unordered_map<int, int> controller_joint_map_;
