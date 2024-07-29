@@ -48,8 +48,8 @@ int main(int argc, char** argv)
     // moteus wrapper
     controller_interface::ControllerParameters params_1;
     params_1.direction_ = 1;
-    params_1.position_max_ = 30;
-    params_1.position_min_ = -30;
+    params_1.position_max_ = 30 * M_PI;
+    params_1.position_min_ = -30 * M_PI;
     params_1.velocity_max_ = 10;
     params_1.torque_max_ = 1;
     params_1.bus_ = 1;
@@ -57,8 +57,8 @@ int main(int argc, char** argv)
 
     controller_interface::ControllerParameters params_2;
     params_2.direction_ = 1;
-    params_2.position_max_ = 10;
-    params_2.position_min_ = -10;
+    params_2.position_max_ = 10 * M_PI;
+    params_2.position_min_ = -10 * M_PI;
     params_2.velocity_max_ = 10;
     params_2.torque_max_ = 1;
     params_2.bus_ = 2;
@@ -125,15 +125,22 @@ int main(int argc, char** argv)
         controllers[i].initialize(tx_frame[i]);
     }
     pi3hat_output = pi3hat.Cycle(input);
-    ::usleep(1000);
+    ::usleep(10000);
 
     for(int i = 0; i < controllers.size(); ++i)
     {
         controller_commands[i].position_ = 0;
         controllers[i].start_up(tx_frame[i], controller_commands[i]);
     }
-    pi3hat_output = pi3hat.Cycle(input);
-    ::usleep(1000000);
+    while(std::abs(controller_states[0].position_) > 0.1 && std::abs(controller_states[1].position_) > 0.1)
+    {
+        pi3hat_output = pi3hat.Cycle(input);
+        ::usleep(2000);
+        for(int i = 0; i < controllers.size(); ++i)
+        {
+            controllers[i].get_state(rx_frame[i], controller_states[i]);
+        }
+    }
     std::cout << "Controllers successfully started!" << std::endl;
 
     auto prev = GetNow();
@@ -141,14 +148,14 @@ int main(int argc, char** argv)
     while(true)
     {   
         auto now = GetNow();
-        controller_commands[0].position_ = 20 * cos(now - prev);
-        controller_commands[1].position_ = 10 * sin(now - prev);
+        controller_commands[0].position_ = 20 * M_PI * cos(now - prev);
+        controller_commands[1].position_ = 10 * M_PI *sin(now - prev);
         for(int i = 0; i < controllers.size(); ++i)
         {
             controllers[i].make_command(tx_frame[i], controller_commands[i]);
         }
         pi3hat_output = pi3hat.Cycle(input);
-        ::usleep(1000);
+        ::usleep(500);
         auto mesaure_time = GetNow() - now;
         frequency = (int) 1/mesaure_time;
         for(int i = 0; i < controllers.size(); ++i)
