@@ -179,12 +179,24 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_activate(const rc
 
     
     /* Send start command to motors */
-    controllers_start_up();
-    pi3hat_->Cycle(pi3hat_input_);
-    ::usleep(1000000);
-    controllers_get_states();
+    RCLCPP_INFO(*logger_, "Motors reaching starting position!");
+    double error_sum = NaN;
 
-    RCLCPP_INFO(*logger_, "Hardware Interface successfully activated!");
+    while(error_sum > 0.01)
+    {
+        error_sum = 0;
+        controllers_start_up();
+        pi3hat_->Cycle(pi3hat_input_);
+        ::usleep(5000);
+        controllers_get_states();
+        for(int i = 0; i < joint_controller_number_; ++i)
+        {
+            error_sum += std::abs(controller_states_[i].position_ - controller_commands_[i].position_);
+        }
+    }
+
+    RCLCPP_INFO(*logger_, "Motors reached starting position!");
+    RCLCPP_INFO(*logger_, "Hardware Interface successfully activated!!");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -225,11 +237,23 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_deactivate(const 
 
     
     /* Send end commands to motors */
-    controllers_start_up();
-    pi3hat_->Cycle(pi3hat_input_);
-    ::usleep(1000000);
-    controllers_get_states();
-
+    RCLCPP_INFO(*logger_, "Motors reaching ending position!");
+    double error_sum = NaN;
+    
+    while(error_sum > 0.01)
+    {
+        error_sum = 0;
+        controllers_start_up();
+        pi3hat_->Cycle(pi3hat_input_);
+        ::usleep(5000);
+        controllers_get_states();
+        for(int i = 0; i < joint_controller_number_; ++i)
+        {
+            error_sum += std::abs(controller_states_[i].position_ - controller_commands_[i].position_);
+        }
+    }
+    
+    RCLCPP_INFO(*logger_, "Motors reached ending position!");
     RCLCPP_INFO(*logger_, "Hardware Interface successfully deactivated!");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
@@ -859,3 +883,9 @@ void Pi3HatHardwareInterface::create_controller_joint_map()
         throw std::logic_error("Controller -> Joint map has diffrent length!");
     }
 }
+
+#include "pluginlib/class_list_macros.hpp"
+
+PLUGINLIB_EXPORT_CLASS(
+  pi3hat_hardware_interface::Pi3HatHardwareInterface,
+  hardware_interface::SystemInterface)

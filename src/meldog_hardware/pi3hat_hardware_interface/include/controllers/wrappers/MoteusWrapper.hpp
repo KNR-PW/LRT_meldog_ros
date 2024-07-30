@@ -7,7 +7,7 @@
 namespace controller_interface
 {
 
-class MoteusWrapper: public ControllerWrapper
+class MoteusWrapper final: public ControllerWrapper 
 {
     private:
 
