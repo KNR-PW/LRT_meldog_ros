@@ -95,3 +95,9 @@ std::unique_ptr<MoteusWrapper> controller_interface::make_moteus_wrapper(const C
     MoteusWrapper wrapper = MoteusWrapper(params, moteus_options);
     return std::make_unique<MoteusWrapper>(wrapper);
 }
+
+MoteusWrapper::MoteusWrapper(const MoteusWrapper& other):
+    ControllerWrapper(), moteus_controller_(other.moteus_controller_.options()), position_command_(other.position_command_) {}
+
+MoteusWrapper::MoteusWrapper(MoteusWrapper&& other):
+    ControllerWrapper(), moteus_controller_(other.moteus_controller_.options()), position_command_(other.position_command_) {}

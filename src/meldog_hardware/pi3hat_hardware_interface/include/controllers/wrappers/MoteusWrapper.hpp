@@ -26,11 +26,18 @@ class MoteusWrapper final: public ControllerWrapper
 
     MoteusWrapper(const ControllerParameters params,
     mjbots::moteus::Controller::Options moteus_options);
+    MoteusWrapper(const MoteusWrapper& other);
+    MoteusWrapper& operator=(const MoteusWrapper& other) = delete;
+    MoteusWrapper(MoteusWrapper&& other);
+    MoteusWrapper& operator=(MoteusWrapper&& other) = delete;
+
+
     void command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
     void rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) override;
     void init_to_tx_frame(CanFrame& tx_frame) override;
     void start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
 
+    ~MoteusWrapper() = default;
 };
 
 /* Function for creating unique pointer for moteus wrapper (used in pi3hat_hardware_interface) */
