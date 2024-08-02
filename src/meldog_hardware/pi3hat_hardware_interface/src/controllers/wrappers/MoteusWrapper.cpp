@@ -96,6 +96,6 @@ std::unique_ptr<MoteusWrapper> controller_interface::make_moteus_wrapper(const C
     moteus_command.velocity_limit = params.velocity_max_;
 
     controller_interface::MoteusWrapper moteus_wrapper(moteus_options, moteus_command);
-    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
+    std::unique_ptr<controller_interface::MoteusWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
     return moteus_wrapper_ptr;
 }
