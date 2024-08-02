@@ -30,11 +30,11 @@
   </link>
 
   <joint name="joint_1" type="revolute">
-        <origin xyz="0.15 0 0" rpy="0 0 0"/>
-        <parent link="base_link"/>
-        <child link="rotor"/>
-        <axis xyz="0 0 1.0"/>
-        <limit lower="-1.39626" upper="-0.5236" effort="35.0" velocity="26.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="base_link"/>
+    <child link="rotor"/>
+    <axis xyz="1.0 0.0 0.0"/>
+    <limit lower="-5.0" upper="5.0" effort="10.0" velocity="10.0"/>
   </joint>
 
   <link name="imu">
