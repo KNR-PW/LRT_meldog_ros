@@ -4,7 +4,7 @@ using namespace controller_interface;
 
 MoteusWrapper::MoteusWrapper(const ControllerParameters params,
     mjbots::moteus::Controller::Options moteus_options):
-        ControllerWrapper(), moteus_controller_(moteus_options), position_command_()
+        ControllerWrapper(), moteus_controller_(mjbots::moteus::Controller(moteus_options)), position_command_()
 {
     /* moteus command (it will be copied to wrapper) */
     position_command_.maximum_torque = params.torque_max_;
