@@ -150,8 +150,6 @@ namespace pi3hat_hardware_interface
             Remember to change this function in source code */
         WrapperType choose_wrapper_type(const std::string& type);
 
-        std::unique_ptr<controller_interface::ControllerWrapper> create_moteus_wrapper(const controller_interface::ControllerParameters& params);
-
         /* Function for creating moteus wrappers (here u can add your own wrapper) */
         void add_controller_bridge(const controller_interface::ControllerParameters& params, const WrapperType type);
 

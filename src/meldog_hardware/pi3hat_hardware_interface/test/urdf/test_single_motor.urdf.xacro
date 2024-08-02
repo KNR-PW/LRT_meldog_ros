@@ -92,7 +92,7 @@
             <param name="motor_position_max">30.0</param>
             <param name="motor_position_min">-30.0</param>
             <param name="motor_velocity_max">10.0</param>
-            <param name="motor_torque_max">1</paramm>
+            <param name="motor_torque_max">1</param>
 
 
             <command_interface name="position"/>

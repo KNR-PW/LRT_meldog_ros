@@ -765,7 +765,7 @@ void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& 
     switch(type)
     {
         case Moteus:
-            wrapper_ptr = create_moteus_wrapper(params);
+            wrapper_ptr = make_moteus_wrapper(params);
             break;
         default:
             throw std::invalid_argument("Motor type doesn't exist!");
@@ -774,30 +774,6 @@ void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& 
 
     controller_interface::ControllerBridge bridge = controller_interface::ControllerBridge(std::move(wrapper_ptr), params);
     controller_bridges_.push_back(std::move(bridge));
-}
-
-std::unique_ptr<ControllerWrapper> Pi3HatHardwareInterface::create_moteus_wrapper(const ControllerParameters& params)
-{
-    /* moteus options */ 
-    using mjbots::moteus::Controller;
-    using controller_interface::MoteusWrapper;
-    Controller::Options moteus_options;
-    moteus_options.bus = params.bus_;
-    moteus_options.id = params.id_;
-
-    /* moteus command format (it will be copied to wrapper) */
-    mjbots::moteus::PositionMode::Format format;
-    format.feedforward_torque = mjbots::moteus::kFloat;
-    format.maximum_torque = mjbots::moteus::kFloat;
-    format.velocity_limit= mjbots::moteus::kFloat;
-    moteus_options.position_format = format;
-
-    /* moteus command (it will be copied to wrapper) */
-    mjbots::moteus::PositionMode::Command moteus_command;
-    moteus_command.maximum_torque = params.torque_max_;
-    moteus_command.velocity_limit = params.velocity_max_;
-    
-    return std::make_unique<MoteusWrapper>(moteus_options, moteus_command);
 }
 
 Pi3HatHardwareInterface::WrapperType Pi3HatHardwareInterface::choose_wrapper_type(const std::string& type)

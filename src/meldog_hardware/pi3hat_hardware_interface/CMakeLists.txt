@@ -55,7 +55,13 @@ ament_target_dependencies(
 
 pluginlib_export_plugin_description_file(hardware_interface pi3hat_hardware_interface.xml)
 
+
 # install
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
+
 install(
   TARGETS ${PROJECT_NAME}
   DESTINATION lib
@@ -84,6 +90,11 @@ install(
 install(
   DIRECTORY test/
   DESTINATION test
+)
+
+install(
+  DIRECTORY test/urdf
+  DESTINATION share//${PROJECT_NAME}/
 )
 
 # uncomment the following section in order to fill in
