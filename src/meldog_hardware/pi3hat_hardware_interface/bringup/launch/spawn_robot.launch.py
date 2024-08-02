@@ -66,6 +66,7 @@ def generate_launch_description():
 
     nodes = [
         robot_state_pub_node,
+        joint_state_publisher, 
     ]
 
     return LaunchDescription(declared_arguments + nodes)
