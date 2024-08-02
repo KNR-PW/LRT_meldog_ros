@@ -69,11 +69,11 @@ int main(int argc, char** argv)
     std::vector<controller_interface::ControllerState> controller_states;
 
     controller_interface::MoteusWrapper moteus_wrapper_1(params_1);
-    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr_1 = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper_1);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr_1 = std::make_unique<controller_interface::MoteusWrapper>(std::move(moteus_wrapper_1));
     controller_interface::ControllerBridge controller_1(std::move(moteus_wrapper_ptr_1), params_1); 
 
     controller_interface::MoteusWrapper moteus_wrapper_2(params_2);
-    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr_2 = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper_2);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr_2 = std::make_unique<controller_interface::MoteusWrapper>(std::move(moteus_wrapper_2));
     controller_interface::ControllerBridge controller_2(std::move(moteus_wrapper_ptr_2), params_2); 
 
     controllers.push_back(std::move(controller_1));

@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     params.id_ = 1;
 
     controller_interface::MoteusWrapper moteus_wrapper(params);
-    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(std::move(moteus_wrapper));
     controller_interface::ControllerBridge controller(std::move(moteus_wrapper_ptr), params);
 
 

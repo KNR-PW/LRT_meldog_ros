@@ -25,6 +25,11 @@ class MoteusWrapper final: public ControllerWrapper
     using CanFrame = mjbots::pi3hat::CanFrame;
 
     MoteusWrapper(const ControllerParameters params);
+    MoteusWrapper(const MoteusWrapper& other) = delete;
+    MoteusWrapper& operator=(const MoteusWrapper& other) = delete;
+    MoteusWrapper(MoteusWrapper&& other) = default;
+    MoteusWrapper& operator=(MoteusWrapper&& other) = default; /* Wrappers needs to be moved (they have unique_ptr) */
+
     void command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
     void rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) override;
     void init_to_tx_frame(CanFrame& tx_frame) override;

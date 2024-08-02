@@ -778,6 +778,10 @@ void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& 
 
 Pi3HatHardwareInterface::WrapperType Pi3HatHardwareInterface::choose_wrapper_type(const std::string& type)
 {
+    /* Changing string to lower case */
+    std::transform(type.begin(), type.end(), type.begin(),
+    [](unsigned char c){ return std::tolower(c); });
+
     if(type == "moteus")
     {
         return WrapperType::Moteus;
