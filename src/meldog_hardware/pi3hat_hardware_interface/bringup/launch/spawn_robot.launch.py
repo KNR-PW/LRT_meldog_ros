@@ -39,7 +39,6 @@ def generate_launch_description():
             PathJoinSubstitution(
                 [
                     FindPackageShare(package_name),
-                    "test",
                     "urdf",
                     urdf_file,
                 ]

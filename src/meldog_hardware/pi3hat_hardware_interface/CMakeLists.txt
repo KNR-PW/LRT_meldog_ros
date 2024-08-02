@@ -94,7 +94,7 @@ install(
 
 install(
   DIRECTORY test/urdf
-  DESTINATION share/${PROJECT_NAME}/
+  DESTINATION share/${PROJECT_NAME}/urdf
 )
 
 # uncomment the following section in order to fill in
