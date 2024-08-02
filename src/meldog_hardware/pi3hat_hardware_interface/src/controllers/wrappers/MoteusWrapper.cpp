@@ -94,6 +94,8 @@ std::unique_ptr<MoteusWrapper> controller_interface::make_moteus_wrapper(const C
     mjbots::moteus::PositionMode::Command moteus_command;
     moteus_command.maximum_torque = params.torque_max_;
     moteus_command.velocity_limit = params.velocity_max_;
-    
-    return std::make_unique<MoteusWrapper>(moteus_options, moteus_command);
+
+    controller_interface::MoteusWrapper moteus_wrapper(moteus_options, moteus_command);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
+    return moteus_wrapper_ptr;
 }
