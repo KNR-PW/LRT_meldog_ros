@@ -3,6 +3,11 @@
 #include "../../include/3rd_libs/moteus/moteus.h"
 
 
+std::unique_ptr<mjbots::moteus::Controller> make_moteus_controller(mjbots::moteus::Controller::Options moteus_options)
+{
+    mjbots::moteus::Controller controller(moteus_options);
+    return std::make_unique<mjbots::moteus::Controller>(controller);
+}
 static double GetNow() 
 {
   struct timespec ts = {};
@@ -19,10 +24,7 @@ int main(int argc, char** argv)
     moteus_options.bus = 1;
     moteus_options.id = 1;
     std::unique_ptr<Controller> moteus_ptr;
-    {
-        Controller moteus_controller(moteus_options);
-        moteus_ptr = std::make_unique<Controller>(moteus_controller);
-    };
+    moteus_ptr = make_moteus_controller(moteus_options);
 
     mjbots::moteus::PositionMode::Command moteus_command;
 
