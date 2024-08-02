@@ -58,7 +58,7 @@ pluginlib_export_plugin_description_file(hardware_interface pi3hat_hardware_inte
 
 # install
 install(DIRECTORY
-  launch
+  bringup/launch
   DESTINATION share/${PROJECT_NAME}/
 )
 
