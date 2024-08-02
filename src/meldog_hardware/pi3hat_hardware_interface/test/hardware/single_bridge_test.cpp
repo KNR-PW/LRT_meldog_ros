@@ -54,7 +54,25 @@ int main(int argc, char** argv)
     params.bus_ = 1;
     params.id_ = 1;
 
-    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = controller_interface::make_moteus_wrapper(params);
+    // moteus options
+    using mjbots::moteus::Controller;
+    Controller::Options moteus_options;
+    moteus_options.bus = 1;
+    moteus_options.id = 1;
+
+    // moteus command format (it will be copied to wrapper)
+    mjbots::moteus::PositionMode::Format format;
+    format.feedforward_torque = mjbots::moteus::kFloat;
+    format.maximum_torque = mjbots::moteus::kFloat;
+    moteus_options.position_format = format;
+
+    //moteus command (it will be copied to wrapper)
+    mjbots::moteus::PositionMode::Command moteus_command;
+    moteus_command.maximum_torque = params.torque_max_;
+    moteus_command.velocity_limit = params.velocity_max_;
+
+    controller_interface::MoteusWrapper moteus_wrapper(moteus_options, moteus_command);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
     controller_interface::ControllerBridge controller(std::move(moteus_wrapper_ptr), params);
 
 

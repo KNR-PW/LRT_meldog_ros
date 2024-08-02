@@ -81,7 +81,6 @@ namespace pi3hat_hardware_interface
         hardware_interface::return_type write(
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
         
-        ~Pi3HatHardwareInterface();
 
     private:
 
@@ -150,6 +149,8 @@ namespace pi3hat_hardware_interface
         /* Function for choosing wrappers (here u can add your own wrapper)
             Remember to change this function in source code */
         WrapperType choose_wrapper_type(const std::string& type);
+
+        std::unique_ptr<controller_interface::ControllerWrapper> create_moteus_wrapper(const controller_interface::ControllerParameters& params);
 
         /* Function for creating moteus wrappers (here u can add your own wrapper) */
         void add_controller_bridge(const controller_interface::ControllerParameters& params, const WrapperType type);

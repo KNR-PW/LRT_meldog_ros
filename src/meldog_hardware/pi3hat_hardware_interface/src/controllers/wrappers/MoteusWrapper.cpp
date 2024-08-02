@@ -2,14 +2,13 @@
 
 using namespace controller_interface;
 
-MoteusWrapper::MoteusWrapper(const ControllerParameters params,
-    mjbots::moteus::Controller::Options moteus_options):
-        ControllerWrapper(), moteus_controller_(mjbots::moteus::Controller(moteus_options)), position_command_()
-{
-    /* moteus command (it will be copied to wrapper) */
-    position_command_.maximum_torque = params.torque_max_;
-    position_command_.velocity_limit = params.velocity_max_;
-} 
+MoteusWrapper::MoteusWrapper(
+        const mjbots::moteus::Controller::Options& options,
+        const mjbots::moteus::PositionMode::Command& command):
+
+        ControllerWrapper(), 
+        position_command_(command),
+        moteus_controller_(mjbots::moteus::Controller(options)) {} 
 
 
 void MoteusWrapper::command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) 
@@ -74,29 +73,3 @@ void MoteusWrapper::start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCo
     tx_frame.size = can_fd_frame.size;
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 }
-
-
-std::unique_ptr<MoteusWrapper> controller_interface::make_moteus_wrapper(const ControllerParameters params)
-{
-    /* moteus options */ 
-    using mjbots::moteus::Controller;
-    using controller_interface::MoteusWrapper;
-    Controller::Options moteus_options;
-    moteus_options.bus = params.bus_;
-    moteus_options.id = params.id_;
-
-    /* moteus command format (it will be copied to wrapper) */
-    mjbots::moteus::PositionMode::Format format;
-    format.feedforward_torque = mjbots::moteus::kFloat;
-    format.maximum_torque = mjbots::moteus::kFloat;
-    format.velocity_limit= mjbots::moteus::kFloat;
-    moteus_options.position_format = format;
-
-    return std::make_unique<MoteusWrapper>(params, moteus_options);
-}
-
-MoteusWrapper::MoteusWrapper(const MoteusWrapper& other):
-    ControllerWrapper(), moteus_controller_(other.moteus_controller_.options()), position_command_(other.position_command_) {}
-
-MoteusWrapper::MoteusWrapper(MoteusWrapper&& other):
-    ControllerWrapper(), moteus_controller_(other.moteus_controller_.options()), position_command_(other.position_command_) {}

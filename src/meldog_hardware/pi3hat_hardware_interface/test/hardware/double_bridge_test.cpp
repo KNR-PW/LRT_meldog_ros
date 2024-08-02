@@ -64,16 +64,43 @@ int main(int argc, char** argv)
     params_2.bus_ = 2;
     params_2.id_ = 2;
 
+    // moteusues options
+    using mjbots::moteus::Controller;
+    Controller::Options moteus_1_options;
+    moteus_1_options.bus = 1;
+    moteus_1_options.id = 1;
+
+    Controller::Options moteus_2_options;
+    moteus_2_options.bus = 2;
+    moteus_2_options.id = 2;
+
+    // moteus command format (it will be copied to wrapper)
+    mjbots::moteus::PositionMode::Format format;
+    format.feedforward_torque = mjbots::moteus::kFloat;
+    format.maximum_torque = mjbots::moteus::kFloat;
+    moteus_1_options.position_format = format;
+    moteus_2_options.position_format = format;
+
+    //moteus command (it will be copied to wrapper)
+    mjbots::moteus::PositionMode::Command moteus_1_command;
+    moteus_1_command.maximum_torque = params_1.torque_max_;
+    moteus_1_command.velocity_limit = params_1.velocity_max_;
+
+    mjbots::moteus::PositionMode::Command moteus_2_command;
+    moteus_2_command.maximum_torque = params_2.torque_max_;
+    moteus_2_command.velocity_limit = params_2.velocity_max_;
+
+
     std::vector<controller_interface::ControllerBridge> controllers;
     std::vector<controller_interface::ControllerCommand> controller_commands;
     std::vector<controller_interface::ControllerState> controller_states;
 
-    controller_interface::MoteusWrapper moteus_wrapper_1(params_1);
-    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr_1 = std::make_unique<controller_interface::MoteusWrapper>(std::move(moteus_wrapper_1));
+    controller_interface::MoteusWrapper moteus_wrapper_1(moteus_1_options, moteus_1_command);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr_1 = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper_1);
     controller_interface::ControllerBridge controller_1(std::move(moteus_wrapper_ptr_1), params_1); 
 
-    controller_interface::MoteusWrapper moteus_wrapper_2(params_2);
-    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr_2 = std::make_unique<controller_interface::MoteusWrapper>(std::move(moteus_wrapper_2));
+    controller_interface::MoteusWrapper moteus_wrapper_2(moteus_2_options, moteus_1_command);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr_2 = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper_2);
     controller_interface::ControllerBridge controller_2(std::move(moteus_wrapper_ptr_2), params_2); 
 
     controllers.push_back(std::move(controller_1));

@@ -3,7 +3,6 @@
 
 #include "ControllerWrapper.hpp"
 #include "../../3rd_libs/moteus/moteus.h"
-#include <memory>
 
 namespace controller_interface
 {
@@ -24,24 +23,17 @@ class MoteusWrapper final: public ControllerWrapper
     public:
     using CanFrame = mjbots::pi3hat::CanFrame;
 
-    MoteusWrapper(const ControllerParameters params,
-    mjbots::moteus::Controller::Options moteus_options);
-    MoteusWrapper(const MoteusWrapper& other);
-    MoteusWrapper& operator=(const MoteusWrapper& other) = delete;
-    MoteusWrapper(MoteusWrapper&& other);
-    MoteusWrapper& operator=(MoteusWrapper&& other) = delete;
-
-
+    MoteusWrapper( 
+        const mjbots::moteus::Controller::Options& options,
+        const mjbots::moteus::PositionMode::Command& command);
     void command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
     void rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) override;
     void init_to_tx_frame(CanFrame& tx_frame) override;
     void start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
 
-    ~MoteusWrapper() = default;
-};
+    // ~MoteusWrapper() override = default;
 
-/* Function for creating unique pointer for moteus wrapper (used in pi3hat_hardware_interface) */
-std::unique_ptr<MoteusWrapper> make_moteus_wrapper(const ControllerParameters params);
+};
 
 };
 
