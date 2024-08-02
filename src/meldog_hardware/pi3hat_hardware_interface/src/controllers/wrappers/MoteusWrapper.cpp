@@ -3,7 +3,7 @@
 using namespace controller_interface;
 
 MoteusWrapper::MoteusWrapper(const ControllerParameters params):
-    ControllerWrapper()
+    ControllerWrapper(), moteus_controller_(), position_command_()
 {
     /* moteus options */ 
     using mjbots::moteus::Controller;
@@ -23,7 +23,7 @@ MoteusWrapper::MoteusWrapper(const ControllerParameters params):
     position_command_.maximum_torque = params.torque_max_;
     position_command_.velocity_limit = params.velocity_max_;
 
-    moteus_controller_ = std::make_unique<mjbots::moteus::Controller>(moteus_options);
+    moteus_controller_ = new Controller(moteus_options);
 } 
 
 
@@ -88,4 +88,9 @@ void MoteusWrapper::start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCo
     tx_frame.bus = can_fd_frame.bus;
     tx_frame.size = can_fd_frame.size;
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
+}
+
+MoteusWrapper::~MoteusWrapper()
+{
+    delete moteus_controller_;
 }
