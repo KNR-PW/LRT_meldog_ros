@@ -19,20 +19,22 @@ class MoteusWrapper final: public ControllerWrapper
 
     /* Command structure for moteus object*/
     mjbots::moteus::PositionMode::Command position_command_;
-    mjbots::moteus::Controller* moteus_controller_;
+    mjbots::moteus::Controller moteus_controller_;
     
     public:
     using CanFrame = mjbots::pi3hat::CanFrame;
 
-    MoteusWrapper(const ControllerParameters params);
+    MoteusWrapper(const ControllerParameters params,
+    mjbots::moteus::Controller::Options moteus_options);
     void command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
     void rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) override;
     void init_to_tx_frame(CanFrame& tx_frame) override;
     void start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) override;
 
-    ~MoteusWrapper();
-
 };
+
+/* Function for creating unique pointer for moteus wrapper (used in pi3hat_hardware_interface) */
+std::unique_ptr<MoteusWrapper> make_moteus_wrapper(const ControllerParameters params);
 
 };
 
