@@ -73,3 +73,27 @@ void MoteusWrapper::start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCo
     tx_frame.size = can_fd_frame.size;
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 }
+
+std::unique_ptr<MoteusWrapper> controller_interface::make_moteus_wrapper(const ControllerParameters& params)
+{
+    /* moteus options */ 
+    using mjbots::moteus::Controller;
+    using controller_interface::MoteusWrapper;
+    Controller::Options moteus_options;
+    moteus_options.bus = params.bus_;
+    moteus_options.id = params.id_;
+
+    /* moteus command format (it will be copied to wrapper) */
+    mjbots::moteus::PositionMode::Format format;
+    format.feedforward_torque = mjbots::moteus::kFloat;
+    format.maximum_torque = mjbots::moteus::kFloat;
+    format.velocity_limit= mjbots::moteus::kFloat;
+    moteus_options.position_format = format;
+
+    /* moteus command (it will be copied to wrapper) */
+    mjbots::moteus::PositionMode::Command moteus_command;
+    moteus_command.maximum_torque = params.torque_max_;
+    moteus_command.velocity_limit = params.velocity_max_;
+    
+    return std::make_unique<MoteusWrapper>(moteus_options, moteus_command);
+}

@@ -71,8 +71,7 @@ int main(int argc, char** argv)
     moteus_command.maximum_torque = params.torque_max_;
     moteus_command.velocity_limit = params.velocity_max_;
 
-    controller_interface::MoteusWrapper moteus_wrapper(moteus_options, moteus_command);
-    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = std::make_unique<controller_interface::MoteusWrapper>(moteus_wrapper);
+    std::unique_ptr<controller_interface::ControllerWrapper> moteus_wrapper_ptr = controller_interface::make_moteus_wrapper(params);
     controller_interface::ControllerBridge controller(std::move(moteus_wrapper_ptr), params);
 
 

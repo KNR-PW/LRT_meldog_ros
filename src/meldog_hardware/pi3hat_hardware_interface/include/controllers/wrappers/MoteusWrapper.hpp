@@ -3,6 +3,7 @@
 
 #include "ControllerWrapper.hpp"
 #include "../../3rd_libs/moteus/moteus.h"
+#include <memory>
 
 namespace controller_interface
 {
@@ -34,6 +35,8 @@ class MoteusWrapper final: public ControllerWrapper
     // ~MoteusWrapper() override = default;
 
 };
+
+std::unique_ptr<MoteusWrapper> make_moteus_wrapper(const ControllerParameters& params);
 
 };
 
