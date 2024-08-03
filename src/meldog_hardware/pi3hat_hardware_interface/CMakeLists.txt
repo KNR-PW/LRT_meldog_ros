@@ -62,6 +62,12 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/
 )
 
+install(DIRECTORY
+  bringup/config
+  DESTINATION share/${PROJECT_NAME}/
+
+)
+
 install(
   TARGETS ${PROJECT_NAME}
   DESTINATION lib
@@ -94,7 +100,7 @@ install(
 
 install(
   DIRECTORY test/urdf
-  DESTINATION share/${PROJECT_NAME}/urdf
+  DESTINATION share/${PROJECT_NAME}
 )
 
 # uncomment the following section in order to fill in
@@ -121,6 +127,7 @@ ament_export_include_directories(
 ament_export_libraries(
   ${PROJECT_NAME}
 )
+
 ament_export_dependencies(
   hardware_interface
   pluginlib

@@ -781,7 +781,8 @@ Pi3HatHardwareInterface::WrapperType Pi3HatHardwareInterface::choose_wrapper_typ
     if(type == "moteus")
     {
         return WrapperType::Moteus;
-    };
+    }
+    return WrapperType::Moteus;
 }
 
 ControllerParameters Pi3HatHardwareInterface::get_controller_parameters(const hardware_interface::ComponentInfo& joint_info)
