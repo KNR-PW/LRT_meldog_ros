@@ -862,6 +862,12 @@ void Pi3HatHardwareInterface::create_controller_joint_map()
     }
 }
 
+Pi3HatHardwareInterface::~Pi3HatHardwareInterface()
+{
+    on_deactivate(rclcpp_lifecycle::State());
+    on_cleanup(rclcpp_lifecycle::State());
+}
+
 #include "pluginlib/class_list_macros.hpp"
 
 PLUGINLIB_EXPORT_CLASS(

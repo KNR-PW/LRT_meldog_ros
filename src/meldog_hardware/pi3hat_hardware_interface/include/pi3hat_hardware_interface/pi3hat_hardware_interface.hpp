@@ -81,6 +81,10 @@ namespace pi3hat_hardware_interface
         ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
         hardware_interface::return_type write(
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
+
+
+        ROS2_CONTROL_PI3HAT_HARDWARE_PUBLIC
+        ~Pi3HatHardwareInterface();
         
 
     private:
