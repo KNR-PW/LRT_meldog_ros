@@ -1,4 +1,5 @@
-#include "../include/pi3hat_hardware_interface/pi3hat_hardware_interface.hpp"
+#include "pi3hat_hardware_interface/pi3hat_hardware_interface.hpp"
+//#include "../include/pi3hat_hardware_interface/pi3hat_hardware_interface.hpp"
 
 using namespace pi3hat_hardware_interface;
 using namespace controller_interface;

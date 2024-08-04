@@ -2,7 +2,7 @@
 #define _CONTROLLER_WRAPPER_HPP_
 
 #include "../ControllerStructures.hpp"
-#include "../../3rd_libs/pi3hat/pi3hat.h"
+#include "3rd_libs/pi3hat/pi3hat.h"
 
 namespace controller_interface
 {

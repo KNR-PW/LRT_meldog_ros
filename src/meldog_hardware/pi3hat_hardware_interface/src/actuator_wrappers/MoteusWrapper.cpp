@@ -1,4 +1,5 @@
-#include "../../include/actuator_wrappers/MoteusWrapper.hpp"
+#include "actuator_wrappers/MoteusWrapper.hpp"
+//#include "../../include/actuator_wrappers/MoteusWrapper.hpp"
 
 /*
     Moteus Actuator Wrapper. It uses API from moteus repository to communicate with pi3hat interface.

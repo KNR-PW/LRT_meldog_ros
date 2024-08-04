@@ -1,4 +1,5 @@
-#include "../../include/controllers/ControllerBridge.hpp"
+#include "controllers/ControllerBridge.hpp"
+//#include "../../include/controllers/ControllerBridge.hpp"
 
 using namespace controller_interface;
 using mjbots::pi3hat::CanFrame;

@@ -2,7 +2,7 @@
 #define _MOTEUS_WRAPPER_HPP_
 
 #include "ControllerWrapper.hpp"
-#include "../../3rd_libs/moteus/moteus.h"
+#include "3rd_libs/moteus/moteus.h"
 #include <memory>
 
 namespace controller_interface

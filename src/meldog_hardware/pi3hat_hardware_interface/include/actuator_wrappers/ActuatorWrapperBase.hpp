@@ -1,7 +1,7 @@
 #ifndef _MOTOR_WRAPPER_BASE_
 #define _MOTOR_WRAPPER_BASE_
 
-#include "../3rd_libs/pi3hat/pi3hat.h"
+#include "3rd_libs/pi3hat/pi3hat.h"
 #include <algorithm>
 /*  
     Base Actuator Wrapper class, used for wrapping actuator API with simple CRTP interface 

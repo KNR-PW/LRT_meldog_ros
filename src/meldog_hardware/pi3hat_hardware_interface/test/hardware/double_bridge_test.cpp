@@ -1,6 +1,7 @@
-#include "../../include/controllers/Controllers.hpp"
-#include "../../include/3rd_libs/pi3hat/pi3hat.h"
-#include "../../include/3rd_libs/pi3hat/realtime.h"
+#include "controllers/Controllers.hpp"
+#include "3rd_libs/pi3hat/pi3hat.h"
+#include "3rd_libs/pi3hat/realtime.h"
+//#include "../../include/3rd_libs/pi3hat/realtime.h"
 #include <iostream>
 #include <cmath>
 #include <unistd.h>

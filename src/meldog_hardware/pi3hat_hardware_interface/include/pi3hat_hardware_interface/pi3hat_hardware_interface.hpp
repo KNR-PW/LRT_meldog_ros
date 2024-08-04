@@ -34,10 +34,10 @@
 #include "transmission_interface/differential_transmission_loader.hpp"
 #include "transmission_interface/transmission_interface_exception.hpp"
 
-#include "../controllers/Controllers.hpp"
-#include "../imu_transform/IMUTransform.hpp"
-#include "../3rd_libs/pi3hat/pi3hat.h"
-#include "../3rd_libs/pi3hat/realtime.h"
+#include "controllers/Controllers.hpp"
+#include "imu_transform/IMUTransform.hpp"
+#include "3rd_libs/pi3hat/pi3hat.h"
+#include "3rd_libs/pi3hat/realtime.h"
 
 #include "visibility_control.hpp"
 
