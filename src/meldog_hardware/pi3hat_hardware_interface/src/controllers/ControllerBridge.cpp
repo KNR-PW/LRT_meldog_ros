@@ -39,7 +39,7 @@ void ControllerBridge::make_command(CanFrame& tx_frame, ControllerCommand& comma
 void ControllerBridge::get_state(const CanFrame& rx_frame, ControllerState& state) const
 {
     wrapper_->rx_frame_to_state(rx_frame, state);
-    state.position_ = params_.direction_ * state.position_;
+    state.position_ = params_.direction_ * (state.position_ - params_.position_offset_);
     state.velocity_ = params_.direction_ * state.velocity_;
     state.torque_ = params_.direction_ * state.torque_; 
 }
@@ -59,4 +59,9 @@ void ControllerBridge::start_up(CanFrame& tx_frame, ControllerCommand& command) 
 
     tx_frame.expect_reply = true;
     wrapper_->start_pos_to_tx_frame(tx_frame, command);
+}
+
+ControllerParameters ControllerBridge::get_params()
+{
+    return params_;
 }

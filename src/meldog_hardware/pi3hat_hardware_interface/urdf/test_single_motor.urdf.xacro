@@ -69,9 +69,9 @@
 
             <param name="motor_direction">1</param>
             <param name="motor_position_start">0.0</param>
-            <param name="motor_position_offset">1.0</param>
-            <param name="motor_position_max">30.0</param>
-            <param name="motor_position_min">-30.0</param>
+            <param name="motor_position_offset">0.0</param>
+            <param name="motor_position_max">500.0</param>
+            <param name="motor_position_min">-500.0</param>
             <param name="motor_velocity_max">10.0</param>
             <param name="motor_torque_max">1</param>
 
@@ -80,10 +80,10 @@
             <command_interface name="velocity"/>
             <command_interface name="effort"/>
 
-            <state_interface name = "position"/>
-            <state_interface name = "velocity"/>
-            <state_interface name = "effort"/>
-            <state_interface name = "temperature"/>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <state_interface name="temperature"/>
       </joint>
 
     <transmission name="transmission1">
@@ -96,16 +96,16 @@
     </transmission>
 
       <sensor name="imu_sensor">
-          <state_interface name = "orientation.x"/>
-          <state_interface name = "orientation.y"/>
-          <state_interface name = "orientation.z"/>
-          <state_interface name = "orientation.w"/>
-          <state_interface name = "angular_velocity.x"/>
-          <state_interface name = "angular_velocity.y"/>
-          <state_interface name = "angular_velocity.z"/>
-          <state_interface name = "linear_acceleration.x"/>
-          <state_interface name = "linear_acceleration.y"/>
-          <state_interface name = "linear_acceleration.z"/>
+          <state_interface name="orientation.x"/>
+          <state_interface name="orientation.y"/>
+          <state_interface name="orientation.z"/>
+          <state_interface name="orientation.w"/>
+          <state_interface name="angular_velocity.x"/>
+          <state_interface name="angular_velocity.y"/>
+          <state_interface name="angular_velocity.z"/>
+          <state_interface name="linear_acceleration.x"/>
+          <state_interface name="linear_acceleration.y"/>
+          <state_interface name="linear_acceleration.z"/>
       </sensor>
   </ros2_control>
 

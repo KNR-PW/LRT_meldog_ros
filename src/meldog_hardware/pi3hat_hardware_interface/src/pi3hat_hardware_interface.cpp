@@ -122,8 +122,10 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const r
 
     /* Initialize all motors/remove all flags */
     controllers_init();
-    pi3hat_->Cycle(pi3hat_input_);
-    ::usleep(1000);
+    auto result = pi3hat_->Cycle(pi3hat_input_);
+    ::usleep(1000000);
+
+    RCLCPP_INFO(*logger_, "%d", result.rx_can_size);
 
     /* Create rx_frame.id -> joint map */
     try
@@ -304,7 +306,7 @@ std::vector<hardware_interface::CommandInterface> Pi3HatHardwareInterface::expor
             }
             else
             {
-                RCLCPP_WARN(*logger_, "%s is wrong type of command interface, omitted!", command_interface.name);
+                RCLCPP_WARN(*logger_, "%s is wrong type of command interface, omitted!", command_interface.name.c_str());
             }
         }
     }
@@ -321,7 +323,7 @@ std::vector<hardware_interface::StateInterface> Pi3HatHardwareInterface::export_
     {
         if(!(info_.joints[i].state_interfaces.size() > 0))
         {
-            RCLCPP_WARN(*logger_, "Zero state interfaces for joint %s!", info_.joints[i].name);
+            RCLCPP_WARN(*logger_, "Zero state interfaces for joint %s!", info_.joints[i].name.c_str());
         }
         for(const auto& state_interface: info_.joints[i].state_interfaces)
         {
@@ -330,24 +332,24 @@ std::vector<hardware_interface::StateInterface> Pi3HatHardwareInterface::export_
                 state_interfaces.emplace_back(hardware_interface::StateInterface(
                     info_.joints[i].name, hardware_interface::HW_IF_POSITION, &(joint_states_[i].position_)));
             }
-            if(state_interface.name == hardware_interface::HW_IF_VELOCITY)
+            else if(state_interface.name == hardware_interface::HW_IF_VELOCITY)
             {
                 state_interfaces.emplace_back(hardware_interface::StateInterface(
                     info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &(joint_states_[i].velocity_)));
             }
-            if(state_interface.name == hardware_interface::HW_IF_EFFORT)
+            else if(state_interface.name == hardware_interface::HW_IF_EFFORT)
             {
                 state_interfaces.emplace_back(hardware_interface::StateInterface(
                     info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &(joint_states_[i].torque_)));
             }
-            if(state_interface.name == "temperature")
+            else if(state_interface.name == "temperature")
             {
                 state_interfaces.emplace_back(hardware_interface::StateInterface(
                     info_.joints[i].name, "temperature", &(joint_states_[i].temperature_)));
             }
             else
             {
-                RCLCPP_WARN(*logger_, "%s is wrong type of state interface, omitted!", state_interface.name);
+                RCLCPP_WARN(*logger_, "%s is wrong type of state interface, omitted!", state_interface.name.c_str());
             }
         }
     }
@@ -846,12 +848,13 @@ void Pi3HatHardwareInterface::create_controller_joint_map()
     for(int i = 0; i < joint_controller_number_; ++i)
     {
         int joint_id = i;
-        int controller_id = tx_can_frames_[i].id;
+        int controller_id = controller_bridges_[i].get_params().id_;
         for(int j = 0; j < joint_controller_number_; ++j)
         {
-            if(controller_id == rx_can_frames_[j].id)
+            RCLCPP_INFO(*logger_, "Joint: %d, Controller: %d, Frame id: %d, Frame bus: %d", joint_id, controller_id, rx_can_frames_[j].id, rx_can_frames_[j].bus);
+            if(controller_id == ((rx_can_frames_[j].id>> 8) & 0x7f))
             {
-                std::pair<int, int> controller_joint_pair(controller_id, joint_id);
+                std::pair<int, int> controller_joint_pair(rx_can_frames_[j].id, joint_id);
                 controller_joint_map_.emplace(controller_joint_pair);
             }
         }

@@ -1,77 +1,123 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="test_single_motor">
 
-  <link name="base_link">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="3.0"/>
-      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
-    </inertial>
-    <visual name="Cube">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.24 0.14 0.22"/>
-      </geometry>
-    </visual>
-  </link>
+  <link name="world">
+    </link>
 
-  <link name="link_1">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="3.0"/>
-      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
-    </inertial>
-    <visual name="Cube">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.24 0.14 0.22"/>
-      </geometry>
-    </visual>
-  </link>
+    <link name="box">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5"/>
+            </geometry>
+            <material name="red">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+    </link>
 
-  <link name="link_2">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="3.0"/>
-      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
-    </inertial>
-    <visual name="Cube">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.24 0.14 0.22"/>
-      </geometry>
-    </visual>
-  </link>
+    <joint name="world_box_1" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="world"/>
+        <child link="box"/>
+    </joint>
 
-  <joint name="joint_1" type="revolute">
-    <origin xyz="0 -0.1 0" rpy="1.5708 1.5708 0"/>
-    <parent link="base_link"/>
-    <child link="link_1"/>
-    <axis xyz="0 0 1.0"/>
-    <limit lower="-1.39626" upper="-0.5236" effort="35.0" velocity="26.0"/>
-  </joint>
+    <link name="rotor">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.2" length="0.1"/>
+            </geometry>
+            <material name="red">
+                <color rgba="0.0 0.0 1.0 1.0"/>
+            </material>
+        </visual>
+    </link>
 
-  <joint name="joint_2" type="revolute">
-    <origin xyz="0 -0.1 0" rpy="1.5708 1.5708 0"/>
-    <parent link="link_1"/>
-    <child link="link_2"/>
-    <axis xyz="0 0 1.0"/>
-    <limit lower="-1.39626" upper="-0.5236" effort="35.0" velocity="26.0"/>
-  </joint>
+    <link name="indicator">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.01 0.3 0.01"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.0 1.0 0.0 1.0"/>
+                <texture filename=""/>
+            </material>
+        </visual>
+    </link>
 
-  <link name="imu">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.001"/>
-      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
-    </inertial>
-  </link>
+    <joint name="joint_1" type="revolute">
+        <origin xyz="0.0 0.3 0.0" rpy="-1.5707 0.0 0.0"/>
+        <parent link="box"/>
+        <child link="rotor"/>
+        <axis xyz="0.0 0.0 -1.0"/>
+        <limit lower="-10.0" upper="10.0" effort="10.0" velocity="100.0"/>
+    </joint>
 
-  <joint name="imu" type="fixed">
-    <origin xyz="0 0 0" rpy="1.5708 0 1.5708"/>
-    <parent link="base_link"/>
-    <child link="imu"/>
-  </joint>
+    <joint name="indicator_joint" type="fixed">
+        <origin xyz="0.0 -0.25 0.055" rpy="0.0 0.0 0.0"/>
+        <parent link="rotor"/>
+        <child link="indicator"/>
+    </joint>
+
+
+    <link name="box_2">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5"/>
+            </geometry>
+            <material name="red">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="world_box_2" type="fixed">
+        <origin xyz="1.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="world"/>
+        <child link="box_2"/>
+    </joint>
+
+    <link name="rotor_2">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.2" length="0.1"/>
+            </geometry>
+            <material name="red">
+                <color rgba="0.0 0.0 1.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <link name="indicator_2">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.01 0.3 0.01"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.0 1.0 0.0 1.0"/>
+                <texture filename=""/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="joint_2" type="revolute">
+        <origin xyz="0.0 0.3 0.0" rpy="-1.5707 0.0 0.0"/>
+        <parent link="box_2"/>
+        <child link="rotor_2"/>
+        <axis xyz="0.0 0.0 -1.0"/>
+        <limit lower="-10.0" upper="10.0" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <joint name="indicator_joint_2" type="fixed">
+        <origin xyz="0.0 -0.25 0.055" rpy="0.0 0.0 0.0"/>
+        <parent link="rotor_2"/>
+        <child link="indicator_2"/>
+    </joint>
 
   <ros2_control name="pi3hat_hardware_interface" type="system">
     <hardware>
@@ -90,10 +136,10 @@
           <param name="motor_direction">1</param>
           <param name="motor_position_start">0.0</param>
           <param name="motor_position_offset">1.0</param>
-          <param name="motor_position_max">30.0</param>
-          <param name="motor_position_min">-30.0</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
           <param name="motor_velocity_max">10.0</param>
-          <param name="motor_torque_max">1</paramm>
+          <param name="motor_torque_max">1.0</param>
 
 
           <command_interface name="position"/>
@@ -115,10 +161,10 @@
           <param name="motor_direction">1</param>
           <param name="motor_position_start">0.0</param>
           <param name="motor_position_offset">1.0</param>
-          <param name="motor_position_max">30.0</param>
-          <param name="motor_position_min">-30.0</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
           <param name="motor_velocity_max">10.0</param>
-          <param name="motor_torque_max">1</paramm>
+          <param name="motor_torque_max">1</param>
 
 
           <command_interface name="position"/>
@@ -133,14 +179,14 @@
       <transmission name="fbl_transmission">
           <plugin>transmission_interface/FourBarLinkageTransmission</plugin>
           <actuator name="joint_1_motor" role="actuator1">
-            <mechanical_reduction>10</mechanical_reduction>
+            <mechanical_reduction>16.0</mechanical_reduction>
           </actuator>
           <actuator name="joint_2_motor" role="actuator2">
-            <mechanical_reduction>10</mechanical_reduction>
+            <mechanical_reduction>16.0</mechanical_reduction>
           </actuator>
           <joint name="joint_1" role="joint1">
             <offset>0.0</offset>
-            <mechanical_reduction>0.0</mechanical_reduction>
+            <mechanical_reduction>1.0</mechanical_reduction>
           </joint>
           <joint name="joint_2" role="joint2">
             <offset>0.0</offset>

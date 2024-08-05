@@ -35,6 +35,8 @@ class ControllerBridge
     void initialize(CanFrame& tx_frame) const;
     void start_up(CanFrame& tx_frame, ControllerCommand& command) const;
 
+    ControllerParameters get_params();
+
     ~ControllerBridge() = default;
 };
 

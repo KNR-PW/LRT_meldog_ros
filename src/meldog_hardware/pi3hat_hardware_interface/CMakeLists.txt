@@ -144,18 +144,18 @@ install(TARGETS
 )
 
 install(
-  DIRECTORY include/
-  DESTINATION include/${PROJECT_NAME}
+  DIRECTORY include
+  DESTINATION include/${PROJECT_NAME}/
 )
 
 install(
-  DIRECTORY test/
-  DESTINATION test/${PROJECT_NAME}
+  DIRECTORY test
+  DESTINATION test/${PROJECT_NAME}/
 )
 
 install(
-  DIRECTORY urdf/
-  DESTINATION share/${PROJECT_NAME}
+  DIRECTORY urdf
+  DESTINATION share/${PROJECT_NAME}/
 )
 install(DIRECTORY
   bringup/launch
