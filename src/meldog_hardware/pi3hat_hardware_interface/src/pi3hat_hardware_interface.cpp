@@ -113,19 +113,19 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     pi3hat_ =  std::make_shared<mjbots::pi3hat::Pi3Hat>(config);
     mjbots::pi3hat::ConfigureRealtime(0);
     
-    RCLCPP_INFO(*logger_, "Hardware Interface successfully initialized!");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 
 hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const rclcpp_lifecycle::State &previous_state)
 {
 
-    /* Initialize all motors/remove all flags */
-    controllers_init();
-    auto result = pi3hat_->Cycle(pi3hat_input_);
-    ::usleep(1000000);
-
-    RCLCPP_INFO(*logger_, "%d", result.rx_can_size);
+    /* Initialize all motors/remove all flags (5 times in 5 seconds) */
+    for(int i = 0; i < 5; ++i)
+    {
+        controllers_init();
+        auto result = pi3hat_->Cycle(pi3hat_input_);
+        ::usleep(1000000);
+    }
 
     /* Create rx_frame.id -> joint map */
     try
@@ -141,7 +141,6 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const r
     /* Get states with prepared controller -> joint map */
     controllers_get_states();
 
-    RCLCPP_INFO(*logger_, "Hardware Interface successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -199,7 +198,6 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_activate(const rc
     }
 
     RCLCPP_INFO(*logger_, "Motors reached starting position!");
-    RCLCPP_INFO(*logger_, "Hardware Interface successfully activated!!");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -257,7 +255,6 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_deactivate(const 
     }
     
     RCLCPP_INFO(*logger_, "Motors reached ending position!");
-    RCLCPP_INFO(*logger_, "Hardware Interface successfully deactivated!");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -267,12 +264,11 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_cleanup(const rcl
     /* Deinitialize all motors/remove all flags */
     controllers_init();
     pi3hat_->Cycle(pi3hat_input_);
-    ::usleep(1000);
+    ::usleep(1000000);
 
     /* Get states with prepared controller -> joint map */
     controllers_get_states();
 
-    RCLCPP_INFO(*logger_, "Hardware Interface successfully cleanuped!");
     return hardware_interface::CallbackReturn::SUCCESS;
 }
 
