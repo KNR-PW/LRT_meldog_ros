@@ -21,9 +21,9 @@ class ControllerWrapper
     ControllerWrapper& operator=(ControllerWrapper&& other) = default;
     
     virtual void command_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) = 0;
+    virtual void query_to_tx_frame(CanFrame& tx_frame) = 0;
     virtual void rx_frame_to_state(const CanFrame& rx_frame, ControllerState& state) = 0;
     virtual void init_to_tx_frame(CanFrame& tx_frame) = 0;
-    virtual void start_pos_to_tx_frame(CanFrame& tx_frame, const ControllerCommand& command) = 0;
 
     virtual ~ControllerWrapper() = default;
 

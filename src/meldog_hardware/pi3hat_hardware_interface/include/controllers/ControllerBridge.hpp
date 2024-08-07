@@ -31,9 +31,9 @@ class ControllerBridge
 
 
     void make_command(CanFrame& tx_frame, ControllerCommand& command) const;
+    void make_query(CanFrame& tx_frame) const;
     void get_state(const CanFrame& rx_frame, ControllerState& state) const;
     void initialize(CanFrame& tx_frame) const;
-    void start_up(CanFrame& tx_frame, ControllerCommand& command) const;
 
     ControllerParameters get_params();
 
