@@ -7,31 +7,31 @@ namespace controller_interface
 /* Structure for basic actuator command */
 struct ControllerCommand
 {
-    double position_;   /* [radians] */
-    double velocity_;   /* [radians/s] */
-    double torque_;     /* [Nm] */
+    double position_ = 0;   /* [radians] */
+    double velocity_  = 0;   /* [radians/s] */
+    double torque_ = 0;     /* [Nm] */
 };
 
 /* Structure for basic actuator state */
 struct ControllerState
 {
-    double position_;   /* [radians] */
-    double velocity_;   /* [radians/s] */
-    double torque_;     /* [Nm] */
-    double temperature_;   /* [Celcius] */
+    double position_ = 0;   /* [radians] */
+    double velocity_ = 0;   /* [radians/s] */
+    double torque_ = 0;     /* [Nm] */
+    double temperature_ = 0;   /* [Celcius] */
     bool fault = false;
 };
 
 struct ControllerParameters
 {
-    double position_max_;
-    double position_min_;
-    double position_offset_;
-    double velocity_max_;
-    double torque_max_;
+    double position_max_ = 0;
+    double position_min_ = 0;
+    double position_offset_ = 0;
+    double velocity_max_ = 0;
+    double torque_max_ = 0;
     int direction_ = 1;
-    int id_;             /* Usage in your bridge (check moteus bridge)*/
-    int bus_;            /* Usage in your bridge (check moteus bridge)*/
+    int id_ = 0;             /* Usage in your bridge (check moteus bridge)*/
+    int bus_ = 0;            /* Usage in your bridge (check moteus bridge)*/
 };
 
 }
