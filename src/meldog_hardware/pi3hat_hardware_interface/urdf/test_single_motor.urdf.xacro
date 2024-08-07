@@ -68,7 +68,6 @@
 
 
             <param name="motor_direction">1</param>
-            <param name="motor_position_start">0.0</param>
             <param name="motor_position_offset">0.0</param>
             <param name="motor_position_max">500.0</param>
             <param name="motor_position_min">-500.0</param>

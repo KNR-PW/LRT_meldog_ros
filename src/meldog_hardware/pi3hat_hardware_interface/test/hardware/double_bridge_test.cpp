@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     for(int i = 0; i < controllers.size(); ++i)
     {
         controller_commands[i].position_ = 0;
-        controllers[i].start_up(tx_frame[i], controller_commands[i]);
+        controllers[i].make_command(tx_frame[i], controller_commands[i]);
     }
     while(std::abs(controller_states[0].position_) > 0.1 && std::abs(controller_states[1].position_) > 0.1)
     {

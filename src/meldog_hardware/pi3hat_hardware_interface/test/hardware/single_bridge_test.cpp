@@ -96,7 +96,7 @@ int main(int argc, char** argv)
     controller_state.position_ = NaN;
     while(std::abs(controller_state.position_) > 0.1)
     {
-        controller.start_up(tx_frame, controller_command);
+        controller.make_command(tx_frame, controller_command);
         pi3hat_output = pi3hat.Cycle(input);
         ::usleep(2000);
         controller.get_state(rx_frame, controller_state);
