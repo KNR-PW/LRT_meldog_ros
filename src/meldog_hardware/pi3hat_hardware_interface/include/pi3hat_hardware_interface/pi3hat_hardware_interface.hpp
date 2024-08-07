@@ -128,9 +128,6 @@ namespace pi3hat_hardware_interface
         std::vector<controller_interface::ControllerState> controller_states_;
         std::vector<controller_interface::ControllerCommand> controller_commands_;
 
-        /* Controller start positions after initialization */
-        std::vector<double> controller_start_positions_;
-
         /* For transmission interface */
         std::vector<controller_interface::ControllerCommand> controller_transmission_passthrough_;
          
@@ -163,9 +160,9 @@ namespace pi3hat_hardware_interface
         /* FUNCTION FOR CONTROLLERS */
         void controllers_init();
 
-        void controllers_start_up();
-
         void controllers_make_commands();
+
+        void controllers_make_queries();
 
         void controllers_get_states();
 
