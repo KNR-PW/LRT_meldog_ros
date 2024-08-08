@@ -40,10 +40,9 @@ target_compile_features(
 target_compile_definitions(${PROJECT_NAME} PRIVATE "PI3HAT_HARDWARE_INTERFACE_BUILDING_DLL")
 
 
-
 ## Pi3hat library by mjbots
 add_library(
-  pi3hat 
+  pi3hat
   SHARED
   include/3rd_libs/pi3hat/pi3hat.cc
 )
@@ -51,16 +50,10 @@ add_library(
 # add include directory
 target_include_directories(pi3hat
   PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
     
 target_compile_features(
       pi3hat PUBLIC cxx_std_17)
-
-# Causes the visibility macros to use dllexport rather than dllimport,
-# which is appropriate when building the dll but not consuming it.
-target_compile_definitions(pi3hat PRIVATE "PI3HAT_HARDWARE_INTERFACE_BUILDING_DLL")
-
 
 
 ## Custom controller bridge library
@@ -73,15 +66,10 @@ add_library(controllers SHARED
 # add include directory
 target_include_directories(controllers 
   PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
     
 target_compile_features(
   controllers  PUBLIC cxx_std_17)
-
-# Causes the visibility macros to use dllexport rather than dllimport,
-# which is appropriate when building the dll but not consuming it.
-target_compile_definitions(controllers PRIVATE "PI3HAT_HARDWARE_INTERFACE_BUILDING_DLL")
 
 
 ## Custom library for IMU transformations
@@ -94,23 +82,11 @@ add_library(
 # add include directory
 target_include_directories(imu_transform 
   PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
     
 target_compile_features(
   imu_transform  PUBLIC cxx_std_17)
 
-# Causes the visibility macros to use dllexport rather than dllimport,
-# which is appropriate when building the dll but not consuming it.
-target_compile_definitions(imu_transform PRIVATE "PI3HAT_HARDWARE_INTERFACE_BUILDING_DLL")
-
-
-
-# target_include_directories(
-#   pi3hat_hardware_interface
-#   PRIVATE
-#   include
-# )
 
 target_link_libraries(
   pi3hat_hardware_interface 
@@ -136,7 +112,7 @@ install(TARGETS
   pi3hat
   controllers
   imu_transform
-
+  
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
@@ -144,27 +120,22 @@ install(TARGETS
 )
 
 install(
-  DIRECTORY include
-  DESTINATION include/${PROJECT_NAME}/
-)
-
-install(
-  DIRECTORY test
-  DESTINATION test/${PROJECT_NAME}/
+  DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}
 )
 
 install(
   DIRECTORY urdf
-  DESTINATION share/${PROJECT_NAME}/
+  DESTINATION share/${PROJECT_NAME}
 )
 install(DIRECTORY
   bringup/launch
-  DESTINATION share/${PROJECT_NAME}/
+  DESTINATION share/${PROJECT_NAME}
 )
 
 install(DIRECTORY
   bringup/config
-  DESTINATION share/${PROJECT_NAME}/
+  DESTINATION share/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
