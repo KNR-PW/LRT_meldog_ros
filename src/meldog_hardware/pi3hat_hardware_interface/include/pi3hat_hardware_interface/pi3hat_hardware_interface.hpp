@@ -207,6 +207,11 @@ namespace pi3hat_hardware_interface
         
         /* FUNCTIONS FOR INITIALIZING PI3HAT/CAN INTERFACE */
         
+
+
+        /* UTILITY FUNCTIONS */
+
+        bool string_to_bool(const std::string& str);
     }; 
 };
 

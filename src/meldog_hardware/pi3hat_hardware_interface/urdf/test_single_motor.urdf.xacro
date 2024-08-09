@@ -59,6 +59,28 @@
             <param name="imu_mounting_deg.yaw">0</param>
             <param name="imu_mounting_deg.pitch">0</param>
             <param name="imu_mounting_deg.roll">0</param>
+            <param name="imu_sampling_rate">1000</param>
+
+            <param name="can_1_fdcan_frame">true</param>
+            <param name="can_1_automatic_retransmission">true</param>
+            <param name="can_1_bitrate_switch">true</param>
+
+            <param name="can_2_fdcan_frame">true</param>
+            <param name="can_2_automatic_retransmission">true</param>
+            <param name="can_2_bitrate_switch">true</param>
+
+            <param name="can_3_fdcan_frame">true</param>
+            <param name="can_3_automatic_retransmission">true</param>
+            <param name="can_3_bitrate_switch">true</param>
+
+            <param name="can_4_fdcan_frame">true</param>
+            <param name="can_4_automatic_retransmission">true</param>
+            <param name="can_4_bitrate_switch">true</param>
+
+            <param name="can_5_fdcan_frame">true</param>
+            <param name="can_5_automatic_retransmission">true</param>
+            <param name="can_5_bitrate_switch">true</param>
+            
         </hardware>
 
         <joint name="joint_1">
@@ -72,7 +94,7 @@
             <param name="motor_position_max">500.0</param>
             <param name="motor_position_min">-500.0</param>
             <param name="motor_velocity_max">10.0</param>
-            <param name="motor_torque_max">1</param>
+            <param name="motor_torque_max">0.2</param>
 
 
             <command_interface name="position"/>
