@@ -66,6 +66,11 @@ void MoteusWrapper::init_to_tx_frame(CanFrame& tx_frame)
     std::memcpy(tx_frame.data, can_fd_frame.data, can_fd_frame.size);
 }
 
+int MoteusWrapper::get_id_from_rx_frame(const CanFrame& rx_frame)
+{
+    return ((rx_frame.id>> 8) & 0x7f);
+}
+
 std::unique_ptr<MoteusWrapper> controller_interface::make_moteus_wrapper(const ControllerParameters& params)
 {
     /* moteus options */ 

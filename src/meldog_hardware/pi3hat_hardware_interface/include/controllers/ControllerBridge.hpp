@@ -30,11 +30,22 @@ class ControllerBridge
     ControllerBridge& operator=(ControllerBridge&& other_controller);
 
 
+    /* Transform controller command to data in TX CAN frame */
     void make_command(CanFrame& tx_frame, ControllerCommand& command) const;
+
+    /* Transform query to data in TX CAN frame */
     void make_query(CanFrame& tx_frame) const;
+
+    /* Transform RX CAN frame to controller state */
     void get_state(const CanFrame& rx_frame, ControllerState& state) const;
+
+    /* Initialize controller */
     void initialize(CanFrame& tx_frame) const;
 
+    /* Get id from RX CAN frame (sometimes raw id from rx frame needs to be transformed)*/
+    int get_id(const CanFrame& rx_frame);
+
+    /* Get parameters that were set by user */
     ControllerParameters get_params();
 
     ~ControllerBridge() = default;
