@@ -3,7 +3,6 @@ from rclpy.node import Node
 from geometry_msgs.msg import Vector3
 import math
 from rclpy.duration import Duration
-from rclpy.time import Time
 import rclpy.time
 
 class Linear_Trajectory(Node):

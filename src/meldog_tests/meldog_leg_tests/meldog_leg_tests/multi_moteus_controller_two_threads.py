@@ -8,7 +8,6 @@ import sys
 import math
 import threading
 import moteus.multiplex
-import copy
 import queue
 
 # TODO: Dodaj serwer do wylaczenia moteusa (make_stop())

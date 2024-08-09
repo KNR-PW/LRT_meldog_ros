@@ -5,7 +5,6 @@ from meldog_interfaces_tests.msg import MultiMoteusControl
 from meldog_interfaces_tests.msg import MoteusControl
 from geometry_msgs.msg import Vector3
 import math
-import matplotlib.pyplot as plt
 from rclpy.duration import Duration
 
 class Demo_Single_Motor(Node):

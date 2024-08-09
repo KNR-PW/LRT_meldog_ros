@@ -2,12 +2,9 @@ import rclpy
 from rclpy.node import Node
 from meldog_interfaces_tests.msg import MultiMoteusControl, MultiMoteusState
 from meldog_interfaces_tests.msg import MoteusControl, MoteusState
-from geometry_msgs.msg import Vector3
-import math
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import threading
-import sys
 class Ploter(Node):
 
     def __init__(self, name, plt: plt):
