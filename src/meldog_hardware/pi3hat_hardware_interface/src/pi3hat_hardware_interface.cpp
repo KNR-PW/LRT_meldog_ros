@@ -185,40 +185,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_configure(const r
 
 hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_activate(const rclcpp_lifecycle::State &previous_state)
 {
-    /* Set all commands, states and transmission passthrough to start state */
-    // for(int i = 0; i < joint_controller_number_; ++i)
-    // {
-    //     controller_commands_[i].position_ = 0;
-    //     controller_commands_[i].velocity_ = 0;
-    //     controller_commands_[i].torque_ = 0;
 
-    //     controller_states_[i].position_ = 0;
-    //     controller_states_[i].velocity_ = 0;
-    //     controller_states_[i].torque_ = 0;
-    //     controller_states_[i].fault = 0;
-    //     controller_states_[i].temperature_ = 0;
-
-    //     controller_transmission_passthrough_[i].position_ = 0;
-    //     controller_transmission_passthrough_[i].velocity_ = 0;
-    //     controller_transmission_passthrough_[i].torque_ = 0;
-
-
-    //     joint_commands_[i].position_ = 0;
-    //     joint_commands_[i].velocity_ = 0;
-    //     joint_commands_[i].torque_ = 0;
-
-    //     joint_states_[i].position_ = 0;
-    //     joint_states_[i].velocity_ = 0;
-    //     joint_states_[i].torque_ = 0;
-    //     joint_states_[i].fault = 0;
-    //     joint_states_[i].temperature_ = 0;  
-
-    //     joint_transmission_passthrough_[i].position_ = 0;
-    //     joint_transmission_passthrough_[i].velocity_ = 0;
-    //     joint_transmission_passthrough_[i].torque_ = 0;
-    // }
-
-    
     /* Make start from actual motor position to 0.0 (offset included in controller bridges) */
     RCLCPP_INFO(*logger_, "Motors reaching starting position!");
 
@@ -241,12 +208,6 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_deactivate(const 
         controller_commands_[i].velocity_ = 0;
         controller_commands_[i].torque_ = 0;
 
-        controller_states_[i].position_ = 0;
-        controller_states_[i].velocity_ = 0;
-        controller_states_[i].torque_ = 0;
-        controller_states_[i].fault = 0;
-        controller_states_[i].temperature_ = 0;
-
         controller_transmission_passthrough_[i].position_ = 0;
         controller_transmission_passthrough_[i].velocity_ = 0;
         controller_transmission_passthrough_[i].torque_ = 0;
@@ -255,12 +216,6 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_deactivate(const 
         joint_commands_[i].position_ = 0;
         joint_commands_[i].velocity_ = 0;
         joint_commands_[i].torque_ = 0;
-
-        joint_states_[i].position_ = 0;
-        joint_states_[i].velocity_ = 0;
-        joint_states_[i].torque_ = 0;
-        joint_states_[i].fault = 0;
-        joint_states_[i].temperature_ = 0;  
 
         joint_transmission_passthrough_[i].position_ = 0;
         joint_transmission_passthrough_[i].velocity_ = 0;
