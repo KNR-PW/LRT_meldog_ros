@@ -2,14 +2,14 @@
 #define _CONTROLLER_BRIDGE_HPP_
 
 #include "3rd_libs/pi3hat/pi3hat.h"
-#include "wrappers/ControllerWrapper.hpp"
+#include "wrappers/WrappersTypes.hpp"
 #include "ControllerStructures.hpp"
+#include <exception>
 #include <memory>
 #include <algorithm>
 
 namespace controller_interface
 {
-
 class ControllerBridge
 {
     private:
@@ -21,7 +21,7 @@ class ControllerBridge
 
 
     public:
-    ControllerBridge(std::unique_ptr<ControllerWrapper> wrapper, 
+    ControllerBridge(std::string wrapper_type, 
      const ControllerParameters& params);
 
     ControllerBridge(const ControllerBridge& other_controller) = delete;

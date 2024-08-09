@@ -6,9 +6,21 @@ using mjbots::pi3hat::CanFrame;
 
 
 ControllerBridge::ControllerBridge(
-     std::unique_ptr<ControllerWrapper> wrapper, 
+     std::string wrapper_type, 
      const ControllerParameters& params): 
-     wrapper_(std::move(wrapper)), params_(params){}
+     wrapper_(nullptr), params_(params)
+{
+    if(wrapper_type == "moteus")
+    {
+         wrapper_ = make_moteus_wrapper(params);
+    }
+
+    
+    else
+    {
+        throw std::invalid_argument("Wrong type of wrapper!");
+    }
+}
      
 ControllerBridge::ControllerBridge(ControllerBridge&& other_controller):
     wrapper_(std::move(other_controller.wrapper_)), params_(other_controller.params_) {}
