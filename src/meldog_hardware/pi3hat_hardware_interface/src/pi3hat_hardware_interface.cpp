@@ -32,13 +32,11 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
         controller_interface::ControllerParameters params;
-        WrapperType type;
+        std::string wrapper_type;
         try
         {
             params = get_controller_parameters(joint);
-
-            std::string type_string = joint.parameters.at("controller_type");
-            type = choose_wrapper_type(type_string);
+            wrapper_type = joint.parameters.at("controller_type");
         }
         catch(const std::exception& e)
         {
@@ -48,7 +46,8 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
 
         try
         {
-            add_controller_bridge(params, type);
+            ControllerBridge controller_bridge(wrapper_type, params);
+            controller_bridges_.push_back(std::move(controller_bridge));
         }
         catch(const std::exception& e)
         {
@@ -551,7 +550,7 @@ void Pi3HatHardwareInterface::create_transmission_interface(const hardware_inter
         {
             try
             {
-                create_simple_transmission(transmission_info, simple_loader, joint_names);
+                create_transmission(transmission_info, "SimpleTransmission", simple_loader, joint_names);
             }
             catch(const transmission_interface::TransmissionInterfaceException& e)
             {
@@ -568,7 +567,7 @@ void Pi3HatHardwareInterface::create_transmission_interface(const hardware_inter
         {
             try
             {
-                create_fbl_transmission(transmission_info, fbl_loader, joint_names);
+                create_transmission(transmission_info, "FourBarLinkageTransmission", fbl_loader, joint_names);
             }
             catch(const transmission_interface::TransmissionInterfaceException& e)
             {
@@ -585,7 +584,7 @@ void Pi3HatHardwareInterface::create_transmission_interface(const hardware_inter
         {
             try
             {
-                create_diff_transmission(transmission_info, diff_loader, joint_names);
+                create_transmission(transmission_info, "DifferentialTransmission", diff_loader, joint_names);
             }
             catch(const transmission_interface::TransmissionInterfaceException& e)
             {
@@ -595,44 +594,56 @@ void Pi3HatHardwareInterface::create_transmission_interface(const hardware_inter
     }
 }
 
-void Pi3HatHardwareInterface::create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
-        transmission_interface::SimpleTransmissionLoader& loader, const std::vector<std::string>& joint_names)
+ void Pi3HatHardwareInterface::create_transmission(const hardware_interface::TransmissionInfo& transmission_info, std::string type, 
+        transmission_interface::TransmissionLoader& loader, const std::vector<std::string>& joint_names)
 {
-    RCLCPP_INFO(*logger_, "Simple transmission initialization starting!");
+    RCLCPP_INFO(*logger_, "%s initialization starting!", type.c_str());
 
     std::shared_ptr<transmission_interface::Transmission> transmission;
-    if (transmission_info.type != "transmission_interface/SimpleTransmission")
-    {
-        RCLCPP_FATAL(*logger_, "This is not SimpleTransmission!");
-        throw transmission_interface::TransmissionInterfaceException("This is not SimpleTransmission!"); // this should not happen!
-    }
 
+    if (transmission_info.type != ("transmission_interface/" + type))
+    {
+        RCLCPP_FATAL(*logger_, "This is not %s!", type.c_str());
+        throw transmission_interface::TransmissionInterfaceException("This is not " + type + "!"); // this should not happen!
+    }
     load_transmission_data(transmission_info, transmission, loader);
 
-    if(transmission_info.joints.size() != 1)
+    int joint_for_transmission = 0;
+
+    if(type == "SimpleTransmission")
     {
-        RCLCPP_FATAL(*logger_, "Invalid number of joints in SimpleTransmission!");
+        joint_for_transmission = 1;
+    }
+    else if(type == "FourBarLinkageTransmission" || type == "DifferentialTransmission")
+    {
+        joint_for_transmission = 2;
+    }
+
+    if(transmission_info.joints.size() != joint_for_transmission)
+    {
+        RCLCPP_FATAL(*logger_, "Invalid number of joints in %s!", type.c_str());
         throw transmission_interface::TransmissionInterfaceException("Invalid number of joints in SimpleTransmission!"); // this should not happen!
     }
 
-    if(transmission_info.actuators.size() != 1)
+    if(transmission_info.actuators.size() != joint_for_transmission)
     {
-        RCLCPP_FATAL(*logger_, "Invalid number of actuators in SimpleTransmission!");
+        RCLCPP_FATAL(*logger_, "Invalid number of actuators in %s!", type.c_str());
         throw transmission_interface::TransmissionInterfaceException("Invalid number of actuators in SimpleTransmission!"); // this should not happen!
     }
 
-    /* Find joint index for transmission handels by name*/
-    std::vector<std::string>::const_iterator joint_it = std::find(joint_names.begin(), 
-    joint_names.end(), transmission_info.joints[0].name);
-    int joint_index = std::distance(joint_names.begin(), joint_it);
-
-    /* Joint handels */
     std::vector<transmission_interface::JointHandle> joint_handles;
-    append_joint_handles(joint_handles, transmission_info.joints[0].name, joint_index);
-    
-    /* Actuator handels */
     std::vector<transmission_interface::ActuatorHandle> actuator_handles;
-    append_actuator_handles(actuator_handles, transmission_info.actuators[0].name, joint_index);
+
+    for(int i = 0; i < joint_for_transmission; ++i)
+    {
+        std::vector<std::string>::const_iterator joint_it = std::find(joint_names.begin(), 
+          joint_names.end(), transmission_info.joints[i].name);
+
+        int joint_index = std::distance(joint_names.begin(), joint_it);
+
+        append_joint_handles(joint_handles, transmission_info.joints[i].name, joint_index);
+        append_actuator_handles(actuator_handles, transmission_info.actuators[i].name, joint_index);
+    }
 
     try
     {
@@ -646,151 +657,9 @@ void Pi3HatHardwareInterface::create_simple_transmission(const hardware_interfac
 
     transmissions_.push_back(transmission);
     
-    RCLCPP_INFO(*logger_, "Simple transmissions initialized!");
-}
+    RCLCPP_INFO(*logger_, "%s initialized!", type.c_str());
 
-void Pi3HatHardwareInterface::create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
-        transmission_interface::FourBarLinkageTransmissionLoader& loader, const std::vector<std::string>& joint_names)
-{
-    RCLCPP_INFO(*logger_, "FourBarLinkage transmissions initialization starting!");
 
-    std::shared_ptr<transmission_interface::Transmission> transmission;
-    if (transmission_info.type != "transmission_interface/FourBarLinkageTransmission")
-    {
-        RCLCPP_FATAL(*logger_, "This is not FourBarLinkageTransmission!");
-        throw transmission_interface::TransmissionInterfaceException("This is not FourBarLinkageTransmission!"); // this should not happen!
-    }
-
-    load_transmission_data(transmission_info, transmission, loader);
-
-    if(transmission_info.joints.size() != 2)
-    {
-        RCLCPP_FATAL(*logger_, "Invalid number of joints in FourBarLinkageTransmission!");
-        throw transmission_interface::TransmissionInterfaceException("Invalid number of joints in FourBarLinkageTransmission!"); // this should not happen!
-    }
-    if(transmission_info.actuators.size() != 2)
-    {
-        RCLCPP_FATAL(*logger_, "Invalid number of actuators in FourBarLinkageTransmission!");
-        throw transmission_interface::TransmissionInterfaceException("Invalid number of actuators in FourBarLinkageTransmission!"); // this should not happen!
-    }
-
-    /* Find joints indexes for transmission handels by name*/
-    std::vector<std::string>::const_iterator joint_it_1 = std::find(joint_names.begin(), 
-    joint_names.end(), transmission_info.joints[0].name);
-    int joint_index_1 = std::distance(joint_names.begin(), joint_it_1);
-
-    std::vector<std::string>::const_iterator joint_it_2 = std::find(joint_names.begin(), 
-    joint_names.end(), transmission_info.joints[1].name);
-    int joint_index_2 = std::distance(joint_names.begin(), joint_it_2);
-
-    /* Joint handels */
-    std::vector<transmission_interface::JointHandle> joint_handles;
-    append_joint_handles(joint_handles, transmission_info.joints[0].name, joint_index_1);
-    append_joint_handles(joint_handles, transmission_info.joints[1].name, joint_index_2);
-    
-    /* Actuator handels */
-    std::vector<transmission_interface::ActuatorHandle> actuator_handles;
-    append_actuator_handles(actuator_handles, transmission_info.actuators[0].name, joint_index_1);
-    append_actuator_handles(actuator_handles, transmission_info.actuators[1].name, joint_index_2);
-
-    try
-    {
-        transmission->configure(joint_handles, actuator_handles);
-    }
-    catch (const transmission_interface::TransmissionInterfaceException & exc)
-    {
-        RCLCPP_FATAL(*logger_, "Error while loading %s: %s", transmission_info.name.c_str(), exc.what());
-        throw;
-    }
-
-    transmissions_.push_back(transmission);
-    
-    RCLCPP_INFO(*logger_, "FourBarLinkage transmissions initialized!");
-}
-
-void Pi3HatHardwareInterface::create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
-        transmission_interface::DifferentialTransmissionLoader& loader, const std::vector<std::string>& joint_names)
-{
-    RCLCPP_INFO(*logger_, "Differential transmissions initialization starting!");
-
-    std::shared_ptr<transmission_interface::Transmission> transmission;
-    if (transmission_info.type != "transmission_interface/DifferentialTransmission")
-    {
-        RCLCPP_FATAL(*logger_, "This is not DifferentialTransmission!");
-        throw transmission_interface::TransmissionInterfaceException("This is not DifferentialTransmission!"); // this should not happen!
-    }
-    
-    load_transmission_data(transmission_info, transmission, loader);
-
-    if(transmission_info.joints.size() != 2)
-    {
-        RCLCPP_FATAL(*logger_, "Invalid number of joints in DifferentialTransmission!");
-        throw transmission_interface::TransmissionInterfaceException("Invalid number of joints in DifferentialTransmission!");; // this should not happen!
-    }
-    if(transmission_info.actuators.size() != 2)
-    {
-        RCLCPP_FATAL(*logger_, "Invalid number of actuators in DifferentialTransmission!");
-        throw transmission_interface::TransmissionInterfaceException("Invalid number of actuators in DifferentialTransmission!"); // this should not happen!
-    }
-
-    /* Find joints indexes for transmission handels by name*/
-    std::vector<std::string>::const_iterator joint_it_1 = std::find(joint_names.begin(), 
-    joint_names.end(), transmission_info.joints[0].name);
-    int joint_index_1 = std::distance(joint_names.begin(), joint_it_1);
-
-    std::vector<std::string>::const_iterator joint_it_2 = std::find(joint_names.begin(), 
-    joint_names.end(), transmission_info.joints[1].name);
-    int joint_index_2 = std::distance(joint_names.begin(), joint_it_2);
-
-    /* Joint handels */
-    std::vector<transmission_interface::JointHandle> joint_handles;
-    append_joint_handles(joint_handles, transmission_info.joints[0].name, joint_index_1);
-    append_joint_handles(joint_handles, transmission_info.joints[1].name, joint_index_2);
-    
-    /* Actuator handels */
-    std::vector<transmission_interface::ActuatorHandle> actuator_handles;
-    append_actuator_handles(actuator_handles, transmission_info.actuators[0].name, joint_index_1);
-    append_actuator_handles(actuator_handles, transmission_info.actuators[1].name, joint_index_2);
-
-    try
-    {
-        transmission->configure(joint_handles, actuator_handles);
-    }
-    catch (const transmission_interface::TransmissionInterfaceException & exc)
-    {
-        RCLCPP_FATAL(*logger_, "Error while loading %s: %s", transmission_info.name.c_str(), exc.what());
-        throw;
-    }
-
-    transmissions_.push_back(transmission);
-    
-    RCLCPP_INFO(*logger_, "Differential transmissions initialized!");
-}
-
-void Pi3HatHardwareInterface::add_controller_bridge(const ControllerParameters& params, const WrapperType type)
-{
-    std::unique_ptr<ControllerWrapper> wrapper_ptr; 
-    switch(type)
-    {
-        case Moteus:
-            wrapper_ptr = make_moteus_wrapper(params);
-            break;
-        default:
-            throw std::invalid_argument("Motor type doesn't exist!");
-            break;
-    }
-
-    controller_interface::ControllerBridge bridge = controller_interface::ControllerBridge(std::move(wrapper_ptr), params);
-    controller_bridges_.push_back(std::move(bridge));
-}
-
-Pi3HatHardwareInterface::WrapperType Pi3HatHardwareInterface::choose_wrapper_type(const std::string& type)
-{
-    if(type == "moteus")
-    {
-        return WrapperType::Moteus;
-    }
-    return WrapperType::Moteus;
 }
 
 ControllerParameters Pi3HatHardwareInterface::get_controller_parameters(const hardware_interface::ComponentInfo& joint_info)

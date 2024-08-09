@@ -88,12 +88,6 @@ namespace pi3hat_hardware_interface
         
 
     private:
-
-        /* Here add your controller wrapper type */
-        enum WrapperType
-        {
-            Moteus = 0,
-        };
         
         /* UTILITY ROS2 OBJECTS: */
         std::unique_ptr<rclcpp::Logger> logger_;
@@ -148,13 +142,6 @@ namespace pi3hat_hardware_interface
 
         /* FUNCTION FOR INITIALIZATION */
 
-        /* Function for choosing wrappers (here u can add your own wrapper)
-            Remember to change this function in source code */
-        WrapperType choose_wrapper_type(const std::string& type);
-
-        /* Function for creating moteus wrappers (here u can add your own wrapper) */
-        void add_controller_bridge(const controller_interface::ControllerParameters& params, const WrapperType type);
-
         controller_interface::ControllerParameters get_controller_parameters(const hardware_interface::ComponentInfo& joint_info);
 
         /* FUNCTION FOR CONTROLLERS */
@@ -180,19 +167,11 @@ namespace pi3hat_hardware_interface
         /* Function for creating all transmissions */
         void create_transmission_interface(const hardware_interface::HardwareInfo &info);
 
-        /* Functions for creating simple transmission */
-        void create_simple_transmission(const hardware_interface::TransmissionInfo& transmission_info,
-        transmission_interface::SimpleTransmissionLoader& loader, const std::vector<std::string>& joint_names);
+        /* Function for creating one transmission */
+        void create_transmission(const hardware_interface::TransmissionInfo& transmission_info, std::string type, 
+        transmission_interface::TransmissionLoader& loader, const std::vector<std::string>& joint_names);
 
-        /* Functions for creating four bar linkage transmission */
-        void create_fbl_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
-        transmission_interface::FourBarLinkageTransmissionLoader& loader, const std::vector<std::string>& joint_names);
-
-        /* Functions for creating differential transmission */
-        void create_diff_transmission(const hardware_interface::TransmissionInfo& transmission_info, 
-        transmission_interface::DifferentialTransmissionLoader& loader, const std::vector<std::string>& joint_names);
-
-        /* Functions for checking, if data passed from urdf is correct */
+        /* Functions for loading transmission data */
         void load_transmission_data(const hardware_interface::TransmissionInfo& transmission_info, 
             transmission_interface::TransmissionSharedPtr& transmission,
             transmission_interface::TransmissionLoader& loader);
