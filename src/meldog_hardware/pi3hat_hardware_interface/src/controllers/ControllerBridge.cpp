@@ -1,5 +1,17 @@
+/*
+ *  Pi3hat Hardware Interface for ROS2 control framework
+ *  Copyright (C) 2024 KNR-Melson team
+ *
+ *  Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License");
+ *  You may obtain a copy of the License at
+ *  <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+/* Author: Bartłomiej Krajewski (https://github.com/BartlomiejK2) */
+
+
 #include "controllers/ControllerBridge.hpp"
-//#include "../../include/controllers/ControllerBridge.hpp"
 
 using namespace controller_interface;
 using mjbots::pi3hat::CanFrame;
@@ -10,6 +22,7 @@ ControllerBridge::ControllerBridge(
      const ControllerParameters& params): 
      wrapper_(nullptr), params_(params)
 {
+    /* Here add your wrapper type as std::string (use "else if" after this "if") */
     if(wrapper_type == "moteus")
     {
          wrapper_ = make_moteus_wrapper(params);
@@ -37,6 +50,7 @@ ControllerBridge& ControllerBridge::operator=(ControllerBridge&& other_controlle
 
 void ControllerBridge::make_command(CanFrame& tx_frame, ControllerCommand& command) const
 {
+    /* Basic transformations before sending data to wrapper */
     command.position_ = params_.direction_* std::clamp(command.position_,
      params_.position_min_, params_.position_max_) + params_.position_offset_;
     command.velocity_ = params_.direction_* std::clamp(command.velocity_, -params_.velocity_max_, params_.velocity_max_);
@@ -57,6 +71,8 @@ void ControllerBridge::make_query(CanFrame& tx_frame) const
 void ControllerBridge::get_state(const CanFrame& rx_frame, ControllerState& state) const
 {
     wrapper_->rx_frame_to_state(rx_frame, state);
+
+    /* Basic transformations after getting data from wrapper */
     state.position_ = params_.direction_ * (state.position_ - params_.position_offset_);
     state.velocity_ = params_.direction_ * state.velocity_;
     state.torque_ = params_.direction_ * state.torque_; 

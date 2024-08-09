@@ -1,3 +1,16 @@
+/*
+ *  Pi3hat Hardware Interface for ROS2 control framework
+ *  Copyright (C) 2024 KNR-Melson team
+ *
+ *  Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License");
+ *  You may obtain a copy of the License at
+ *  <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+/* Author: Bartłomiej Krajewski (https://github.com/BartlomiejK2) */
+
+
 #ifndef _MOTEUS_WRAPPER_HPP_
 #define _MOTEUS_WRAPPER_HPP_
 
@@ -34,6 +47,8 @@ class MoteusWrapper final: public ControllerWrapper
 
 };
 
+/* Copying for Moteus class is deleted, prevents from making constructor for MoteusWrapper 
+   with only ControllerParameter as argument :/ */
 std::unique_ptr<MoteusWrapper> make_moteus_wrapper(const ControllerParameters& params);
 
 };

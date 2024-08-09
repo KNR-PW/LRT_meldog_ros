@@ -1,3 +1,16 @@
+/*
+ *  Pi3hat Hardware Interface for ROS2 control framework
+ *  Copyright (C) 2024 KNR-Melson team
+ *
+ *  Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License");
+ *  You may obtain a copy of the License at
+ *  <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+/* Author: Bartłomiej Krajewski (https://github.com/BartlomiejK2) */
+
+
 #ifndef PI3HAT_HARDWARE_INTERFACE__PI3HAT_HARDWARE_INTERFACE_
 #define PI3HAT_HARDWARE_INTERFACE__PI3HAT_HARDWARE_INTERFACE_
 
@@ -141,7 +154,6 @@ namespace pi3hat_hardware_interface
 
 
         /* FUNCTION FOR INITIALIZATION */
-
         controller_interface::ControllerParameters get_controller_parameters(const hardware_interface::ComponentInfo& joint_info);
 
         /* FUNCTION FOR CONTROLLERS */
@@ -189,7 +201,6 @@ namespace pi3hat_hardware_interface
 
 
         /* UTILITY FUNCTIONS */
-
         bool string_to_bool(const std::string& str);
     }; 
 };

@@ -1,7 +1,19 @@
+/*
+ *  Pi3hat Hardware Interface for ROS2 control framework
+ *  Copyright (C) 2024 KNR-Melson team
+ *
+ *  Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License");
+ *  You may obtain a copy of the License at
+ *  <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+/* Author: Bartłomiej Krajewski (https://github.com/BartlomiejK2) */
+
+
 #include "controllers/Controllers.hpp"
 #include "3rd_libs/pi3hat/pi3hat.h"
 #include "3rd_libs/pi3hat/realtime.h"
-//#include "../../include/3rd_libs/pi3hat/realtime.h"
 #include <iostream>
 #include <cmath>
 #include <unistd.h>

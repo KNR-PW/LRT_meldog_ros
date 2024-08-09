@@ -1,3 +1,16 @@
+/*
+ *  Pi3hat Hardware Interface for ROS2 control framework
+ *  Copyright (C) 2024 KNR-Melson team
+ *
+ *  Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License");
+ *  You may obtain a copy of the License at
+ *  <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+/* Author: Bartłomiej Krajewski (https://github.com/BartlomiejK2) */
+
+
 #ifndef _CONTROLLER_BRIDGE_HPP_
 #define _CONTROLLER_BRIDGE_HPP_
 
@@ -10,6 +23,9 @@
 
 namespace controller_interface
 {
+
+/* Class for abstracting communication with diffrent type of controllers. 
+   Class makes basic transformations for command and state structures before using wrapper */
 class ControllerBridge
 {
     private:
