@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_core">
+
+
+    <!-- BASE LINK spawns in x= 0.0 y = 0.0 z = 0.0-->
+    <link name="base_link"></link>
+    <xacro:include filename="trunk/trunk.urdf.xacro"/>
+
+</robot>

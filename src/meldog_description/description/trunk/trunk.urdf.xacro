@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <!-- Trunk joint to base -->
+    <joint name="trunk_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="trunk"/>
+        <!--Origin defines translation child frame relative to parent frame. Translation is performed in parent frame.-->
+        <origin xyz="0 0 1.0" rpy="0 0 0"/>  <!--testing-->
+    </joint>
+
+
+    <xacro:property name="trunk_base_length" value="0.8" />
+    <xacro:property name="trunk_base_width" value="0.2" />
+    <xacro:property name="trunk_base_height" value="0.1" />
+
+    <xacro:property name="trunk_actuators_length" value="0.3" />
+    <xacro:property name="trunk_actuators_width" value="0.2" />
+    <xacro:property name="trunk_actuators_height" value="0.1" />
+
+    <link name="trunk">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="5.0"/> <!--testing-->
+            <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/> <!--testing-->
+        </inertial>
+
+        <visual name="trunk_base">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_base_length} ${trunk_base_width} ${trunk_base_height}"/>
+            </geometry>
+            <material name="trunk_base_color">
+                <color rgba="0.0 0.0 1.0 1.0"/>
+                <texture filename=""/>
+            </material>
+        </visual>
+        <visual name="trunk_actuators_left">
+            <origin xyz="0.0 ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.0 1.0 0.0 1.0"/>
+                <texture filename="trunk_actuators_left_color"/>
+            </material>
+        </visual>
+        <visual name="trunk_actuators_right">
+            <origin xyz="0.0 ${-trunk_base_width/2 - trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+                <texture filename="trunk_actuators_right_color"/>
+            </material>
+        </visual>
+
+        <collision> <!--testing-->
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="1.0 1.0 1.0"/>
+            </geometry>
+        </collision>
+    </link>
+</robot>
