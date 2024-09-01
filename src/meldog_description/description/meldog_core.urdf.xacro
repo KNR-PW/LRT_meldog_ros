@@ -4,6 +4,8 @@
     <!-- PI -->
     <xacro:property name="PI" value="3.1415926535897"/>
 
+    <!-- LINKS: -->
+
 
     <!-- Base link spawns in x= 0.0 y = 0.0 z = 0.0 -->
     <link name="base_link"></link>
@@ -18,6 +20,17 @@
     <xacro:hip_link position="back_left"/>
     <xacro:hip_link position="back_right"/>
 
+    <!-- Lower leg links -->
+    <xacro:include filename="lower_leg/lower_leg.urdf.xacro"/>
+    <xacro:lower_leg_link position="front_left"/>
+    <xacro:lower_leg_link position="front_right"/>
+    <xacro:lower_leg_link position="back_left"/>
+    <xacro:lower_leg_link position="back_right"/>
+
+
+    <!-- JOINTS: -->
+
+
     <!-- Base to Trunk joint -->
     <joint name="base_trunk_joint" type="fixed">
         <parent link="base_link"/>
@@ -25,6 +38,7 @@
         <!--Origin defines translation child frame relative to parent frame. Translation is performed in parent frame.-->
         <origin xyz="0 0 1.0" rpy="0 0 0"/>  <!--testing-->
     </joint>
+
 
     <!-- Trunk to Hip front left joint -->
     <joint name="trunk_hip_front_left_joint" type="revolute">
@@ -61,6 +75,44 @@
         <axis xyz="1.0 0.0 0.0"/>
         <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
     </joint>
+
+
+    <!-- Hip front left to Lower leg front left -->
+    <joint name="hip_lower_leg_front_left" type="revolute">
+        <origin xyz="${hip_length/2} ${hip_width/2 + lower_leg_radius} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="hip_front_left_link"/>
+        <child link="lower_leg_front_left_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Hip front right to Lower leg front right -->
+    <joint name="hip_lower_leg_front_right" type="revolute">
+        <origin xyz="${hip_length/2} ${-(hip_width/2 + lower_leg_radius)} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="hip_front_right_link"/>
+        <child link="lower_leg_front_right_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Hip back left to Lower leg back left -->
+    <joint name="hip_lower_leg_back_left" type="revolute">
+        <origin xyz="${hip_length/2} ${-(hip_width/2 + lower_leg_radius)} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="hip_back_left_link"/>
+        <child link="lower_leg_back_left_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Hip back right to Lower leg back right -->
+    <joint name="hip_lower_leg_back_right" type="revolute">
+        <origin xyz="${hip_length/2} ${hip_width/2 + lower_leg_radius} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="hip_back_right_link"/>
+        <child link="lower_leg_back_right_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+    </joint>
+    
 
 
 </robot>

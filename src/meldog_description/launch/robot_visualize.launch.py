@@ -7,6 +7,8 @@ from launch.substitutions import Command, FindExecutable, LaunchConfiguration, P
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
+from launch_ros.parameter_descriptions import ParameterValue
+
 
 def generate_launch_description():
     # Declare arguments
@@ -39,7 +41,8 @@ def generate_launch_description():
     urdf_file = LaunchConfiguration("urdf_file")
 
     # Get URDF via xacro
-    robot_description_content = Command(
+    robot_description_content = ParameterValue(
+        Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
@@ -51,7 +54,7 @@ def generate_launch_description():
                 ]
             ),
         ]
-    )
+    ), value_type=str)
     robot_description = {"robot_description": robot_description_content}
 
     # rviz_config_file = PathJoinSubstitution(

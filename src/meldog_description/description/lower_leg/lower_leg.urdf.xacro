@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_lower_leg">
+
+    <xacro:property name="lower_leg_length" value="0.2"/>
+    <xacro:property name="lower_leg_radius" value="0.05"/>
+
+
+    <xacro:macro name="lower_leg_link" params="position">
+        <link name="lower_leg_${position}_link">
+            <inertial>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <mass value="1.0"/>
+                <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+            </inertial>
+            <visual name="">
+                <origin xyz="0.0 0.0 ${-lower_leg_length/2}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${lower_leg_radius}" length="${lower_leg_length}"/>
+                </geometry>
+                <material name="lower_leg_${position}_link">
+                    <color rgba="0.0 1.0 0.0 1.0"/>
+                    <texture filename=""/>
+                </material>
+            </visual>
+            <!-- <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="0.0 0.0 0.0"/>
+                </geometry>
+            </collision> -->
+        </link>
+    </xacro:macro>
+</robot>
