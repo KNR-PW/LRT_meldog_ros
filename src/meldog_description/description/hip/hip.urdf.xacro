@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_hip">
+
+
+
+    <xacro:property name="hip_length" value="0.2"/>
+    <xacro:property name="hip_width" value="0.1"/>
+    <xacro:property name="hip_height" value="0.05"/>
+
+    <xacro:macro name="hip_link" params="position">
+        <link name="hip_${position}_link">
+            <inertial>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <mass value="3.0"/>
+                <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+            </inertial>
+            <visual name="">
+                <origin xyz="${hip_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${hip_length} ${hip_width} ${hip_height}"/>
+                </geometry>
+                <material name="hip_${position}_link">
+                    <color rgba="1.0 0.0 0.0 1.0"/>
+                    <texture filename=""/>
+                </material>
+            </visual>
+            <!-- <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="0.0 0.0 0.0"/>
+                </geometry>
+            </collision> -->
+        </link>
+    </xacro:macro>
+</robot>

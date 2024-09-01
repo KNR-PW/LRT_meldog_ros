@@ -1,9 +1,66 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_core">
 
+    <!-- PI -->
+    <xacro:property name="PI" value="3.1415926535897"/>
 
-    <!-- BASE LINK spawns in x= 0.0 y = 0.0 z = 0.0-->
+
+    <!-- Base link spawns in x= 0.0 y = 0.0 z = 0.0 -->
     <link name="base_link"></link>
+
+    <!-- Trunk link -->
     <xacro:include filename="trunk/trunk.urdf.xacro"/>
+
+    <!-- Hip links -->
+    <xacro:include filename="hip/hip.urdf.xacro"/>
+    <xacro:hip_link position="front_left"/>
+    <xacro:hip_link position="front_right"/>
+    <xacro:hip_link position="back_left"/>
+    <xacro:hip_link position="back_right"/>
+
+    <!-- Base to Trunk joint -->
+    <joint name="base_trunk_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="trunk_link"/>
+        <!--Origin defines translation child frame relative to parent frame. Translation is performed in parent frame.-->
+        <origin xyz="0 0 1.0" rpy="0 0 0"/>  <!--testing-->
+    </joint>
+
+    <!-- Trunk to Hip front left joint -->
+    <joint name="trunk_hip_front_left_joint" type="revolute">
+        <origin xyz="${trunk_actuators_length/2} ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="trunk_link"/>
+        <child link="hip_front_left_link"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Trunk to Hip front right joint -->
+    <joint name="trunk_hip_front_right_joint" type="revolute">
+        <origin xyz="${trunk_actuators_length/2} ${-(trunk_base_width/2 + trunk_actuators_width/2)} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="trunk_link"/>
+        <child link="hip_front_right_link"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Trunk to Hip back left joint -->
+    <joint name="trunk_hip_back_left_joint" type="revolute">
+        <origin xyz="${-trunk_actuators_length/2} ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 ${PI}"/>
+        <parent link="trunk_link"/>
+        <child link="hip_back_left_link"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Trunk to Hip back right joint -->
+    <joint name="trunk_hip_back_right_joint" type="revolute">
+        <origin xyz="${-trunk_actuators_length/2} ${-(trunk_base_width/2 + trunk_actuators_width/2)} 0.0" rpy="0.0 0.0 ${PI}"/>
+        <parent link="trunk_link"/>
+        <child link="hip_back_right_link"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
+    </joint>
+
 
 </robot>

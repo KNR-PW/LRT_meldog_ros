@@ -1,14 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
-
-    <!-- Trunk joint to base -->
-    <joint name="trunk_joint" type="fixed">
-        <parent link="base_link"/>
-        <child link="trunk"/>
-        <!--Origin defines translation child frame relative to parent frame. Translation is performed in parent frame.-->
-        <origin xyz="0 0 1.0" rpy="0 0 0"/>  <!--testing-->
-    </joint>
-
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_trunk">
 
     <xacro:property name="trunk_base_length" value="0.8" />
     <xacro:property name="trunk_base_width" value="0.2" />
@@ -18,7 +9,7 @@
     <xacro:property name="trunk_actuators_width" value="0.2" />
     <xacro:property name="trunk_actuators_height" value="0.1" />
 
-    <link name="trunk">
+    <link name="trunk_link">
         <inertial>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <mass value="5.0"/> <!--testing-->
