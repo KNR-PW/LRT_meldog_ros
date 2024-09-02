@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_shank">
+
+    <xacro:property name="shank_length" value="0.5"/>
+    <xacro:property name="shank_radius" value="0.05"/>
+
+
+    <xacro:macro name="shank_link" params="position">
+        <link name="shank_${position}_link">
+            <inertial>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <mass value="1.0"/>
+                <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+            </inertial>
+            <visual name="">
+                <origin xyz="0.0 0.0 ${-shank_length/2}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${shank_radius}" length="${shank_length}"/>
+                </geometry>
+                <material name="shank_${position}_link">
+                    <color rgba="1.0 1.0 0.0 1.0"/>
+                    <texture filename=""/>
+                </material>
+            </visual>
+            <!-- <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="0.0 0.0 0.0"/>
+                </geometry>
+            </collision> -->
+        </link>
+    </xacro:macro>
+</robot>

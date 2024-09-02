@@ -20,19 +20,27 @@
     <xacro:hip_link position="back_left"/>
     <xacro:hip_link position="back_right"/>
 
-    <!-- Lower leg links -->
-    <xacro:include filename="lower_leg/lower_leg.urdf.xacro"/>
-    <xacro:lower_leg_link position="front_left"/>
-    <xacro:lower_leg_link position="front_right"/>
-    <xacro:lower_leg_link position="back_left"/>
-    <xacro:lower_leg_link position="back_right"/>
+    <!-- Thigh links -->
+    <xacro:include filename="thigh/thigh.urdf.xacro"/>
+    <xacro:thigh_link position="front_left"/>
+    <xacro:thigh_link position="front_right"/>
+    <xacro:thigh_link position="back_left"/>
+    <xacro:thigh_link position="back_right"/>
+
+
+    <!-- Shank links -->
+    <xacro:include filename="shank/shank.urdf.xacro"/>
+    <xacro:shank_link position="front_left"/>
+    <xacro:shank_link position="front_right"/>
+    <xacro:shank_link position="back_left"/>
+    <xacro:shank_link position="back_right"/>
 
 
     <!-- JOINTS: -->
 
 
     <!-- Base to Trunk joint -->
-    <joint name="base_trunk_joint" type="fixed">
+    <joint name="BT_joint" type="fixed">
         <parent link="base_link"/>
         <child link="trunk_link"/>
         <!--Origin defines translation child frame relative to parent frame. Translation is performed in parent frame.-->
@@ -41,7 +49,7 @@
 
 
     <!-- Trunk to Hip front left joint -->
-    <joint name="trunk_hip_front_left_joint" type="revolute">
+    <joint name="FLH_joint" type="revolute">
         <origin xyz="${trunk_actuators_length/2} ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="trunk_link"/>
         <child link="hip_front_left_link"/>
@@ -50,7 +58,7 @@
     </joint>
 
     <!-- Trunk to Hip front right joint -->
-    <joint name="trunk_hip_front_right_joint" type="revolute">
+    <joint name="FRH_joint" type="revolute">
         <origin xyz="${trunk_actuators_length/2} ${-(trunk_base_width/2 + trunk_actuators_width/2)} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="trunk_link"/>
         <child link="hip_front_right_link"/>
@@ -59,7 +67,7 @@
     </joint>
 
     <!-- Trunk to Hip back left joint -->
-    <joint name="trunk_hip_back_left_joint" type="revolute">
+    <joint name="BLH_joint" type="revolute">
         <origin xyz="${-trunk_actuators_length/2} ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 ${PI}"/>
         <parent link="trunk_link"/>
         <child link="hip_back_left_link"/>
@@ -68,7 +76,7 @@
     </joint>
 
     <!-- Trunk to Hip back right joint -->
-    <joint name="trunk_hip_back_right_joint" type="revolute">
+    <joint name="BRH_joint" type="revolute">
         <origin xyz="${-trunk_actuators_length/2} ${-(trunk_base_width/2 + trunk_actuators_width/2)} 0.0" rpy="0.0 0.0 ${PI}"/>
         <parent link="trunk_link"/>
         <child link="hip_back_right_link"/>
@@ -77,38 +85,75 @@
     </joint>
 
 
-    <!-- Hip front left to Lower leg front left -->
-    <joint name="hip_lower_leg_front_left" type="revolute">
-        <origin xyz="${hip_length/2} ${hip_width/2 + lower_leg_radius} 0.0" rpy="0.0 0.0 0.0"/>
+    <!-- Hip front left to Thigh front left -->
+    <joint name="FLT_joint" type="revolute">
+        <origin xyz="${hip_length/2} ${hip_width/2 + thigh_radius} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="hip_front_left_link"/>
-        <child link="lower_leg_front_left_link"/>
+        <child link="thigh_front_left_link"/>
         <axis xyz="0.0 1.0 0.0"/>
         <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
     </joint>
 
-    <!-- Hip front right to Lower leg front right -->
-    <joint name="hip_lower_leg_front_right" type="revolute">
-        <origin xyz="${hip_length/2} ${-(hip_width/2 + lower_leg_radius)} 0.0" rpy="0.0 0.0 0.0"/>
+    <!-- Hip front right to Thigh front right -->
+    <joint name="FRT_joint" type="revolute">
+        <origin xyz="${hip_length/2} ${-(hip_width/2 + thigh_radius)} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="hip_front_right_link"/>
-        <child link="lower_leg_front_right_link"/>
+        <child link="thigh_front_right_link"/>
         <axis xyz="0.0 1.0 0.0"/>
         <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
     </joint>
 
-    <!-- Hip back left to Lower leg back left -->
-    <joint name="hip_lower_leg_back_left" type="revolute">
-        <origin xyz="${hip_length/2} ${-(hip_width/2 + lower_leg_radius)} 0.0" rpy="0.0 0.0 0.0"/>
+    <!-- Hip back left to Thigh back left -->
+    <joint name="BLT_joint" type="revolute">
+        <origin xyz="${hip_length/2} ${-(hip_width/2 + thigh_radius)} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="hip_back_left_link"/>
-        <child link="lower_leg_back_left_link"/>
+        <child link="thigh_back_left_link"/>
         <axis xyz="0.0 1.0 0.0"/>
         <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
     </joint>
 
-    <!-- Hip back right to Lower leg back right -->
-    <joint name="hip_lower_leg_back_right" type="revolute">
-        <origin xyz="${hip_length/2} ${hip_width/2 + lower_leg_radius} 0.0" rpy="0.0 0.0 0.0"/>
+    <!-- Hip back right to Thigh back right -->
+    <joint name="BRT_joint" type="revolute">
+        <origin xyz="${hip_length/2} ${hip_width/2 + thigh_radius} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="hip_back_right_link"/>
-        <child link="lower_leg_back_right_link"/>
+        <child link="thigh_back_right_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+    </joint>
+
+
+    <!-- Thigh front left to Shank front left -->
+    <joint name="FLS_joint" type="revolute">
+        <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="thigh_front_left_link"/>
+        <child link="shank_front_left_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Thigh front right to Shank front right -->
+    <joint name="FRS_joint" type="revolute">
+        <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="thigh_front_right_link"/>
+        <child link="shank_front_right_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Thigh back left to Shank back left -->
+    <joint name="BLS_joint" type="revolute">
+        <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="thigh_back_left_link"/>
+        <child link="shank_back_left_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+    </joint>
+
+    <!-- Thigh back right to Shank back right -->
+    <joint name="BRS_joint" type="revolute">
+        <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="thigh_back_right_link"/>
+        <child link="shank_back_right_link"/>
         <axis xyz="0.0 1.0 0.0"/>
         <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
     </joint>
