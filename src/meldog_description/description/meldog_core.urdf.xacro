@@ -36,6 +36,13 @@
     <xacro:shank_link position="back_right"/>
 
 
+    <!-- Feet links -->
+    <xacro:include filename="feet/feet.urdf.xacro"/>
+    <xacro:feet_link position="front_left"/>
+    <xacro:feet_link position="front_right"/>
+    <xacro:feet_link position="back_left"/>
+    <xacro:feet_link position="back_right"/>
+
     <!-- JOINTS: -->
 
 
@@ -62,7 +69,7 @@
         <origin xyz="${trunk_actuators_length/2} ${-(trunk_base_width/2 + trunk_actuators_width/2)} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="trunk_link"/>
         <child link="hip_front_right_link"/>
-        <axis xyz="1.0 0.0 0.0"/>
+        <axis xyz="-1.0 0.0 0.0"/>
         <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
     </joint>
 
@@ -71,7 +78,7 @@
         <origin xyz="${-trunk_actuators_length/2} ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 ${PI}"/>
         <parent link="trunk_link"/>
         <child link="hip_back_left_link"/>
-        <axis xyz="1.0 0.0 0.0"/>
+        <axis xyz="-1.0 0.0 0.0"/>
         <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
     </joint>
 
@@ -90,7 +97,7 @@
         <origin xyz="${hip_length/2} ${hip_width/2 + thigh_radius} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="hip_front_left_link"/>
         <child link="thigh_front_left_link"/>
-        <axis xyz="0.0 1.0 0.0"/>
+        <axis xyz="0.0 -1.0 0.0"/>
         <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
     </joint>
 
@@ -99,7 +106,7 @@
         <origin xyz="${hip_length/2} ${-(hip_width/2 + thigh_radius)} 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="hip_front_right_link"/>
         <child link="thigh_front_right_link"/>
-        <axis xyz="0.0 1.0 0.0"/>
+        <axis xyz="0.0 -1.0 0.0"/>
         <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
     </joint>
 
@@ -127,7 +134,7 @@
         <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
         <parent link="thigh_front_left_link"/>
         <child link="shank_front_left_link"/>
-        <axis xyz="0.0 1.0 0.0"/>
+        <axis xyz="0.0 -1.0 0.0"/>
         <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
     </joint>
 
@@ -136,7 +143,7 @@
         <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
         <parent link="thigh_front_right_link"/>
         <child link="shank_front_right_link"/>
-        <axis xyz="0.0 1.0 0.0"/>
+        <axis xyz="0.0 -1.0 0.0"/>
         <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
     </joint>
 
@@ -159,5 +166,32 @@
     </joint>
     
 
+    <!-- Shank front left to Feet front left -->
+    <joint name="FLF_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="shank_front_left_link"/>
+        <child link="feet_front_left_link"/>
+    </joint>
+
+    <!-- Shank front right to Feet right left -->
+    <joint name="RLF_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="shank_front_right_link"/>
+        <child link="feet_front_right_link"/>
+    </joint>
+
+    <!-- Shank back left to Feet back left -->
+    <joint name="BLF_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="shank_back_left_link"/>
+        <child link="feet_back_left_link"/>
+    </joint>
+
+    <!-- Shank back right to Feet back right-->
+    <joint name="BRF_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="shank_back_right_link"/>
+        <child link="feet_back_right_link"/>
+    </joint>
 
 </robot>
