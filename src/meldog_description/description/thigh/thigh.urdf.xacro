@@ -4,30 +4,33 @@
     <xacro:property name="thigh_length" value="0.5"/>
     <xacro:property name="thigh_radius" value="0.05"/>
 
+    <xacro:property name="thigh_mass" value="1.0"/>
 
     <xacro:macro name="thigh_link" params="position">
         <link name="thigh_${position}_link">
             <inertial>
-                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-                <mass value="1.0"/>
-                <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/>
+                <origin xyz="0.0 0.0 ${-thigh_length/2}" rpy="0.0 0.0 0.0"/>
+                <mass value="${thigh_mass}"/>
+                <inertia ixx="${1/12*thigh_mass*(3*thigh_radius*thigh_radius+thigh_length*thigh_length)}" ixy="0.0" ixz="0.0" iyy="${1/12*thigh_mass*(3*thigh_radius*thigh_radius+thigh_length*thigh_length)}" iyz="0.0" izz="${1/2*thigh_mass*thigh_radius*thigh_radius}"/>
             </inertial>
-            <visual name="">
+
+            <visual name="thigh_${position}_link_visual">
                 <origin xyz="0.0 0.0 ${-thigh_length/2}" rpy="0.0 0.0 0.0"/>
                 <geometry>
                     <cylinder radius="${thigh_radius}" length="${thigh_length}"/>
                 </geometry>
-                <material name="thigh_${position}_link">
+                <material name="">
                     <color rgba="0.0 1.0 0.0 1.0"/>
-                    <texture filename=""/>
                 </material>
             </visual>
-            <!-- <collision>
-                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+            <collision name="thigh_${position}_link_collision">
+                <origin xyz="0.0 0.0 ${-thigh_length/2}" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                    <box size="0.0 0.0 0.0"/>
+                    <cylinder radius="${thigh_radius}" length="${thigh_length}"/>
                 </geometry>
-            </collision> -->
+            </collision>
+            
         </link>
     </xacro:macro>
 </robot>

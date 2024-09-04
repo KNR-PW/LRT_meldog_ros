@@ -9,48 +9,60 @@
     <xacro:property name="trunk_actuators_width" value="0.2" />
     <xacro:property name="trunk_actuators_height" value="0.1" />
 
+    <xacro:property name="trunk_mass" value="8.0"/>
+
     <link name="trunk_link">
         <inertial>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <mass value="5.0"/> <!--testing-->
-            <inertia ixx="1.0" ixy="1.0" ixz="1.0" iyy="1.0" iyz="1.0" izz="1.0"/> <!--testing-->
+            <mass value="${trunk_mass}"/> 
+            <inertia ixx="${1/12*trunk_mass*(trunk_base_width*trunk_base_width + trunk_base_height*trunk_base_height)}" ixy="0.0" ixz="0.0" iyy="${1/12*trunk_mass*(trunk_base_length*trunk_base_length + trunk_base_height*trunk_base_height)}" iyz=".0" izz="${1/12*trunk_mass*(trunk_base_length*trunk_base_length + trunk_base_width*trunk_base_width)}"/> 
         </inertial>
 
-        <visual name="trunk_base">
+        <visual name="trunk_base_visual">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <box size="${trunk_base_length} ${trunk_base_width} ${trunk_base_height}"/>
             </geometry>
-            <material name="trunk_base_color">
+            <material name="">
                 <color rgba="0.0 0.0 1.0 1.0"/>
-                <texture filename=""/>
             </material>
         </visual>
-        <visual name="trunk_actuators_left">
+        <visual name="trunk_actuators_left_visual">
             <origin xyz="0.0 ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
             </geometry>
             <material name="">
                 <color rgba="0.0 1.0 0.0 1.0"/>
-                <texture filename="trunk_actuators_left_color"/>
             </material>
         </visual>
-        <visual name="trunk_actuators_right">
+        <visual name="trunk_actuators_right_visual">
             <origin xyz="0.0 ${-trunk_base_width/2 - trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
                 <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
             </geometry>
             <material name="">
                 <color rgba="1.0 0.0 0.0 1.0"/>
-                <texture filename="trunk_actuators_right_color"/>
             </material>
         </visual>
 
-        <collision> <!--testing-->
+        
+         <collision name="trunk_base_collision">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <box size="1.0 1.0 1.0"/>
+                <box size="${trunk_base_length} ${trunk_base_width} ${trunk_base_height}"/>
+            </geometry>
+        </collision>
+        <collision name="trunk_actuators_left_collision">
+            <origin xyz="0.0 ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
+            </geometry>
+        </collision>
+        <collision name="trunk_actuators_right_collision">
+            <origin xyz="0.0 ${-trunk_base_width/2 - trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
             </geometry>
         </collision>
     </link>
