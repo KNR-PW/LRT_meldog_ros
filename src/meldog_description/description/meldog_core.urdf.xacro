@@ -36,14 +36,13 @@
     <xacro:shank_link position="back_right"/>
 
 
-    <!-- Feet links -->
-    <xacro:include filename="feet/feet.urdf.xacro"/>
-    <xacro:feet_link position="front_left"/>
-    <xacro:feet_link position="front_right"/>
-    <xacro:feet_link position="back_left"/>
-    <xacro:feet_link position="back_right"/>
+    <!-- Feet links (frames in the end of shank) -->
+    <link name="feet_front_left_link"></link>
+    <link name="feet_front_right_link"></link>
+    <link name="feet_back_left_link"></link>
+    <link name="feet_back_right_link"></link>
 
-    <!-- JOINTS: -->
+    <!-- JOINTS: -->    
 
 
     <!-- Base to Trunk joint -->
