@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_actuator">
+
+
+    <xacro:property name="actuator_max_velocity" value="0.5"/>
+    <xacro:property name="actuator_max_torque" value="0.5"/>
+    <xacro:property name="actuator_damping" value="0.5"/>
+    <xacro:property name="actuator_friction" value="1.788"/>
+
+
+    <xacro:macro name ="meldog_joint_limits" params="lower upper">
+        <limit lower="${lower}" upper="${upper}" effort="${actuator_max_torque}" velocity="${actuator_max_velocity}"/>
+         <dynamics damping="${actuator_damping}" friction="${actuator_friction}"/>
+    </xacro:macro>
+
+</robot>

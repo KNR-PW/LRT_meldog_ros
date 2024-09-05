@@ -44,7 +44,6 @@
 
     <!-- JOINTS: -->    
 
-
     <!-- Base to Trunk joint -->
     <joint name="BT_joint" type="fixed">
         <parent link="base_link"/>
