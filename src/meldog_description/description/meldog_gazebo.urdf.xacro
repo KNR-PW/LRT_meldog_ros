@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_gazebo">
 
     <!-- Gazebo macros -->
-    <xacro:include filename="common/gazebo_macros.urdf.xacro"/>
+    <xacro:include filename="gazebo/gazebo_macros.urdf.xacro"/>
 
     <!-- LINKS: -->
     <!-- Trunk link -->
@@ -51,13 +51,5 @@
     <xacro:gazebo_joint joint_name="FRS"/>
     <xacro:gazebo_joint joint_name="BLS"/>
     <xacro:gazebo_joint joint_name="BRS"/>
-
-
-    <!-- ROS2 Control -->
-    <ros2_control name="meldog_gazebo" type="system">
-        <hardware>  
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-        </hardware>
-        <xacro:include filename="common/transmission_macros.urdf.xacro"/>
 
 </robot>

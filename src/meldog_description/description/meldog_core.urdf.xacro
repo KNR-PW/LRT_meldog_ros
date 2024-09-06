@@ -5,24 +5,24 @@
     <xacro:property name="PI" value="3.1415926535897"/>
 
     <!-- Actuator macros -->
-    <xacro:include filename="common/actuator_macros.urdf.xacro"/>
+    <xacro:include filename="actuator/actuator_macros.urdf.xacro"/>
 
     <!-- LINKS: -->
     <!-- Base link spawns in x= 0.0 y = 0.0 z = 0.0 -->
     <link name="base_link"></link>
 
     <!-- Trunk link -->
-    <xacro:include filename="trunk/trunk.urdf.xacro"/>
+    <xacro:include filename="meldog_links/trunk/trunk.urdf.xacro"/>
 
     <!-- Hip links -->
-    <xacro:include filename="hip/hip.urdf.xacro"/>
+    <xacro:include filename="meldog_links/hip/hip.urdf.xacro"/>
     <xacro:hip_link position="front_left"/>
     <xacro:hip_link position="front_right"/>
     <xacro:hip_link position="back_left"/>
     <xacro:hip_link position="back_right"/>
 
     <!-- Thigh links -->
-    <xacro:include filename="thigh/thigh.urdf.xacro"/>
+    <xacro:include filename="meldog_links/thigh/thigh.urdf.xacro"/>
     <xacro:thigh_link position="front_left"/>
     <xacro:thigh_link position="front_right"/>
     <xacro:thigh_link position="back_left"/>
@@ -30,7 +30,7 @@
 
 
     <!-- Shank links -->
-    <xacro:include filename="shank/shank.urdf.xacro"/>
+    <xacro:include filename="meldog_links/shank/shank.urdf.xacro"/>
     <xacro:shank_link position="front_left"/>
     <xacro:shank_link position="front_right"/>
     <xacro:shank_link position="back_left"/>
@@ -38,7 +38,7 @@
 
 
     <!-- Feet links (frames in the end of shank) -->
-    <xacro:include filename="feet/feet.urdf.xacro"/>
+    <xacro:include filename="meldog_links/feet/feet.urdf.xacro"/>
     <xacro:feet_link position="front_left"/>
     <xacro:feet_link position="front_right"/>
     <xacro:feet_link position="back_left"/>
