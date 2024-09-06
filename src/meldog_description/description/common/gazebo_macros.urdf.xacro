@@ -11,7 +11,7 @@
     <xacro:property name="dampingFactor_value" value="0.004"/>
 
     <xacro:macro name="gazebo_link" params="link_name color selfCollide_value">
-        <gazebo reference="${link_name}">
+        <gazebo reference="${link_name}_link">
             <material>Gazebo/${color}</material>
               <mu1 value="${mu2_value}"/>
               <mu2 value="${mu2_value}"/>
@@ -32,7 +32,7 @@
     <xacro:property name="stopCfm_value" value="0.45"/> 
 
     <xacro:macro name="gazebo_joint" params="joint_name">
-        <gazebo reference="${joint_name}">
+        <gazebo reference="${joint_name_joint}">
             <implicitSpringDamper>${Damper_value}</implicitSpringDamper>
             <springStiffness>${springstiffness_value}</springStiffness>
             <springReference>${springReference_value}</springReference>

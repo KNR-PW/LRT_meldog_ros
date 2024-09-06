@@ -4,4 +4,60 @@
     <!-- Gazebo macros -->
     <xacro:include filename="common/gazebo_macros.urdf.xacro"/>
 
+    <!-- LINKS: -->
+    <!-- Trunk link -->
+    <xacro:gazebo_link link_name="trunk" color="Blue" selfCollide_value ="false"/>
+
+    <!-- Hip links -->
+    <xacro:gazebo_link link_name="hip_front_left" color="Red" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="hip_front_right" color="Red" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="hip_back_left" color="Red" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="hip_back_right" color="Red" selfCollide_value ="false"/>
+
+    <!-- Thigh links -->
+    <xacro:gazebo_link link_name="thigh_front_left" color="Green" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="thigh_front_right" color="Green" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="thigh_back_left" color="Green" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="thigh_back_right" color="Green" selfCollide_value ="false"/>
+
+    <!-- Shank links -->
+    <xacro:gazebo_link link_name="shank_front_left_" color="Yellow" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="shank_front_right" color="Yellow" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="shank_back_left" color="Yellow" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="shank_back_right" color="Yellow" selfCollide_value ="false"/>
+
+    <!-- Feet links -->
+    <xacro:gazebo_link link_name="feet_front_left" color="Pink" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="feet_front_right" color="Pink" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="feet_back_left" color="Pink" selfCollide_value ="false"/>
+    <xacro:gazebo_link link_name="feet_back_right" color="Pink" selfCollide_value ="false"/>
+
+
+    <!-- JOINTS (only revolute): -->
+    <!-- Trunk to Hips joints-->
+    <xacro:gazebo_joint joint_name="FLH"/>
+    <xacro:gazebo_joint joint_name="FRH"/>
+    <xacro:gazebo_joint joint_name="BLH"/>
+    <xacro:gazebo_joint joint_name="BRH"/>
+
+    <!-- Hips to Thighs joints -->
+    <xacro:gazebo_joint joint_name="FLT"/>
+    <xacro:gazebo_joint joint_name="FRT"/>
+    <xacro:gazebo_joint joint_name="BLT"/>
+    <xacro:gazebo_joint joint_name="BRT"/>
+
+    <!-- Thighs to Shanks joints -->
+    <xacro:gazebo_joint joint_name="FLS"/>
+    <xacro:gazebo_joint joint_name="FRS"/>
+    <xacro:gazebo_joint joint_name="BLS"/>
+    <xacro:gazebo_joint joint_name="BRS"/>
+
+
+    <!-- ROS2 Control -->
+    <ros2_control name="meldog_gazebo" type="system">
+        <hardware>  
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </hardware>
+        <xacro:include filename="common/transmission_macros.urdf.xacro"/>
+
 </robot>

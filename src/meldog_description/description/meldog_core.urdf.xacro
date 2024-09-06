@@ -8,8 +8,6 @@
     <xacro:include filename="common/actuator_macros.urdf.xacro"/>
 
     <!-- LINKS: -->
-
-
     <!-- Base link spawns in x= 0.0 y = 0.0 z = 0.0 -->
     <link name="base_link"></link>
 
@@ -47,7 +45,6 @@
     <xacro:feet_link position="back_right"/>
 
     <!-- JOINTS: -->    
-
     <!-- Base to Trunk joint -->
     <joint name="BT_joint" type="fixed">
         <parent link="base_link"/>
