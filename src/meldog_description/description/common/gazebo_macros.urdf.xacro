@@ -9,9 +9,8 @@
     <xacro:property name="mu2_value" value="25"/>
     <xacro:property name="maxVel_value" value="0.1"/>
     <xacro:property name="dampingFactor_value" value="0.004"/>
-    <xacro:property name="selfCollide_value" value="false"/>  
 
-    <xacro:macro name="gazebo_link" params="link_name color">
+    <xacro:macro name="gazebo_link" params="link_name color selfCollide_value">
         <gazebo reference="${link_name}">
             <material>Gazebo/${color}</material>
               <mu1 value="${mu2_value}"/>

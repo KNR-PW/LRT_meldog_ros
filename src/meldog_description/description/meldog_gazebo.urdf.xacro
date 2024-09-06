@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_gazebo">
+
+    <!-- Gazebo macros -->
+    <xacro:include filename="common/gazebo_macros.urdf.xacro"/>
+
+</robot>

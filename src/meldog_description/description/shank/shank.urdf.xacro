@@ -3,7 +3,6 @@
 
     <xacro:property name="shank_length" value="0.5"/>
     <xacro:property name="shank_radius" value="0.05"/>
-    <xacro:property name="feet_radius" value ="0.08"/>
 
     <xacro:property name="shank_mass" value = "1.0"/>
 
@@ -24,27 +23,11 @@
                     <color rgba="1.0 1.0 0.0 1.0"/>
                 </material>
             </visual>
-            <visual name="feet_visual">
-                <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
-                <geometry>
-                    <sphere radius="${feet_radius}"/>
-                </geometry>
-                <material name="">
-                    <color rgba="1.0 0.0 1.0 1.0"/>
-                </material>
-            </visual>
-
 
             <collision name="shank_${position}_link_collision">
                 <origin xyz="0.0 0.0 ${-shank_length/2}" rpy="0.0 0.0 0.0"/>
                 <geometry>
                     <cylinder radius="${shank_radius}" length="${shank_length}"/>
-                </geometry>
-            </collision>
-            <collision name="feet_collision">
-                <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
-                <geometry>
-                    <sphere radius="${feet_radius}"/>
                 </geometry>
             </collision>
            

@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_core">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="meldog_core">
 
     <!-- PI -->
     <xacro:property name="PI" value="3.1415926535897"/>
+
+    <!-- Actuator macros -->
+    <xacro:include filename="common/actuator_macros.urdf.xacro"/>
 
     <!-- LINKS: -->
 
@@ -37,10 +40,11 @@
 
 
     <!-- Feet links (frames in the end of shank) -->
-    <link name="feet_front_left_link"></link>
-    <link name="feet_front_right_link"></link>
-    <link name="feet_back_left_link"></link>
-    <link name="feet_back_right_link"></link>
+    <xacro:include filename="feet/feet.urdf.xacro"/>
+    <xacro:feet_link position="front_left"/>
+    <xacro:feet_link position="front_right"/>
+    <xacro:feet_link position="back_left"/>
+    <xacro:feet_link position="back_right"/>
 
     <!-- JOINTS: -->    
 
@@ -59,7 +63,7 @@
         <parent link="trunk_link"/>
         <child link="hip_front_left_link"/>
         <axis xyz="1.0 0.0 0.0"/>
-        <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
     </joint>
 
     <!-- Trunk to Hip front right joint -->
@@ -68,7 +72,7 @@
         <parent link="trunk_link"/>
         <child link="hip_front_right_link"/>
         <axis xyz="-1.0 0.0 0.0"/>
-        <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
     </joint>
 
     <!-- Trunk to Hip back left joint -->
@@ -77,7 +81,7 @@
         <parent link="trunk_link"/>
         <child link="hip_back_left_link"/>
         <axis xyz="-1.0 0.0 0.0"/>
-        <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
     </joint>
 
     <!-- Trunk to Hip back right joint -->
@@ -86,7 +90,7 @@
         <parent link="trunk_link"/>
         <child link="hip_back_right_link"/>
         <axis xyz="1.0 0.0 0.0"/>
-        <limit lower="-1.0" upper="1" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
     </joint>
 
 
@@ -96,7 +100,7 @@
         <parent link="hip_front_left_link"/>
         <child link="thigh_front_left_link"/>
         <axis xyz="0.0 -1.0 0.0"/>
-        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI}" upper = "${PI}"/>
     </joint>
 
     <!-- Hip front right to Thigh front right -->
@@ -105,7 +109,7 @@
         <parent link="hip_front_right_link"/>
         <child link="thigh_front_right_link"/>
         <axis xyz="0.0 -1.0 0.0"/>
-        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI}" upper = "${PI}"/>
     </joint>
 
     <!-- Hip back left to Thigh back left -->
@@ -114,7 +118,7 @@
         <parent link="hip_back_left_link"/>
         <child link="thigh_back_left_link"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI}" upper = "${PI}"/>
     </joint>
 
     <!-- Hip back right to Thigh back right -->
@@ -123,7 +127,7 @@
         <parent link="hip_back_right_link"/>
         <child link="thigh_back_right_link"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI}" upper = "${PI}"/>
     </joint>
 
 
@@ -133,7 +137,7 @@
         <parent link="thigh_front_left_link"/>
         <child link="shank_front_left_link"/>
         <axis xyz="0.0 -1.0 0.0"/>
-        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
     </joint>
 
     <!-- Thigh front right to Shank front right -->
@@ -142,7 +146,7 @@
         <parent link="thigh_front_right_link"/>
         <child link="shank_front_right_link"/>
         <axis xyz="0.0 -1.0 0.0"/>
-        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
     </joint>
 
     <!-- Thigh back left to Shank back left -->
@@ -151,7 +155,7 @@
         <parent link="thigh_back_left_link"/>
         <child link="shank_back_left_link"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
     </joint>
 
     <!-- Thigh back right to Shank back right -->
@@ -160,7 +164,7 @@
         <parent link="thigh_back_right_link"/>
         <child link="shank_back_right_link"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <limit lower="-1.0" upper="1.0" effort="10.0" velocity="100.0"/>
+        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
     </joint>
     
 
@@ -191,5 +195,6 @@
         <parent link="shank_back_right_link"/>
         <child link="feet_back_right_link"/>
     </joint>
+
 
 </robot>
