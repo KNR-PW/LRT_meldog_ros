@@ -27,7 +27,7 @@
             <collision name="thigh_${position}_link_collision">
                 <origin xyz="0.0 0.0 ${-thigh_length/2}" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                    <cylinder radius="${thigh_radius}" length="${thigh_length}"/>
+                    <cylinder radius="${thigh_radius}" length="${3*thigh_length/4}"/>
                 </geometry>
             </collision>
             

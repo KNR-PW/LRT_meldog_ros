@@ -27,7 +27,7 @@
             <collision name="shank_${position}_link_collision">
                 <origin xyz="0.0 0.0 ${-shank_length/2}" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                    <cylinder radius="${shank_radius}" length="${shank_length}"/>
+                    <cylinder radius="${shank_radius}" length="${3*shank_length/4}"/>
                 </geometry>
             </collision>
            
