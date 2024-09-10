@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name ="meldog_ros2_control_joint_macros">
+
+    <xacro:include filename="actuator/actuator_macros.urdf.xacro"/>
+
+    <xacro:macro name="ros2_control_joint" params="joint_name upper lower"/>
+        <joint name="${joint_name}_joint">
+            <command_interface name="position">
+                <param name="min">${lower}</param>
+                <param name="max">${upper}</param>
+            </command_interface>
+            <command_interface name="velocity">
+                <param name="min">-${actuator_max_velocity}</param>
+                <param name="max">${actuator_max_velocity}</param>
+            </command_interface>
+            <xacro:if value="$(arg use_gazebo)">
+                <command_interface name="effort"/>
+                    <param name="min">-${actuator_max_torque}</param>
+                    <param name="max">${actuator_max_torque}</param>
+            </xacro:if>                
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+    </xacro:macro>
+
+</robot>
