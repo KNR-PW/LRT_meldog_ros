@@ -4,9 +4,38 @@
 <!-- ROS2 Control Gazebo -->
     <ros2_control name="meldog_gazebo" type="system">
         <hardware>  
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            <plugin>ign_ros2_control/IgnitionSystem</plugin>
         </hardware>
+        <!-- Transmissions -->
         <xacro:include filename="ros2_control/transmission_macros.urdf.xacro"/>
-        <!-- TUTAJ DODAJ JOINTY -->
+
+        <!-- Hardware interface for Gazebo -->
+        <xacro:include filename="ros2_control/ros2_control_joint_macros.urdf.xacro"/>
+
+        <!-- Trunk to Hips joints-->
+        <xacro:ros2_control_joint joint_name="FLH_joint" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="FRH_joint" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="BLH_joint" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="BRH_joint" lower="-${PI/2}" upper="${PI/2}"/>
+
+        <!-- Hips to Thighs joints -->
+        <xacro:ros2_control_joint joint_name="FLT_joint" lower="-${PI}" upper="${PI}"/>
+        <xacro:ros2_control_joint joint_name="FRT_joint" lower="-${PI}" upper="${PI}"/>
+        <xacro:ros2_control_joint joint_name="BLT_joint" lower="-${PI}" upper="${PI}"/>
+        <xacro:ros2_control_joint joint_name="BRT_joint" lower="-${PI}" upper="${PI}"/>
+
+
+        <!-- Thighs to Shanks joints -->
+        <xacro:ros2_control_joint joint_name="FLS_joint" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="FRS_joint" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="BLS_joint" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="BRS_joint" lower="-${PI/2}" upper="${PI/2}"/>
+
     </ros2_control>
+
+    <gazebo>
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+          <parameters>$(find meldog_simple_description)/test_controllers/joint_trajectory_controller_test.yaml</parameters>
+        </plugin>
+    </gazebo>
 </robot>
