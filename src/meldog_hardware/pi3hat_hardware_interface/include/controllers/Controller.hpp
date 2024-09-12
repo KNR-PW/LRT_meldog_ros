@@ -11,8 +11,8 @@
 /* Author: Bartłomiej Krajewski (https://github.com/BartlomiejK2) */
 
 
-#ifndef _CONTROLLER_BRIDGE_HPP_
-#define _CONTROLLER_BRIDGE_HPP_
+#ifndef _CONTROLLER_HPP_
+#define _CONTROLLER_HPP_
 
 #include "3rd_libs/pi3hat/pi3hat.h"
 #include "wrappers/WrappersTypes.hpp"

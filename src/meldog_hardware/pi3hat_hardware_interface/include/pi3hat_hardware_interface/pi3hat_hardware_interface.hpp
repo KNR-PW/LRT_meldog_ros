@@ -139,7 +139,7 @@ namespace pi3hat_hardware_interface
         std::vector<controller_interface::ControllerCommand> controller_transmission_passthrough_;
          
         /* Controller Bridges */
-        std::vector<controller_interface::Controller> controller_bridges_;
+        std::vector<controller_interface::Controller> controllers_;
 
 
         using JointState = controller_interface::ControllerState;
