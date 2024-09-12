@@ -81,7 +81,7 @@ int main(int argc, char** argv)
     moteus_command.maximum_torque = params.torque_max_;
     moteus_command.velocity_limit = params.velocity_max_;
 
-    controller_interface::ControllerBridge controller("moteus", params);
+    controller_interface::Controller controller("moteus", params);
 
 
     controller_interface::ControllerCommand controller_command;

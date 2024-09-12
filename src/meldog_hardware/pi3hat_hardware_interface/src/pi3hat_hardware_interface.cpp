@@ -58,7 +58,7 @@ hardware_interface::CallbackReturn Pi3HatHardwareInterface::on_init(const hardwa
 
         try
         {
-            ControllerBridge controller_bridge(wrapper_type, params);
+            Controller controller_bridge(wrapper_type, params);
             controller_bridges_.push_back(std::move(controller_bridge));
         }
         catch(const std::exception& e)
