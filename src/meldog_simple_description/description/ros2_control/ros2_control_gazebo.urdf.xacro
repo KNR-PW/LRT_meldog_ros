@@ -7,29 +7,29 @@
             <plugin>ign_ros2_control/IgnitionSystem</plugin>
         </hardware>
         <!-- Transmissions -->
-        <xacro:include filename="ros2_control/transmission_macros.urdf.xacro"/>
+        <!-- <xacro:include filename="transmission_macros.urdf.xacro"/> -->
 
         <!-- Hardware interface for Gazebo -->
-        <xacro:include filename="ros2_control/ros2_control_joint_macros.urdf.xacro"/>
+        <xacro:include filename="ros2_control_joint_macros.urdf.xacro"/>
 
         <!-- Trunk to Hips joints-->
-        <xacro:ros2_control_joint joint_name="FLH_joint" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="FRH_joint" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="BLH_joint" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="BRH_joint" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="FLH" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="FRH" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="BLH" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="BRH" lower="-${PI/2}" upper="${PI/2}"/>
 
         <!-- Hips to Thighs joints -->
-        <xacro:ros2_control_joint joint_name="FLT_joint" lower="-${PI}" upper="${PI}"/>
-        <xacro:ros2_control_joint joint_name="FRT_joint" lower="-${PI}" upper="${PI}"/>
-        <xacro:ros2_control_joint joint_name="BLT_joint" lower="-${PI}" upper="${PI}"/>
-        <xacro:ros2_control_joint joint_name="BRT_joint" lower="-${PI}" upper="${PI}"/>
+        <xacro:ros2_control_joint joint_name="FLT" lower="-${PI}" upper="${PI}"/>
+        <xacro:ros2_control_joint joint_name="FRT" lower="-${PI}" upper="${PI}"/>
+        <xacro:ros2_control_joint joint_name="BLT" lower="-${PI}" upper="${PI}"/>
+        <xacro:ros2_control_joint joint_name="BRT" lower="-${PI}" upper="${PI}"/>
 
 
         <!-- Thighs to Shanks joints -->
-        <xacro:ros2_control_joint joint_name="FLS_joint" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="FRS_joint" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="BLS_joint" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="BRS_joint" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="FLS" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="FRS" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="BLS" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="BRS" lower="-${PI/2}" upper="${PI/2}"/>
 
     </ros2_control>
 

@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name ="meldog_transmissions">
 
     <!-- SimpleTransmission macro -->
-    <xacro:macro name="SimpleTransmission" params="joint_name reduction offset"/>
+    <xacro:macro name="SimpleTransmission" params="joint_name reduction offset">
         <transmission name="SimpleTransmission_${joint_name}">
                 <plugin>transmission_interface/SimpleTransmission</plugin>
                 <actuator name="${joint_name}_actuator" role="actuator1"/>
@@ -14,8 +14,8 @@
     </xacro:macro>
 
     <!-- FourBarLinkageTransmission macro -->
-    <xacro:macro name="FourBarLinkageTransmission" params="first_joint_name second__joint_name reduction first_offset second_offset"/>
-        <transmission name="FourBarLinkageTransmission_${first_joint_name}_${second__joint_name}">
+    <xacro:macro name="FourBarLinkageTransmission" params="first_joint_name second_joint_name reduction first_offset second_offset">
+        <transmission name="FourBarLinkageTransmission_${first_joint_name}_${second_joint_name}">
             <plugin>transmission_interface/FourBarLinkageTransmission</plugin>
             <actuator name="${first_joint_name}_actuator" role="actuator1">
                 <mechanical_reduction>${reduction}</mechanical_reduction>
@@ -43,9 +43,9 @@
     <xacro:SimpleTransmission joint_name="BRH" reduction="9.97" offset="0.0"/>
 
     <!-- Thighs to Shanks transmissions -->
-    <xacro:FourBarLinkageTransmission first_joint_name="FLT" second__joint_name="FLS" reduction="9.97" first_offset="0.0" second_offset="0.0"/>
-    <xacro:FourBarLinkageTransmission first_joint_name="FRT" second__joint_name="FRS" reduction="9.97" first_offset="0.0" second_offset="0.0"/>
-    <xacro:FourBarLinkageTransmission first_joint_name="BLT" second__joint_name="BLS" reduction="9.97" first_offset="0.0" second_offset="0.0"/>
-    <xacro:FourBarLinkageTransmission first_joint_name="BRT" second__joint_name="BRS" reduction="9.97" first_offset="0.0" second_offset="0.0"/>
+    <xacro:FourBarLinkageTransmission first_joint_name="FLT" second_joint_name="FLS" reduction="9.97" first_offset="0.0" second_offset="0.0"/>
+    <xacro:FourBarLinkageTransmission first_joint_name="FRT" second_joint_name="FRS" reduction="9.97" first_offset="0.0" second_offset="0.0"/>
+    <xacro:FourBarLinkageTransmission first_joint_name="BLT" second_joint_name="BLS" reduction="9.97" first_offset="0.0" second_offset="0.0"/>
+    <xacro:FourBarLinkageTransmission first_joint_name="BRT" second_joint_name="BRS" reduction="9.97" first_offset="0.0" second_offset="0.0"/>
 
 </robot>

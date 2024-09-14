@@ -55,4 +55,6 @@
     <xacro:gazebo_joint joint_name="BLS"/>
     <xacro:gazebo_joint joint_name="BRS"/>
 
+    <!-- ROS2 Control -->
+    <xacro:include filename="ros2_control/ros2_control_gazebo.urdf.xacro"/>
 </robot>

@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 200.0  # Hz
+    update_rate: 1000  # Hz
     use_sim_time: true
 
     joint_trajectory_controller:
@@ -52,92 +52,68 @@ joint_trajectory_controller:
     state_interfaces:
       - position
       - velocity
-    action_monitor_rate: 200.0
-    state_publish_rate: 200.0  # Hz
+    action_monitor_rate: 1000.0
+    state_publish_rate: 1000.0  # Hz
     allow_nonzero_velocity_at_trajectory_end: false
 
     gains:
       FLH_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       FRH_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       BLH_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       BRH_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       FLT_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       FRT_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       BLT_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       BRT_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       FLS_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       FRS_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       BLS_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
       BRS_joint:
-        angle_wraparound: false
-        d: 0.1
-        ff_velocity_scale: 0.0
+        d: 2.5
         i: 0.0
         i_clamp: 0.0
-        p: 5.0
+        p: 350.0
