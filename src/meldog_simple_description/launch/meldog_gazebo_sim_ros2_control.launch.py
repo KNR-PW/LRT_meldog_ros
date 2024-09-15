@@ -128,14 +128,19 @@ def generate_launch_description():
     )
 
     # Bridge between ros2 and Ignition Gazebo
-    ros2_gazebo_sim_bridge =  IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                [os.path.join(get_package_share_directory('ros_ign_gazebo'),
-                              'launch', 'ign_gazebo.launch.py')]),
-            launch_arguments=[('gz_args', [' -r -v 4 empty.sdf'])])
+    # ros2_gazebo_sim_bridge =  IncludeLaunchDescription(
+    #         PythonLaunchDescriptionSource(
+    #             [os.path.join(get_package_share_directory('ros_ign_gazebo'),
+    #                           'launch', 'ign_gazebo.launch.py')]),
+    #         launch_arguments=[('gz_args', [' -r -v 4 empty.sdf'])])
+    gazebo_sim_bridge = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('ros_gz_sim'), 'launch'), '/gz_sim.launch.py']),
+            launch_arguments={'gz_args': ['-r -v -v4 ', world], 'on_exit_shutdown': 'true'}.items()
+        )
     
     nodes = [
-        ros2_gazebo_sim_bridge,
+        gazebo_sim_bridge,
 
         RegisterEventHandler(
             event_handler=OnProcessExit(

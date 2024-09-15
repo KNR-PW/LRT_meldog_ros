@@ -134,7 +134,7 @@
         <parent link="thigh_front_left_link"/>
         <child link="shank_front_left_link"/>
         <axis xyz="0.0 -1.0 0.0"/>
-        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
+        <xacro:meldog_joint_limits lower ="-${5*PI/6}" upper = "${5*PI/6}"/>
     </joint>
 
     <!-- Thigh front right to Shank front right -->
@@ -143,7 +143,7 @@
         <parent link="thigh_front_right_link"/>
         <child link="shank_front_right_link"/>
         <axis xyz="0.0 -1.0 0.0"/>
-        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
+        <xacro:meldog_joint_limits lower ="-${5*PI/6}" upper = "${5*PI/6}"/>
     </joint>
 
     <!-- Thigh back left to Shank back left -->
@@ -152,7 +152,7 @@
         <parent link="thigh_back_left_link"/>
         <child link="shank_back_left_link"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
+        <xacro:meldog_joint_limits lower ="-${5*PI/6}" upper = "${5*PI/6}"/>
     </joint>
 
     <!-- Thigh back right to Shank back right -->
@@ -161,7 +161,7 @@
         <parent link="thigh_back_right_link"/>
         <child link="shank_back_right_link"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <xacro:meldog_joint_limits lower ="-${PI/2}" upper = "${PI/2}"/>
+        <xacro:meldog_joint_limits lower ="-${5*PI/6}" upper = "${5*PI/6}"/>
     </joint>
     
 

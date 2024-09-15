@@ -26,10 +26,10 @@
 
 
         <!-- Thighs to Shanks joints -->
-        <xacro:ros2_control_joint joint_name="FLS" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="FRS" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="BLS" lower="-${PI/2}" upper="${PI/2}"/>
-        <xacro:ros2_control_joint joint_name="BRS" lower="-${PI/2}" upper="${PI/2}"/>
+        <xacro:ros2_control_joint joint_name="FLS" lower="-${5*PI/6}" upper="${5*PI/6}"/>
+        <xacro:ros2_control_joint joint_name="FRS" lower="-${5*PI/6}" upper="${5*PI/6}"/>
+        <xacro:ros2_control_joint joint_name="BLS" lower="-${5*PI/6}" upper="${5*PI/6}"/>
+        <xacro:ros2_control_joint joint_name="BRS" lower="-${5*PI/6}" upper="${5*PI/6}"/>
 
     </ros2_control>
 

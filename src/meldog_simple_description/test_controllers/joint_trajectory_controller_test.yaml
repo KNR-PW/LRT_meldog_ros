@@ -58,62 +58,62 @@ joint_trajectory_controller:
 
     gains:
       FLH_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       FRH_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       BLH_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       BRH_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       FLT_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       FRT_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       BLT_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       BRT_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       FLS_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       FRS_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       BLS_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0
       BRS_joint:
-        d: 2.5
+        d: 100.0
         i: 0.0
         i_clamp: 0.0
-        p: 350.0
+        p: 1500.0

@@ -5,8 +5,8 @@
     <!-- Gazebo macro for links -->
     <xacro:property name="kp_value" value="25000.0"/>
     <xacro:property name="kd_value" value="0.15"/>
-    <xacro:property name="mu2_value" value="0.7"/>
-    <xacro:property name="mu2_value" value="0.7"/>
+    <xacro:property name="mu2_value" value="0.9"/>
+    <xacro:property name="mu2_value" value="0.9"/>
     <xacro:property name="maxVel_value" value="0.25"/>
     <xacro:property name="dampingFactor_value" value="0.00"/>
 
