@@ -1,0 +1,24 @@
+ POZYCJA STARTOWA:
+ 
+ ros2 action send_goal /joint_trajectory_controller/follow_joint_trajectory control_msgs/action/FollowJointTrajectory -f "{
+    trajectory: {
+      joint_names: ['FLH_joint', 'FRH_joint', 'BLH_joint', 'BRH_joint', 'FLT_joint', 'FRT_joint', 'BLT_joint', 'BRT_joint', 'FLS_joint', 'FRS_joint', 'BLS_joint', 'BRS_joint'],
+      points: [
+        { positions: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], time_from_start: { sec: 1 } },
+        { positions: [0.0, 0.0, 0.0, 0.0, -0.78539, -0.78539, -0.78539, -0.78539, 1.5707, 1.5707, 1.5707, 1.5707], time_from_start: { sec: 6 } }    ]
+    }
+  }"
+  
+
+
+PRZYSIAD:
+
+   ros2 action send_goal /joint_trajectory_controller/follow_joint_trajectory control_msgs/action/FollowJointTrajectory -f "{
+    trajectory: {
+      joint_names: ['FLH_joint', 'FRH_joint', 'BLH_joint', 'BRH_joint', 'FLT_joint', 'FRT_joint', 'BLT_joint', 'BRT_joint', 'FLS_joint', 'FRS_joint', 'BLS_joint', 'BRS_joint'],
+      points: [
+        { positions: [0.0, 0.0, 0.0, 0.0, -0.78539, -0.78539, -0.78539, -0.78539, 1.5707, 1.5707, 1.5707, 1.5707], time_from_start: { sec: 3 } },
+        { positions: [0.0, 0.0, 0.0, 0.0, -1.04719, -1.04719, -1.04719, -1.04719, 2.094, 2.094, 2.094, 2.094], time_from_start: { sec: 6 } },
+        { positions: [0.0, 0.0, 0.0, 0.0, -0.78539, -0.78539, -0.78539, -0.78539, 1.5707, 1.5707, 1.5707, 1.5707], time_from_start: { sec: 9 } }    ]
+    }
+  }" 
