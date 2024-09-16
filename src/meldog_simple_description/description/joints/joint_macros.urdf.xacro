@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "joint_macros">
+
+    <xacro:macro name ="joint_macro" params="lower upper">
+        <limit lower="${lower}" upper="${upper}" effort="${joint_max_torque}" velocity="${joint_max_velocity}"/>
+        <dynamics damping="${joint_damping}" friction="${joint_friction}"/>
+    </xacro:macro>
+
+</robot>

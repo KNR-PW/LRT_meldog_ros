@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "joint_properties"> 
+    
+    <!-- Limits for joints (lower and upper position): -->
+    <xacro:property name="H_lower_limit" value="-${PI/2}"/>
+    <xacro:property name="H_upper_limit" value="${PI/2}"/>
+    <xacro:property name="T_lower_limit" value="-${PI}"/>
+    <xacro:property name="T_upper_limit" value="${PI}"/>
+    <xacro:property name="S_lower_limit" value="-${5*PI/6}"/>
+    <xacro:property name="S_upper_limit" value="${5*PI/6}"/>
+
+    <!-- Limits for joints (velocity, torque)-->
+    <xacro:property name="joint_max_velocity" value="20.2"/>
+    <xacro:property name="joint_max_torque" value="30"/>
+
+    <!-- Joint properties -->
+    <xacro:property name="joint_damping" value="0.0"/>
+    <xacro:property name="joint_friction" value="0.0"/>
+
+</robot>
