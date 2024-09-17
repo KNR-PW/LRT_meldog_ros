@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="meldog_simple_core">
+
+    <!-- PI -->
+    <xacro:property name="PI" value="3.1415926535897"/>
+
+    <!-- Joint properties and macros -->
+    <xacro:include filename="joints/joint_properties.urdf.xacro"/>
+    <xacro:include filename="joints/joint_macros.urdf.xacro"/>
+
+    <!-- LINKS -->
+    <!-- Base link spawns in x= 0.0 y = 0.0 z = 0.0 -->
+    <link name="base_link"></link>
+
+    <!-- Trunk link -->
+    <xacro:include filename="links/trunk/trunk.urdf.xacro"/>
+
+    <!-- Hip links -->
+    <xacro:include filename="links/hip/hip.urdf.xacro"/>
+    <xacro:hip_link position="front_left"/>
+    <xacro:hip_link position="front_right"/>
+    <xacro:hip_link position="back_left"/>
+    <xacro:hip_link position="back_right"/>
+
+    <!-- Thigh links -->
+    <xacro:include filename="links/thigh/thigh.urdf.xacro"/>
+    <xacro:thigh_link position="front_left"/>
+    <xacro:thigh_link position="front_right"/>
+    <xacro:thigh_link position="back_left"/>
+    <xacro:thigh_link position="back_right"/>
+
+
+    <!-- Shank links -->
+    <xacro:include filename="links/shank/shank.urdf.xacro"/>
+    <xacro:shank_link position="front_left"/>
+    <xacro:shank_link position="front_right"/>
+    <xacro:shank_link position="back_left"/>
+    <xacro:shank_link position="back_right"/>
+
+
+    <!-- Feet links (frames in the end of shank) -->
+    <xacro:include filename="links/feet/feet.urdf.xacro"/>
+    <xacro:feet_link position="front_left"/>
+    <xacro:feet_link position="front_right"/>
+    <xacro:feet_link position="back_left"/>
+    <xacro:feet_link position="back_right"/>
+
+    <!-- JOINTS -->   
+
+    <!-- Base to Trunk joint -->
+    <joint name="BT_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="trunk_link"/>
+        <origin xyz="0 0 1.0" rpy="0 0 0"/>  
+    </joint>
+
+
+    <!-- Trunk to Hip front left joint -->
+    <joint name="FLH_joint" type="revolute">
+        <origin xyz="${trunk_actuators_length/2} ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="trunk_link"/>
+        <child link="hip_front_left_link"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <xacro:joint_macro lower ="${H_lower_limit}" upper = "${H_upper_limit}"/>
+    </joint>
+
+    <!-- Trunk to Hip front right joint -->
+    <joint name="FRH_joint" type="revolute">
+        <origin xyz="${trunk_actuators_length/2} ${-(trunk_base_width/2 + trunk_actuators_width/2)} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="trunk_link"/>
+        <child link="hip_front_right_link"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <xacro:joint_macro lower ="${H_lower_limit}" upper = "${H_upper_limit}"/>
+    </joint>
+
+    <!-- Trunk to Hip back left joint -->
+    <joint name="BLH_joint" type="revolute">
+        <origin xyz="${-trunk_actuators_length/2} ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 ${PI}"/>
+        <parent link="trunk_link"/>
+        <child link="hip_back_left_link"/>
+        <axis xyz="-1.0 0.0 0.0"/>
+        <xacro:joint_macro lower ="${H_lower_limit}" upper = "${H_upper_limit}"/>
+    </joint>
+
+    <!-- Trunk to Hip back right joint -->
+    <joint name="BRH_joint" type="revolute">
+        <origin xyz="${-trunk_actuators_length/2} ${-(trunk_base_width/2 + trunk_actuators_width/2)} 0.0" rpy="0.0 0.0 ${PI}"/>
+        <parent link="trunk_link"/>
+        <child link="hip_back_right_link"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <xacro:joint_macro lower ="${H_lower_limit}" upper = "${H_upper_limit}"/>
+    </joint>
+
+
+    <!-- Hip front left to Thigh front left -->
+    <joint name="FLT_joint" type="revolute">
+        <origin xyz="${hip_length/2} ${hip_width/2 + thigh_radius} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="hip_front_left_link"/>
+        <child link="thigh_front_left_link"/>
+        <axis xyz="0.0 -1.0 0.0"/>
+        <xacro:joint_macro lower ="${T_lower_limit}" upper = "${T_upper_limit}"/>
+    </joint>
+
+    <!-- Hip front right to Thigh front right -->
+    <joint name="FRT_joint" type="revolute">
+        <origin xyz="${hip_length/2} ${-(hip_width/2 + thigh_radius)} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="hip_front_right_link"/>
+        <child link="thigh_front_right_link"/>
+        <axis xyz="0.0 -1.0 0.0"/>
+        <xacro:joint_macro lower ="${T_lower_limit}" upper = "${T_upper_limit}"/>
+    </joint>
+
+    <!-- Hip back left to Thigh back left -->
+    <joint name="BLT_joint" type="revolute">
+        <origin xyz="${hip_length/2} ${-(hip_width/2 + thigh_radius)} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="hip_back_left_link"/>
+        <child link="thigh_back_left_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <xacro:joint_macro lower ="${T_lower_limit}" upper = "${T_upper_limit}"/>
+    </joint>
+
+    <!-- Hip back right to Thigh back right -->
+    <joint name="BRT_joint" type="revolute">
+        <origin xyz="${hip_length/2} ${hip_width/2 + thigh_radius} 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="hip_back_right_link"/>
+        <child link="thigh_back_right_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <xacro:joint_macro lower ="${T_lower_limit}" upper = "${T_upper_limit}"/>
+    </joint>
+
+
+    <!-- Thigh front left to Shank front left -->
+    <joint name="FLS_joint" type="revolute">
+        <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="thigh_front_left_link"/>
+        <child link="shank_front_left_link"/>
+        <axis xyz="0.0 -1.0 0.0"/>
+        <xacro:joint_macro lower ="${S_lower_limit}" upper = "${S_upper_limit}"/>
+    </joint>
+
+    <!-- Thigh front right to Shank front right -->
+    <joint name="FRS_joint" type="revolute">
+        <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="thigh_front_right_link"/>
+        <child link="shank_front_right_link"/>
+        <axis xyz="0.0 -1.0 0.0"/>
+        <xacro:joint_macro lower ="${S_lower_limit}" upper = "${S_upper_limit}"/>
+    </joint>
+
+    <!-- Thigh back left to Shank back left -->
+    <joint name="BLS_joint" type="revolute">
+        <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="thigh_back_left_link"/>
+        <child link="shank_back_left_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <xacro:joint_macro lower ="${S_lower_limit}" upper = "${S_upper_limit}"/>
+    </joint>
+
+    <!-- Thigh back right to Shank back right -->
+    <joint name="BRS_joint" type="revolute">
+        <origin xyz="0.0 0.0 -${thigh_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="thigh_back_right_link"/>
+        <child link="shank_back_right_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <xacro:joint_macro lower ="${S_lower_limit}" upper = "${S_upper_limit}"/>
+    </joint>
+    
+
+    <!-- Shank front left to Feet front left -->
+    <joint name="FLF_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="shank_front_left_link"/>
+        <child link="feet_front_left_link"/>
+    </joint>
+
+    <!-- Shank front right to Feet right left -->
+    <joint name="RLF_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="shank_front_right_link"/>
+        <child link="feet_front_right_link"/>
+    </joint>
+
+    <!-- Shank back left to Feet back left -->
+    <joint name="BLF_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="shank_back_left_link"/>
+        <child link="feet_back_left_link"/>
+    </joint>
+
+    <!-- Shank back right to Feet back right-->
+    <joint name="BRF_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
+        <parent link="shank_back_right_link"/>
+        <child link="feet_back_right_link"/>
+    </joint>
+
+
+</robot>

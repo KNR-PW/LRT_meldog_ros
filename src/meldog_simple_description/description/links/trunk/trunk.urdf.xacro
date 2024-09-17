@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_trunk">
+
+    <!-- Meldog trunk (3 simple boxes) -->
+    <xacro:property name="trunk_base_length" value="0.8" />
+    <xacro:property name="trunk_base_width" value="0.2" />
+    <xacro:property name="trunk_base_height" value="0.1" />
+
+    <xacro:property name="trunk_actuators_length" value="0.3" />
+    <xacro:property name="trunk_actuators_width" value="0.2" />
+    <xacro:property name="trunk_actuators_height" value="0.1" />
+
+    <xacro:property name="trunk_mass" value="8.0"/>
+
+    <link name="trunk_link">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="${trunk_mass}"/> 
+            <inertia ixx="${1/12*trunk_mass*(trunk_base_width*trunk_base_width + trunk_base_height*trunk_base_height)}" ixy="0.0" ixz="0.0" iyy="${1/12*trunk_mass*(trunk_base_length*trunk_base_length + trunk_base_height*trunk_base_height)}" iyz=".0" izz="${1/12*trunk_mass*(trunk_base_length*trunk_base_length + trunk_base_width*trunk_base_width)}"/> 
+        </inertial>
+
+        <visual name="trunk_base_visual">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_base_length} ${trunk_base_width} ${trunk_base_height}"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.0 0.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <visual name="trunk_actuators_left_visual">
+            <origin xyz="0.0 ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
+            </geometry>
+            <material name="">
+                <color rgba="0.0 1.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <visual name="trunk_actuators_right_visual">
+            <origin xyz="0.0 ${-trunk_base_width/2 - trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+
+        
+         <collision name="trunk_base_collision">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_base_length} ${trunk_base_width} ${trunk_base_height}"/>
+            </geometry>
+        </collision>
+        <collision name="trunk_actuators_left_collision">
+            <origin xyz="0.0 ${trunk_base_width/2 + trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
+            </geometry>
+        </collision>
+        <collision name="trunk_actuators_right_collision">
+            <origin xyz="0.0 ${-trunk_base_width/2 - trunk_actuators_width/2} 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${trunk_actuators_length} ${trunk_actuators_width} ${trunk_actuators_height}"/>
+            </geometry>
+        </collision>
+    </link>
+</robot>
