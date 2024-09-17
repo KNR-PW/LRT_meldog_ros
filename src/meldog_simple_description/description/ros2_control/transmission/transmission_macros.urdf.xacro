@@ -34,15 +34,15 @@
         </transmission>
     </xacro:macro>
 
-    <!-- Meldog Transmissions: -->
+    <!-- Meldog Transmissions -->
 
-    <!-- Trunk to Hips transmissions: -->
+    <!-- Trunk to Hips transmissions -->
     <xacro:SimpleTransmission joint_name="FLH" reduction="${actuator_gear_ratio}" offset="0.0"/>
     <xacro:SimpleTransmission joint_name="FRH" reduction="${actuator_gear_ratio}" offset="0.0"/>
     <xacro:SimpleTransmission joint_name="BLH" reduction="${actuator_gear_ratio}" offset="0.0"/>
     <xacro:SimpleTransmission joint_name="BRH" reduction="${actuator_gear_ratio}" offset="0.0"/>
 
-    <!-- Thighs to Shanks transmissions: -->
+    <!-- Thighs to Shanks transmissions -->
     <xacro:FourBarLinkageTransmission first_joint_name="FLT" second_joint_name="FLS" reduction="${actuator_gear_ratio}" first_offset="0.0" second_offset="0.0"/>
     <xacro:FourBarLinkageTransmission first_joint_name="FRT" second_joint_name="FRS" reduction="${actuator_gear_ratio}" first_offset="0.0" second_offset="0.0"/>
     <xacro:FourBarLinkageTransmission first_joint_name="BLT" second_joint_name="BLS" reduction="${actuator_gear_ratio}" first_offset="0.0" second_offset="0.0"/>

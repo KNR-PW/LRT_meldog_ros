@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name ="meldog_feet">
 
-     <xacro:property name="feet_radius" value="0.06"/>
-     <xacro:property name="feet_mass" value="0.1"/>
-
+    <!-- Meldog feet (simple spheres) -->
+    <xacro:property name="feet_radius" value="0.06"/>
+    <xacro:property name="feet_mass" value="0.1"/>
 
     <xacro:macro name="feet_link" params="position">
         <link name="feet_${position}_link">

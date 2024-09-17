@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_ros2_control_core">
 
-    <!-- Joint hardware properties and macros: -->
+    <!-- Joint hardware properties and macros -->
     <xacro:include filename="joints_hardware/joint_hardware_properties.urdf.xacro"/>
     <xacro:include filename="joints_hardware/joint_hardware_macros.urdf.xacro"/>
 
-    <!-- Transmissions: -->
+    <!-- Transmissions -->
     <xacro:include filename="transmission/transmission_macros.urdf.xacro"/>
 
-    <!-- Hardware interface for Gazebo: -->
+    <!-- Hardware interface for Gazebo -->
 
     <!-- Trunk to Hips joints-->
     <xacro:joint_hardware_macro joint_name="FLH" lower="${motor_lower_limit}" upper="${motor_upper_limit}"/>

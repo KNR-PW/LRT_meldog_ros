@@ -4,11 +4,11 @@
     <!-- PI -->
     <xacro:property name="PI" value="3.1415926535897"/>
 
-    <!-- Joint properties and macros: -->
+    <!-- Joint properties and macros -->
     <xacro:include filename="joints/joint_properties.urdf.xacro"/>
     <xacro:include filename="joints/joint_macros.urdf.xacro"/>
 
-    <!-- LINKS: -->
+    <!-- LINKS -->
     <!-- Base link spawns in x= 0.0 y = 0.0 z = 0.0 -->
     <link name="base_link"></link>
 
@@ -45,7 +45,7 @@
     <xacro:feet_link position="back_left"/>
     <xacro:feet_link position="back_right"/>
 
-    <!-- JOINTS: -->   
+    <!-- JOINTS -->   
 
     <!-- Base to Trunk joint -->
     <joint name="BT_joint" type="fixed">

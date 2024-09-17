@@ -2,11 +2,10 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_hip">
 
 
-
+    <!-- Meldog hips (simple boxes)-->
     <xacro:property name="hip_length" value="0.2"/>
     <xacro:property name="hip_width" value="0.15"/>
     <xacro:property name="hip_height" value="0.075"/>
-
     <xacro:property name="hip_mass" value="3.0"/>
 
     <xacro:macro name="hip_link" params="position">

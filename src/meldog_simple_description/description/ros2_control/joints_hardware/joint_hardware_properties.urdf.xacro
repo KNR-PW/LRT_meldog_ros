@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name ="joint_hardware_properties">
 
-    <!-- Actuator and motor parameters: -->
+    <!-- Actuator and motor parameters -->
     <xacro:property name="actuator_gear_ratio" value="9.97"/>
     <xacro:property name="motor_max_velocity" value="${actuator_gear_ratio*20.2}"/>
     <xacro:property name="motor_max_torque" value="${30.0/actuator_gear_ratio}"/>

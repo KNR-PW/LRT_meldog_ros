@@ -7,7 +7,7 @@
     <!-- Gazebo macros -->
     <xacro:include filename="gazebo/gazebo_macros.urdf.xacro"/>
 
-    <!-- LINKS: -->
+    <!-- LINKS -->
     <!-- Trunk link -->
     <xacro:gazebo_link link_name="trunk" color="Blue" selfCollide_value ="true"/>
 
@@ -36,7 +36,7 @@
     <xacro:gazebo_link link_name="feet_back_right" color="Pink" selfCollide_value ="true"/>
 
 
-    <!-- JOINTS (only revolute): -->
+    <!-- JOINTS (only revolute) -->
     <!-- Trunk to Hips joints-->
     <xacro:gazebo_joint joint_name="FLH"/>
     <xacro:gazebo_joint joint_name="FRH"/>

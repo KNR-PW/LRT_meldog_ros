@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name ="joint_hardware_macros">
 
+    <!-- JMotor and actuator macro for ros2_control hardware interface -->
     <xacro:macro name="joint_hardware_macro" params="joint_name upper lower">
         <joint name="${joint_name}_joint">
             <command_interface name="position">
