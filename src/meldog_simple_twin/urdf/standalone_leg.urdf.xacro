@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot name="meldog_simple_core" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <link name="upper_limb_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://meldog_simple_twin/meshes/upper_limb_test.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </visual>
+    </link>
+
+    <link name="lower_limb_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://meldog_simple_twin/meshes/lower_limb_test.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </visual>
+    </link>
+
+    <link name="foot_link" />
+
+    <link name="trunk_link">
+        <visual>
+            <geometry>
+                <box size="0.3 0.2 0.1" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </visual>
+    </link>
+
+    <joint name="trunk_upper_limb_joint" type="revolute">
+        <parent link="trunk_link" />
+        <child link="upper_limb_link" />
+        <origin xyz="0 0.1 0" rpy="0 0 0" />
+        <limit lower="${-16.0/36.0*2*pi}" upper="${16.0/36.0*2*pi}" effort="100" velocity="100" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="upper_limb_lower_limb_joint" type="revolute">
+        <parent link="upper_limb_link" />
+        <child link="lower_limb_link" />
+        <origin xyz="0 0 -0.25" rpy="0 0 0" />
+        <limit lower="${-16.0/36.0*2*pi}" upper="${16.0/36.0*2*pi}" effort="100" velocity="100" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="lower_limb_foot_joint" type="fixed">
+        <parent link="lower_limb_link" />
+        <child link="foot_link" />
+        <origin xyz="0 0 -0.25" rpy="0 0 0" />
+    </joint>
+
+</robot>
