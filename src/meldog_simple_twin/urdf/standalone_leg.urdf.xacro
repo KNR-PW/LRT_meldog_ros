@@ -27,7 +27,7 @@
     <link name="leg_body_link">
         <visual>
             <geometry>
-                <box size="0.3 0.2 0.1" />
+                <mesh filename="package://meldog_simple_twin/meshes/${leg_body_stl_name}" scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0" />
         </visual>

@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- stl mesh names for each link in leg -->
-    <xacro:property name="leg_body_stl_name" value="" />
+    <xacro:property name="leg_body_stl_name" value="leg_body_test.stl" />
     <xacro:property name="upper_limb_stl_name" value="upper_limb_test.stl" />
     <xacro:property name="lower_limb_stl_name" value="lower_limb_test.stl" />
 
