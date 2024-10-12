@@ -12,20 +12,21 @@
 
     <!-- joint properties -->
 
-        <!-- joint lower movement limits in degrees -->
-    <xacro:property name="trunk_upper_limb_lower_limit" value="0" />
-    <xacro:property name="upper_limb_lower_limb_lower_limit" value="0" />
+        <!-- joint movement limits in degrees -->
 
-        <!-- joint upper movement limits in degrees -->
-    <xacro:property name="trunk_upper_limb_upper_limit" value="90" />
-    <xacro:property name="upper_limb_lower_limb_upper_limit" value="90" />
+            <!-- trunk upper limb joint -->
+            <xacro:property name="trunk_upper_limb_lower_limit" value="0" />
+            <xacro:property name="trunk_upper_limb_upper_limit" value="90" />
+            <!-- upper limb lower limb joint -->
+            <xacro:property name="upper_limb_lower_limb_lower_limit" value="0" />
+            <xacro:property name="upper_limb_lower_limb_upper_limit" value="90" />
 
         <!-- joint effort limits -->
-    <xacro:property name="trunk_upper_limb_effort" value="100.0" />
-    <xacro:property name="upper_limb_lower_limb_effort" value="100.0" />
+        <xacro:property name="trunk_upper_limb_effort" value="100.0" />
+        <xacro:property name="upper_limb_lower_limb_effort" value="100.0" />
 
         <!-- joint velocity limits -->
-    <xacro:property name="trunk_upper_limb_velocity" value="100.0" />
-    <xacro:property name="upper_limb_lower_limb_velocity" value="100.0" />
+        <xacro:property name="trunk_upper_limb_velocity" value="100.0" />
+        <xacro:property name="upper_limb_lower_limb_velocity" value="100.0" />
 
 </robot>
