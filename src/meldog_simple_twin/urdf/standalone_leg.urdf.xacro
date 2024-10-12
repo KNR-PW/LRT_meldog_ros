@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<robot name="meldog_simple_core" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="meldog_simple_core"
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:include filename="properties.urdf.xacro" />
 
     <link name="upper_limb_link">
         <visual>
             <geometry>
-                <mesh filename="package://meldog_simple_twin/meshes/upper_limb_test.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://meldog_simple_twin/meshes/${upper_limb_stl_name}" scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </visual>
@@ -15,7 +16,7 @@
     <link name="lower_limb_link">
         <visual>
             <geometry>
-                <mesh filename="package://meldog_simple_twin/meshes/lower_limb_test.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://meldog_simple_twin/meshes/${lower_limb_stl_name}" scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </visual>
@@ -36,22 +37,28 @@
         <parent link="trunk_link" />
         <child link="upper_limb_link" />
         <origin xyz="0 0.1 0" rpy="0 0 0" />
-        <limit lower="${-16.0/36.0*2*pi}" upper="${16.0/36.0*2*pi}" effort="100" velocity="100" />
+        <limit lower="${trunk_upper_limb_lower_limit/180.0*pi}" 
+               upper="${trunk_upper_limb_upper_limit/180.0*pi}" 
+               effort="${trunk_upper_limb_effort}" 
+               velocity="${trunk_upper_limb_velocity}" />
         <axis xyz="0 1 0" />
     </joint>
 
     <joint name="upper_limb_lower_limb_joint" type="revolute">
         <parent link="upper_limb_link" />
         <child link="lower_limb_link" />
-        <origin xyz="0 0 -0.25" rpy="0 0 0" />
-        <limit lower="${-16.0/36.0*2*pi}" upper="${16.0/36.0*2*pi}" effort="100" velocity="100" />
+        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
+        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
+               upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
+               effort="${upper_limb_lower_limb_effort}" 
+               velocity="${upper_limb_lower_limb_velocity}" />
         <axis xyz="0 1 0" />
     </joint>
 
     <joint name="lower_limb_foot_joint" type="fixed">
         <parent link="lower_limb_link" />
         <child link="foot_link" />
-        <origin xyz="0 0 -0.25" rpy="0 0 0" />
+        <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
     </joint>
 
 </robot>

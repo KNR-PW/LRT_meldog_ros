@@ -1,27 +1,31 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!-- stl names for each link in leg -->
+    <!-- stl mesh names for each link in leg -->
     <xacro:property name="trunk_stl_name" value="" />
-    <xacro:property name="upper_limb_stl_name" value="" />
-    <xacro:property name="lower_limb_stl_name" value="" />
+    <xacro:property name="upper_limb_stl_name" value="upper_limb_test.stl" />
+    <xacro:property name="lower_limb_stl_name" value="lower_limb_test.stl" />
 
     <!-- leg dimensions -->
-    <xacro:property name="upper_limb_length" value="" />
-    <xacro:property name="lower_limb_length_to_foot" value="" />
+    <xacro:property name="upper_limb_length" value="0.25" />
+    <xacro:property name="lower_limb_length_to_foot" value="0.25" />
 
     <!-- joint properties -->
-        <!-- joint lower movement limits -->
-    <xacro:property name="trunk_upper_limb_lower_limit" value="" />
-    <xacro:property name="upper_limb_lower_limb_lower_limit" value="" />
-        <!-- joint upper movement limits -->
-    <xacro:property name="trunk_upper_limb_upper_limit" value="" />
-    <xacro:property name="upper_limb_lower_limb_upper_limit" value="" />
+
+        <!-- joint lower movement limits in degrees -->
+    <xacro:property name="trunk_upper_limb_lower_limit" value="0" />
+    <xacro:property name="upper_limb_lower_limb_lower_limit" value="0" />
+
+        <!-- joint upper movement limits in degrees -->
+    <xacro:property name="trunk_upper_limb_upper_limit" value="90" />
+    <xacro:property name="upper_limb_lower_limb_upper_limit" value="90" />
+
         <!-- joint effort limits -->
-    <xacro:property name="trunk_upper_limb_effort" value="" />
-    <xacro:property name="upper_limb_lower_limb_effort" value="" />
+    <xacro:property name="trunk_upper_limb_effort" value="100.0" />
+    <xacro:property name="upper_limb_lower_limb_effort" value="100.0" />
+
         <!-- joint velocity limits -->
-    <xacro:property name="trunk_upper_limb_effort" value="" />
-    <xacro:property name="upper_limb_lower_limb_effort" value="" />
+    <xacro:property name="trunk_upper_limb_velocity" value="100.0" />
+    <xacro:property name="upper_limb_lower_limb_velocity" value="100.0" />
 
 </robot>
