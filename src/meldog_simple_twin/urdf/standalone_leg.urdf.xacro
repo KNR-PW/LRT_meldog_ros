@@ -24,7 +24,7 @@
 
     <link name="foot_link" />
 
-    <link name="trunk_link">
+    <link name="leg_body_link">
         <visual>
             <geometry>
                 <box size="0.3 0.2 0.1" />
@@ -33,14 +33,14 @@
         </visual>
     </link>
 
-    <joint name="trunk_upper_limb_joint" type="revolute">
-        <parent link="trunk_link" />
+    <joint name="leg_body_upper_limb_joint" type="revolute">
+        <parent link="leg_body_link" />
         <child link="upper_limb_link" />
         <origin xyz="0 0.1 0" rpy="0 0 0" />
-        <limit lower="${trunk_upper_limb_lower_limit/180.0*pi}" 
-               upper="${trunk_upper_limb_upper_limit/180.0*pi}" 
-               effort="${trunk_upper_limb_effort}" 
-               velocity="${trunk_upper_limb_velocity}" />
+        <limit lower="${leg_body_upper_limb_lower_limit/180.0*pi}" 
+               upper="${leg_body_upper_limb_upper_limit/180.0*pi}" 
+               effort="${leg_body_upper_limb_effort}" 
+               velocity="${leg_body_upper_limb_velocity}" />
         <axis xyz="0 1 0" />
     </joint>
 
