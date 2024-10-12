@@ -11,9 +11,17 @@
     <xacro:property name="lower_limb_length_to_foot" value="" />
 
     <!-- joint properties -->
+        <!-- joint lower movement limits -->
     <xacro:property name="trunk_upper_limb_lower_limit" value="" />
     <xacro:property name="upper_limb_lower_limb_lower_limit" value="" />
+        <!-- joint upper movement limits -->
     <xacro:property name="trunk_upper_limb_upper_limit" value="" />
     <xacro:property name="upper_limb_lower_limb_upper_limit" value="" />
+        <!-- joint effort limits -->
+    <xacro:property name="trunk_upper_limb_effort" value="" />
+    <xacro:property name="upper_limb_lower_limb_effort" value="" />
+        <!-- joint velocity limits -->
+    <xacro:property name="trunk_upper_limb_effort" value="" />
+    <xacro:property name="upper_limb_lower_limb_effort" value="" />
 
 </robot>
