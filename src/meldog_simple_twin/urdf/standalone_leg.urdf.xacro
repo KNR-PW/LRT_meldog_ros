@@ -2,7 +2,7 @@
 <robot name="meldog_simple_core"
     xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:include filename="properties.urdf.xacro" />
+    <xacro:include filename="base_properties.urdf.xacro" />
 
     <link name="upper_limb_link">
         <visual>
