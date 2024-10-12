@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- stl names for each link in leg -->
+    <xacro:property name="trunk_stl_name" value="" />
+    <xacro:property name="upper_limb_stl_name" value="" />
+    <xacro:property name="lower_limb_stl_name" value="" />
+
+    <!-- leg dimensions -->
+    <xacro:property name="upper_limb_length" value="" />
+    <xacro:property name="lower_limb_length_to_foot" value="" />
+
+</robot>
