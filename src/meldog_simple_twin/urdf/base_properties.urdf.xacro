@@ -6,19 +6,27 @@
     <xacro:property name="upper_limb_stl_name" value="upper_limb_test.stl" />
     <xacro:property name="lower_limb_stl_name" value="lower_limb_test.stl" />
 
-    <!-- leg dimensions -->
+    <!-- limb dimensions -->
     <xacro:property name="upper_limb_length" value="0.25" />
     <xacro:property name="lower_limb_length_to_foot" value="0.25" />
 
     <!-- joint properties -->
 
+        <!-- body to limb Joint positions -->
+
+            <!-- leg body upper limb joint -->
+            <xacro:property name="leg_body_upper_limb_x" value="0.174"/>
+            <xacro:property name="leg_body_upper_limb_y" value="0.097"/>
+            <xacro:property name="leg_body_upper_limb_z" value="0"/>
+
         <!-- joint movement limits in degrees -->
 
             <!-- leg body upper limb joint -->
-            <xacro:property name="leg_body_upper_limb_lower_limit" value="0" />
+            <xacro:property name="leg_body_upper_limb_lower_limit" value="-90" />
             <xacro:property name="leg_body_upper_limb_upper_limit" value="90" />
+
             <!-- upper limb lower limb joint -->
-            <xacro:property name="upper_limb_lower_limb_lower_limit" value="0" />
+            <xacro:property name="upper_limb_lower_limb_lower_limit" value="-90" />
             <xacro:property name="upper_limb_lower_limb_upper_limit" value="90" />
 
         <!-- joint effort limits -->

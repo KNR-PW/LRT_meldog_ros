@@ -36,7 +36,10 @@
     <joint name="leg_body_upper_limb_joint" type="revolute">
         <parent link="leg_body_link" />
         <child link="upper_limb_link" />
-        <origin xyz="0 0.1 0" rpy="0 0 0" />
+        <origin xyz="${leg_body_upper_limb_x}
+                     ${leg_body_upper_limb_y}
+                     ${leg_body_upper_limb_z}" 
+                rpy="0 0 0" />
         <limit lower="${leg_body_upper_limb_lower_limit/180.0*pi}" 
                upper="${leg_body_upper_limb_upper_limit/180.0*pi}" 
                effort="${leg_body_upper_limb_effort}" 
