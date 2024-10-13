@@ -16,7 +16,7 @@
 
             <!-- leg body upper limb joint -->
             <xacro:property name="leg_body_upper_limb_x" value="0.174"/>
-            <xacro:property name="leg_body_upper_limb_y" value="0.097"/>
+            <xacro:property name="leg_body_upper_limb_y" value="0.0925"/>
             <xacro:property name="leg_body_upper_limb_z" value="0"/>
 
         <!-- joint movement limits in degrees -->
