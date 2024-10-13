@@ -22,9 +22,11 @@
         </collision>
 
         <inertial>
-            <mass value="${}" />
-            <origin xyz="${}" rpy="${}" />
-            <inertia ixx="${}" ixy="${}" ixz="${}" iyy="${}" iyz="${}" izz="${}" />
+            <mass value="${upper_limb_mass}" />
+            <origin xyz="${upper_limb_cm_x} ${upper_limb_cm_y} ${upper_limb_cm_z}" rpy="0 0 0" />
+            <inertia ixx="${upper_limb_ixx}" ixy="${upper_limb_ixy}" ixz="${upper_limb_ixz}" 
+                                             iyy="${upper_limb_iyy}" iyz="${upper_limb_iyz}" 
+                                                                     izz="${upper_limb_izz}" />
         </inertial>
 
     </link>
@@ -47,9 +49,11 @@
         </collision>
 
         <inertial>
-            <mass value="${}" />
-            <origin xyz="${}" rpy="${}" />
-            <inertia ixx="${}" ixy="${}" ixz="${}" iyy="${}" iyz="${}" izz="${}" />
+            <mass value="${lower_limb_mass}" />
+            <origin xyz="${lower_limb_cm_x} ${lower_limb_cm_y} ${lower_limb_cm_z}" rpy="0 0 0" />
+            <inertia ixx="${lower_limb_ixx}" ixy="${lower_limb_ixy}" ixz="${lower_limb_ixz}" 
+                                             iyy="${lower_limb_iyy}" iyz="${lower_limb_iyz}" 
+                                                                     izz="${lower_limb_izz}" />
         </inertial>
 
     </link>
@@ -74,9 +78,11 @@
         </collision>
 
         <inertial>
-            <mass value="${}" />
-            <origin xyz="${}" rpy="${}" />
-            <inertia ixx="${}" ixy="${}" ixz="${}" iyy="${}" iyz="${}" izz="${}" />
+            <mass value="${leg_body_mass}" />
+            <origin xyz="${leg_body_cm_x} ${leg_body_cm_y} ${leg_body_cm_z}" rpy="0 0 0" />
+            <inertia ixx="${leg_body_ixx}" ixy="${leg_body_ixy}" ixz="${leg_body_ixz}" 
+                                           iyy="${leg_body_iyy}" iyz="${leg_body_iyz}" 
+                                                                 izz="${leg_body_izz}" />
         </inertial>
 
     </link>
