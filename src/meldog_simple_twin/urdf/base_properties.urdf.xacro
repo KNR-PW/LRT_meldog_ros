@@ -17,6 +17,69 @@
     <xacro:property name="upper_limb_length" value="0.25" />
     <xacro:property name="lower_limb_length_to_foot" value="0.25" />
 
+    <!-- inertial properties for each link -->
+
+        <!-- leg body link -->
+
+            <!-- mass -->
+            <xacro:property name="leg_body_mass" value=""/>
+
+            <!-- center of mass -->
+            <xacro:property name="leg_body_cm_x" value=""/>
+            <xacro:property name="leg_body_cm_y" value=""/>
+            <xacro:property name="leg_body_cm_z" value=""/>
+
+            <!-- moments of inertia -->
+            <xacro:property name="leg_body_ixx" value=""/>
+            <xacro:property name="leg_body_ixy" value=""/>
+            <xacro:property name="leg_body_ixz" value=""/>
+
+            <xacro:property name="leg_body_iyy" value=""/>
+            <xacro:property name="leg_body_iyz" value=""/>
+
+            <xacro:property name="leg_body_izz" value=""/>
+
+
+        <!-- upper limb link -->
+
+            <!-- mass -->
+            <xacro:property name="leg_body_mass" value=""/>
+
+            <!-- center of mass -->
+            <xacro:property name="leg_body_cm_x" value=""/>
+            <xacro:property name="leg_body_cm_y" value=""/>
+            <xacro:property name="leg_body_cm_z" value=""/>
+
+            <!-- moments of inertia -->
+            <xacro:property name="leg_body_ixx" value=""/>
+            <xacro:property name="leg_body_ixy" value=""/>
+            <xacro:property name="leg_body_ixz" value=""/>
+
+            <xacro:property name="leg_body_iyy" value=""/>
+            <xacro:property name="leg_body_iyz" value=""/>
+
+            <xacro:property name="leg_body_izz" value=""/>
+
+        <!-- lower limb link -->
+
+            <!-- mass -->
+            <xacro:property name="leg_body_mass" value=""/>
+
+            <!-- center of mass -->
+            <xacro:property name="leg_body_cm_x" value=""/>
+            <xacro:property name="leg_body_cm_y" value=""/>
+            <xacro:property name="leg_body_cm_z" value=""/>
+
+            <!-- moments of inertia -->
+            <xacro:property name="leg_body_ixx" value=""/>
+            <xacro:property name="leg_body_ixy" value=""/>
+            <xacro:property name="leg_body_ixz" value=""/>
+
+            <xacro:property name="leg_body_iyy" value=""/>
+            <xacro:property name="leg_body_iyz" value=""/>
+
+            <xacro:property name="leg_body_izz" value=""/>
+
     <!-- joint properties -->
 
         <!-- body to limb Joint positions -->
