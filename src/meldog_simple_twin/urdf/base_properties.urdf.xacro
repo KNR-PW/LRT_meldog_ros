@@ -2,9 +2,16 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- stl mesh names for each link in leg -->
-    <xacro:property name="leg_body_stl_name" value="leg_body_test.stl" />
-    <xacro:property name="upper_limb_stl_name" value="upper_limb_test.stl" />
-    <xacro:property name="lower_limb_stl_name" value="lower_limb_test.stl" />
+
+        <!-- visual tag meshes -->
+        <xacro:property name="leg_body_vis_stl_name" value="leg_body_test.stl" />
+        <xacro:property name="upper_limb_vis_stl_name" value="upper_limb_test.stl" />
+        <xacro:property name="lower_limb_vis_stl_name" value="lower_limb_test.stl" />
+
+        <!-- collision tag meshes -->
+        <xacro:property name="leg_body_coll_stl_name" value="leg_body_collision.stl" />
+        <xacro:property name="upper_limb_coll_stl_name" value="upper_limb_collision.stl" />
+        <xacro:property name="lower_limb_coll_stl_name" value="lower_limb_collision.stl" />
 
     <!-- limb dimensions -->
     <xacro:property name="upper_limb_length" value="0.25" />
@@ -22,12 +29,12 @@
         <!-- joint movement limits in degrees -->
 
             <!-- leg body upper limb joint -->
-            <xacro:property name="leg_body_upper_limb_lower_limit" value="-90" />
-            <xacro:property name="leg_body_upper_limb_upper_limit" value="90" />
+            <xacro:property name="leg_body_upper_limb_lower_limit" value="-120" />
+            <xacro:property name="leg_body_upper_limb_upper_limit" value="120" />
 
             <!-- upper limb lower limb joint -->
-            <xacro:property name="upper_limb_lower_limb_lower_limit" value="-90" />
-            <xacro:property name="upper_limb_lower_limb_upper_limit" value="90" />
+            <xacro:property name="upper_limb_lower_limb_lower_limit" value="-160" />
+            <xacro:property name="upper_limb_lower_limb_upper_limit" value="160" />
 
         <!-- joint effort limits -->
         <xacro:property name="leg_body_upper_limb_effort" value="100.0" />
