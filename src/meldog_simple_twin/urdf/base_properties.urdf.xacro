@@ -41,7 +41,7 @@
 
 
         <!-- upper limb link -->
-
+         
             <!-- mass -->
             <xacro:property name="leg_body_mass" value=""/>
 
