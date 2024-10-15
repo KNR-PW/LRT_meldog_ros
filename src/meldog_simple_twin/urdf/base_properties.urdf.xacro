@@ -22,63 +22,63 @@
         <!-- leg body link -->
 
             <!-- mass -->
-            <xacro:property name="leg_body_mass" value="0"/>
+            <xacro:property name="leg_body_mass" value="3.607"/>
 
             <!-- center of mass -->
-            <xacro:property name="leg_body_cm_x" value="0"/>
-            <xacro:property name="leg_body_cm_y" value="0"/>
-            <xacro:property name="leg_body_cm_z" value="0"/>
+            <xacro:property name="leg_body_cm_x" value="125.497"/>
+            <xacro:property name="leg_body_cm_y" value="20.770"/>
+            <xacro:property name="leg_body_cm_z" value="0.248"/>
 
             <!-- moments of inertia -->
-            <xacro:property name="leg_body_ixx" value="0"/>
-            <xacro:property name="leg_body_ixy" value="0"/>
-            <xacro:property name="leg_body_ixz" value="0"/>
+            <xacro:property name="leg_body_ixx" value="4660.408"/>
+            <xacro:property name="leg_body_ixy" value="-338.226"/>
+            <xacro:property name="leg_body_ixz" value="0.847"/>
 
-            <xacro:property name="leg_body_iyy" value="0"/>
-            <xacro:property name="leg_body_iyz" value="0"/>
+            <xacro:property name="leg_body_iyy" value="14607.423"/>
+            <xacro:property name="leg_body_iyz" value="49.927"/>
 
-            <xacro:property name="leg_body_izz" value="0"/>
+            <xacro:property name="leg_body_izz" value="13707.172"/>
 
 
         <!-- upper limb link -->
 
             <!-- mass -->
-            <xacro:property name="upper_limb_mass" value="0"/>
+            <xacro:property name="upper_limb_mass" value="0.474"/>
 
             <!-- center of mass -->
-            <xacro:property name="upper_limb_cm_x" value="0"/>
-            <xacro:property name="upper_limb_cm_y" value="0"/>
-            <xacro:property name="upper_limb_cm_z" value="0"/>
+            <xacro:property name="upper_limb_cm_x" value="-1.185"/>
+            <xacro:property name="upper_limb_cm_y" value="-4.308"/>
+            <xacro:property name="upper_limb_cm_z" value="-94.203"/>
 
             <!-- moments of inertia -->
-            <xacro:property name="upper_limb_ixx" value="0"/>
-            <xacro:property name="upper_limb_ixy" value="0"/>
-            <xacro:property name="upper_limb_ixz" value="0"/>
+            <xacro:property name="upper_limb_ixx" value="4064.505"/>
+            <xacro:property name="upper_limb_ixy" value="1.241"/>
+            <xacro:property name="upper_limb_ixz" value="19.989"/>
 
-            <xacro:property name="upper_limb_iyy" value="0"/>
-            <xacro:property name="upper_limb_iyz" value="0"/>
+            <xacro:property name="upper_limb_iyy" value="4150.05"/>
+            <xacro:property name="upper_limb_iyz" value="235.648"/>
 
-            <xacro:property name="upper_limb_izz" value="0"/>
+            <xacro:property name="upper_limb_izz" value="424.555"/>
 
         <!-- lower limb link -->
 
             <!-- mass -->
-            <xacro:property name="lower_limb_mass" value="0"/>
+            <xacro:property name="lower_limb_mass" value="0.116"/>
 
             <!-- center of mass -->
-            <xacro:property name="lower_limb_cm_x" value="0"/>
+            <xacro:property name="lower_limb_cm_x" value="0.546"/>
             <xacro:property name="lower_limb_cm_y" value="0"/>
-            <xacro:property name="lower_limb_cm_z" value="0"/>
+            <xacro:property name="lower_limb_cm_z" value="-177.643"/>
 
             <!-- moments of inertia -->
-            <xacro:property name="lower_limb_ixx" value="0"/>
+            <xacro:property name="lower_limb_ixx" value="967.349"/>
             <xacro:property name="lower_limb_ixy" value="0"/>
-            <xacro:property name="lower_limb_ixz" value="0"/>
+            <xacro:property name="lower_limb_ixz" value="-4.842"/>
 
-            <xacro:property name="lower_limb_iyy" value="0"/>
-            <xacro:property name="lower_limb_iyz" value="0"/>
+            <xacro:property name="lower_limb_iyy" value="982.604"/>
+            <xacro:property name="lower_limb_iyz" value="-0.001"/>
 
-            <xacro:property name="lower_limb_izz" value="0"/>
+            <xacro:property name="lower_limb_izz" value="37.177"/>
 
     <!-- joint properties -->
 
