@@ -7,7 +7,7 @@
     <link name="upper_limb_link">
         <visual>
             <geometry>
-                <mesh filename="package://meldog_simple_twin/meshes/visual/${upper_limb_vis_stl_name}" 
+                <mesh filename="package://meldog_description/meshes/visual/${upper_limb_vis_stl_name}" 
                       scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -15,7 +15,7 @@
 
         <collision>
             <geometry>
-                <mesh filename="package://meldog_simple_twin/meshes/collision/${upper_limb_coll_stl_name}" 
+                <mesh filename="package://meldog_description/meshes/collision/${upper_limb_coll_stl_name}" 
                       scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -23,10 +23,10 @@
 
         <inertial>
             <mass value="${upper_limb_mass}" />
-            <origin xyz="${upper_limb_cm_x} ${upper_limb_cm_y} ${upper_limb_cm_z}" rpy="0 0 0" />
-            <inertia ixx="${upper_limb_ixx}" ixy="${upper_limb_ixy}" ixz="${upper_limb_ixz}" 
-                                             iyy="${upper_limb_iyy}" iyz="${upper_limb_iyz}" 
-                                                                     izz="${upper_limb_izz}" />
+            <origin xyz="${upper_limb_cm_x*0.001} ${upper_limb_cm_y*0.001} ${upper_limb_cm_z*0.001}" rpy="0 0 0" />
+            <inertia ixx="${upper_limb_ixx*0.000001}" ixy="${upper_limb_ixy*0.000001}" ixz="${upper_limb_ixz*0.000001}" 
+                                                      iyy="${upper_limb_iyy*0.000001}" iyz="${upper_limb_iyz*0.000001}" 
+                                                                                       izz="${upper_limb_izz*0.000001}" />
         </inertial>
 
     </link>
@@ -34,7 +34,7 @@
     <link name="lower_limb_link">
         <visual>
             <geometry>
-                <mesh filename="package://meldog_simple_twin/meshes/visual/${lower_limb_vis_stl_name}" 
+                <mesh filename="package://meldog_description/meshes/visual/${lower_limb_vis_stl_name}" 
                       scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -42,7 +42,7 @@
 
         <collision>
             <geometry>
-                <mesh filename="package://meldog_simple_twin/meshes/collision/${lower_limb_coll_stl_name}" 
+                <mesh filename="package://meldog_description/meshes/collision/${lower_limb_coll_stl_name}" 
                       scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -50,10 +50,10 @@
 
         <inertial>
             <mass value="${lower_limb_mass}" />
-            <origin xyz="${lower_limb_cm_x} ${lower_limb_cm_y} ${lower_limb_cm_z}" rpy="0 0 0" />
-            <inertia ixx="${lower_limb_ixx}" ixy="${lower_limb_ixy}" ixz="${lower_limb_ixz}" 
-                                             iyy="${lower_limb_iyy}" iyz="${lower_limb_iyz}" 
-                                                                     izz="${lower_limb_izz}" />
+            <origin xyz="${lower_limb_cm_x*0.001} ${lower_limb_cm_y*0.001} ${lower_limb_cm_z*0.001}" rpy="0 0 0" />
+            <inertia ixx="${lower_limb_ixx*0.000001}" ixy="${lower_limb_ixy*0.000001}" ixz="${lower_limb_ixz*0.000001}" 
+                                                      iyy="${lower_limb_iyy*0.000001}" iyz="${lower_limb_iyz*0.000001}" 
+                                                                                       izz="${lower_limb_izz*0.000001}" />
         </inertial>
 
     </link>
@@ -63,7 +63,7 @@
     <link name="leg_body_link">
         <visual>
             <geometry>
-                <mesh filename="package://meldog_simple_twin/meshes/visual/${leg_body_vis_stl_name}" 
+                <mesh filename="package://meldog_description/meshes/visual/${leg_body_vis_stl_name}" 
                       scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -71,7 +71,7 @@
 
         <collision>
             <geometry>
-                <mesh filename="package://meldog_simple_twin/meshes/collision/${leg_body_coll_stl_name}" 
+                <mesh filename="package://meldog_description/meshes/collision/${leg_body_coll_stl_name}" 
                       scale="0.001 0.001 0.001" />
             </geometry>
             <origin xyz="0 0 0" rpy="0 0 0" />
@@ -79,10 +79,10 @@
 
         <inertial>
             <mass value="${leg_body_mass}" />
-            <origin xyz="${leg_body_cm_x} ${leg_body_cm_y} ${leg_body_cm_z}" rpy="0 0 0" />
-            <inertia ixx="${leg_body_ixx}" ixy="${leg_body_ixy}" ixz="${leg_body_ixz}" 
-                                           iyy="${leg_body_iyy}" iyz="${leg_body_iyz}" 
-                                                                 izz="${leg_body_izz}" />
+            <origin xyz="${leg_body_cm_x*0.001} ${leg_body_cm_y*0.001} ${leg_body_cm_z*0.001}" rpy="0 0 0" />
+            <inertia ixx="${leg_body_ixx*0.000001}" ixy="${leg_body_ixy*0.000001}" ixz="${leg_body_ixz*0.000001}" 
+                                                    iyy="${leg_body_iyy*0.000001}" iyz="${leg_body_iyz*0.000001}" 
+                                                                                   izz="${leg_body_izz*0.000001}" />
         </inertial>
 
     </link>
