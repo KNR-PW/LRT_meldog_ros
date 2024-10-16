@@ -5,7 +5,7 @@ project(meldog_description)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY urdf launch meshes rviz
+  DIRECTORY description launch meshes rviz
   DESTINATION share/${PROJECT_NAME}
 )
 
