@@ -41,6 +41,7 @@ def generate_launch_description():
     )
     
     ros_distro = os.environ["ROS_DISTRO"]
+    physics_engine="" if ros_distro=="humble" else "--physics-engine gz-physics-bullet-featherstone-plugin"
     
     gazebo_resource_path = SetEnvironmentVariable(
         name='GZ_SIM_RESOURCE_PATH',
@@ -48,35 +49,31 @@ def generate_launch_description():
     )
     
     gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(
-                get_package_share_directory("ros_gz_sim"),
-                "launch"
-            ),"/gz_sim.launch.py"]
-        ),launch_arguments=[
-            ("gz_args", [" -v 4 -r empty.sdf "])
-        ]
-    )
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('ros_gz_sim'), 'launch'), '/gz_sim.launch.py']),
+            launch_arguments={'gz_args': ['-r -v -v4 empty.sdf'], 'on_exit_shutdown': 'true'}.items()
+        )
     
     spawn_entity = Node(package='ros_gz_sim', executable='create',
                     arguments=['-topic', 'robot_description',
                                 '-name', 'Meldog'],
                     output='screen')
     
-    gz_ros2_bridge = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        arguments=[
-            "clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
-        ]
-    )
+    # gz_ros2_bridge = Node(
+    #     package='ros_gz_bridge',
+    #     executable='parameter_bridge',
+    #     arguments=[
+    #         "clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
+    #     ]
+    # )
 
     return LaunchDescription([
         robot_state_publisher_node,
         joint_state_publisher_gui_node,
         rviz2_node,
+        gazebo_resource_path,
         gazebo,
         spawn_entity,
-        gz_ros2_bridge,
-        gazebo_resource_path
+        # gz_ros2_bridge,
+        
     ])
