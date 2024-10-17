@@ -60,7 +60,7 @@
 
     <link name="foot_link" />
 
-    <link name="leg_body_link">
+    <link name="hip_link">
         <visual>
             <geometry>
                 <mesh filename="package://meldog_description/meshes/visual/${leg_body_vis_stl_name}" 
@@ -87,8 +87,8 @@
 
     </link>
 
-    <joint name="leg_body_upper_limb_joint" type="revolute">
-        <parent link="leg_body_link" /> 
+    <joint name="hip_upper_limb_joint" type="revolute">
+        <parent link="hip_link" /> 
         <child link="upper_limb_link" />
         <origin xyz="${leg_body_upper_limb_x}
                      ${leg_body_upper_limb_y}
