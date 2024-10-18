@@ -99,12 +99,18 @@
             <xacro:property name="upper_limb_lower_limb_lower_limit" value="-160" />
             <xacro:property name="upper_limb_lower_limb_upper_limit" value="160" />
 
+            <!-- trunk hip joint -->
+            <xacro:property name="trunk_hip_lower_limit" value="-45" />
+            <xacro:property name="trunk_hip_upper_limit" value="45" />
+
         <!-- joint effort limits -->
         <xacro:property name="hip_upper_limb_effort" value="100.0" />
         <xacro:property name="upper_limb_lower_limb_effort" value="100.0" />
+        <xacro:property name="trunk_hip_effort" value="100.0" />
 
         <!-- joint velocity limits -->
         <xacro:property name="hip_upper_limb_velocity" value="100.0" />
         <xacro:property name="upper_limb_lower_limb_velocity" value="100.0" />
+        <xacro:property name="trunk_hip_velocity" value="100.0" />
 
 </robot>

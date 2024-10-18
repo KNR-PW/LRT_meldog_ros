@@ -1,7 +1,7 @@
 <launch>
-    <let name="urdf_path" value="$(find-pkg-share meldog_description)/description/standalone_leg.urdf.xacro" />
+    <let name="urdf_path" value="$(find-pkg-share meldog_description)/description/meldog_core.urdf.xacro" />
 
-    <let name="rviz_config" value="$(find-pkg-share meldog_description)/rviz/leg_config.rviz" />
+    <let name="rviz_config" value="$(find-pkg-share meldog_description)/rviz/meldog_config.rviz" />
 
     <node pkg="robot_state_publisher" exec="robot_state_publisher">
         <param name="robot_description" value="$(command 'xacro $(var urdf_path)')" />

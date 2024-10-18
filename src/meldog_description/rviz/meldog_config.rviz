@@ -59,6 +59,8 @@ Visualization Manager:
           Value: true
         lower_limb_link:
           Value: true
+        trunk_link:
+          Value: true
         upper_limb_link:
           Value: true
       Marker Scale: 1
@@ -67,11 +69,12 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        hip_link:
-          upper_limb_link:
-            lower_limb_link:
-              foot_link:
-                {}
+        trunk_link:
+          hip_link:
+            upper_limb_link:
+              lower_limb_link:
+                foot_link:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -106,6 +109,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        trunk_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         upper_limb_link:
           Alpha: 1
           Show Axes: false
@@ -122,7 +130,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: hip_link
+    Fixed Frame: trunk_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -180,10 +188,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.18039852380752563
+      Pitch: 0.31039848923683167
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.6254019141197205
+      Yaw: 0.9004016518592834
     Saved: ~
 Window Geometry:
   Displays:

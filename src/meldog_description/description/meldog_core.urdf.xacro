@@ -3,6 +3,8 @@
 
     <xacro:include filename="base_properties.urdf.xacro" />
     <xacro:include filename="macros/macros.urdf.xacro" />
+    <xacro:include filename="trunk.urdf.xacro" />
+
 
     <xacro:link_macro 
         name="upper_limb_link" 
@@ -79,6 +81,17 @@
         <parent link="lower_limb_link" />
         <child link="foot_link" />
         <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
+    </joint>
+
+    <joint name="trunk_hip_joint" type="revolute">
+        <parent link="trunk_link" />
+        <child link="hip_link" />
+        <origin xyz="${trunk_actuators_length/2.0} ${(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
+        <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
+               upper="${trunk_hip_upper_limit/180.0*pi}" 
+               effort="${trunk_hip_effort}" 
+               velocity="${trunk_hip_velocity}" />
+        <axis xyz="1 0 0" />
     </joint>
 
 </robot>

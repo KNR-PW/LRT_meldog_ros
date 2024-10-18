@@ -12,13 +12,13 @@ from ament_index_python.packages import get_package_share_path
 def generate_launch_description():
 
     urdf_path = os.path.join(get_package_share_path('meldog_description'),
-                             'description','standalone_leg.urdf.xacro')
+                             'description','meldog_core.urdf.xacro')
 
     robot_description = ParameterValue(Command(['xacro ',urdf_path]),
                                        value_type=str)
     
     rviz_config_path = os.path.join(get_package_share_path('meldog_description'),
-                                    'rviz','leg_config.rviz')
+                                    'rviz','meldog_config.rviz')
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
