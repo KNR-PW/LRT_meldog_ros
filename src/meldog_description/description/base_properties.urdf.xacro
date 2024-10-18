@@ -4,12 +4,12 @@
     <!-- stl mesh names for each link in leg -->
 
         <!-- visual tag meshes -->
-        <xacro:property name="leg_body_vis_stl_name" value="leg_body_test.stl" />
+        <xacro:property name="hip_vis_stl_name" value="hip_test.stl" />
         <xacro:property name="upper_limb_vis_stl_name" value="upper_limb_test.stl" />
         <xacro:property name="lower_limb_vis_stl_name" value="lower_limb_test.stl" />
 
         <!-- collision tag meshes -->
-        <xacro:property name="leg_body_coll_stl_name" value="leg_body_collision.stl" />
+        <xacro:property name="hip_coll_stl_name" value="hip_collision.stl" />
         <xacro:property name="upper_limb_coll_stl_name" value="upper_limb_collision.stl" />
         <xacro:property name="lower_limb_coll_stl_name" value="lower_limb_collision.stl" />
 
@@ -22,22 +22,22 @@
         <!-- leg body link -->
 
             <!-- mass -->
-            <xacro:property name="leg_body_mass" value="3.607"/>
+            <xacro:property name="hip_mass" value="3.607"/>
 
             <!-- center of mass -->
-            <xacro:property name="leg_body_cm_x" value="125.497"/>
-            <xacro:property name="leg_body_cm_y" value="20.770"/>
-            <xacro:property name="leg_body_cm_z" value="0.248"/>
+            <xacro:property name="hip_cm_x" value="125.497"/>
+            <xacro:property name="hip_cm_y" value="20.770"/>
+            <xacro:property name="hip_cm_z" value="0.248"/>
 
             <!-- moments of inertia -->
-            <xacro:property name="leg_body_ixx" value="4660.408"/>
-            <xacro:property name="leg_body_ixy" value="-338.226"/>
-            <xacro:property name="leg_body_ixz" value="0.847"/>
+            <xacro:property name="hip_ixx" value="4660.408"/>
+            <xacro:property name="hip_ixy" value="-338.226"/>
+            <xacro:property name="hip_ixz" value="0.847"/>
 
-            <xacro:property name="leg_body_iyy" value="14607.423"/>
-            <xacro:property name="leg_body_iyz" value="49.927"/>
+            <xacro:property name="hip_iyy" value="14607.423"/>
+            <xacro:property name="hip_iyz" value="49.927"/>
 
-            <xacro:property name="leg_body_izz" value="13707.172"/>
+            <xacro:property name="hip_izz" value="13707.172"/>
 
 
         <!-- upper limb link -->
@@ -85,26 +85,26 @@
         <!-- body to limb Joint positions -->
 
             <!-- leg body upper limb joint -->
-            <xacro:property name="leg_body_upper_limb_x" value="0.174"/>
-            <xacro:property name="leg_body_upper_limb_y" value="0.0925"/>
-            <xacro:property name="leg_body_upper_limb_z" value="0"/>
+            <xacro:property name="hip_upper_limb_x" value="0.174"/>
+            <xacro:property name="hip_upper_limb_y" value="0.0925"/>
+            <xacro:property name="hip_upper_limb_z" value="0"/>
 
         <!-- joint movement limits in degrees -->
 
             <!-- leg body upper limb joint -->
-            <xacro:property name="leg_body_upper_limb_lower_limit" value="-120" />
-            <xacro:property name="leg_body_upper_limb_upper_limit" value="120" />
+            <xacro:property name="hip_upper_limb_lower_limit" value="-120" />
+            <xacro:property name="hip_upper_limb_upper_limit" value="120" />
 
             <!-- upper limb lower limb joint -->
             <xacro:property name="upper_limb_lower_limb_lower_limit" value="-160" />
             <xacro:property name="upper_limb_lower_limb_upper_limit" value="160" />
 
         <!-- joint effort limits -->
-        <xacro:property name="leg_body_upper_limb_effort" value="100.0" />
+        <xacro:property name="hip_upper_limb_effort" value="100.0" />
         <xacro:property name="upper_limb_lower_limb_effort" value="100.0" />
 
         <!-- joint velocity limits -->
-        <xacro:property name="leg_body_upper_limb_velocity" value="100.0" />
+        <xacro:property name="hip_upper_limb_velocity" value="100.0" />
         <xacro:property name="upper_limb_lower_limb_velocity" value="100.0" />
 
 </robot>

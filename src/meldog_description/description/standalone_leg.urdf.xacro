@@ -2,101 +2,65 @@
 <robot name="meldog_simple_core" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:include filename="base_properties.urdf.xacro" />
+    <xacro:include filename="macros/macros.urdf.xacro" />
 
-    <link name="upper_limb_link">
-        <visual>
-            <geometry>
-                <mesh filename="package://meldog_description/meshes/visual/${upper_limb_vis_stl_name}" 
-                      scale="0.001 0.001 0.001" />
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </visual>
+    <xacro:link_macro 
+        name="upper_limb_link" 
+        vis_name="${upper_limb_vis_stl_name}" 
+        coll_name="${upper_limb_coll_stl_name}" 
 
-        <collision>
-            <geometry>
-                <mesh filename="package://meldog_description/meshes/collision/${upper_limb_coll_stl_name}" 
-                      scale="0.001 0.001 0.001" />
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0" />
-        </collision>
+        m="${upper_limb_mass}" 
+        cm_x="${upper_limb_cm_x}" 
+        cm_y="${upper_limb_cm_y}" 
+        cm_z="${upper_limb_cm_z}"
 
-        <inertial>
-            <mass value="${upper_limb_mass}" />
-            <origin xyz="${upper_limb_cm_x*0.001} ${upper_limb_cm_y*0.001} ${upper_limb_cm_z*0.001}" rpy="0 0 0" />
-            <inertia ixx="${upper_limb_ixx*0.000001}" ixy="${upper_limb_ixy*0.000001}" ixz="${upper_limb_ixz*0.000001}" 
-                                                      iyy="${upper_limb_iyy*0.000001}" iyz="${upper_limb_iyz*0.000001}" 
-                                                                                       izz="${upper_limb_izz*0.000001}" />
-        </inertial>
+        ixx="${upper_limb_ixx}" ixy="${upper_limb_ixy}" ixz="${upper_limb_ixz}" 
+                                iyy="${upper_limb_iyy}" iyz="${upper_limb_iyz}" 
+                                                        izz="${upper_limb_izz}"/>
 
-    </link>
+    <xacro:link_macro 
+        name="lower_limb_link" 
+        vis_name="${lower_limb_vis_stl_name}" 
+        coll_name="${lower_limb_coll_stl_name}" 
 
-    <link name="lower_limb_link">
-        <visual>
-            <geometry>
-                <mesh filename="package://meldog_description/meshes/visual/${lower_limb_vis_stl_name}" 
-                      scale="0.001 0.001 0.001" />
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </visual>
+        m="${lower_limb_mass}" 
+        cm_x="${lower_limb_cm_x}" 
+        cm_y="${lower_limb_cm_y}" 
+        cm_z="${lower_limb_cm_z}"
 
-        <collision>
-            <geometry>
-                <mesh filename="package://meldog_description/meshes/collision/${lower_limb_coll_stl_name}" 
-                      scale="0.001 0.001 0.001" />
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0" />
-        </collision>
+        ixx="${lower_limb_ixx}" ixy="${lower_limb_ixy}" ixz="${lower_limb_ixz}" 
+                                iyy="${lower_limb_iyy}" iyz="${lower_limb_iyz}" 
+                                                        izz="${lower_limb_izz}"/>
 
-        <inertial>
-            <mass value="${lower_limb_mass}" />
-            <origin xyz="${lower_limb_cm_x*0.001} ${lower_limb_cm_y*0.001} ${lower_limb_cm_z*0.001}" rpy="0 0 0" />
-            <inertia ixx="${lower_limb_ixx*0.000001}" ixy="${lower_limb_ixy*0.000001}" ixz="${lower_limb_ixz*0.000001}" 
-                                                      iyy="${lower_limb_iyy*0.000001}" iyz="${lower_limb_iyz*0.000001}" 
-                                                                                       izz="${lower_limb_izz*0.000001}" />
-        </inertial>
 
-    </link>
 
     <link name="foot_link" />
 
-    <link name="hip_link">
-        <visual>
-            <geometry>
-                <mesh filename="package://meldog_description/meshes/visual/${leg_body_vis_stl_name}" 
-                      scale="0.001 0.001 0.001" />
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0" />
-        </visual>
+    <xacro:link_macro 
+        name="hip_link" 
+        vis_name="${hip_vis_stl_name}" 
+        coll_name="${hip_coll_stl_name}" 
 
-        <collision>
-            <geometry>
-                <mesh filename="package://meldog_description/meshes/collision/${leg_body_coll_stl_name}" 
-                      scale="0.001 0.001 0.001" />
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 0 0" />
-        </collision>
+        m="${hip_mass}" 
+        cm_x="${hip_cm_x}" 
+        cm_y="${hip_cm_y}" 
+        cm_z="${hip_cm_z}"
 
-        <inertial>
-            <mass value="${leg_body_mass}" />
-            <origin xyz="${leg_body_cm_x*0.001} ${leg_body_cm_y*0.001} ${leg_body_cm_z*0.001}" rpy="0 0 0" />
-            <inertia ixx="${leg_body_ixx*0.000001}" ixy="${leg_body_ixy*0.000001}" ixz="${leg_body_ixz*0.000001}" 
-                                                    iyy="${leg_body_iyy*0.000001}" iyz="${leg_body_iyz*0.000001}" 
-                                                                                   izz="${leg_body_izz*0.000001}" />
-        </inertial>
-
-    </link>
+        ixx="${hip_ixx}" ixy="${hip_ixy}" ixz="${hip_ixz}" 
+                         iyy="${hip_iyy}" iyz="${hip_iyz}" 
+                                          izz="${hip_izz}"/>
 
     <joint name="hip_upper_limb_joint" type="revolute">
         <parent link="hip_link" /> 
         <child link="upper_limb_link" />
-        <origin xyz="${leg_body_upper_limb_x}
-                     ${leg_body_upper_limb_y}
-                     ${leg_body_upper_limb_z}" 
+        <origin xyz="${hip_upper_limb_x}
+                     ${hip_upper_limb_y}
+                     ${hip_upper_limb_z}" 
                 rpy="0 0 0" />
-        <limit lower="${leg_body_upper_limb_lower_limit/180.0*pi}" 
-               upper="${leg_body_upper_limb_upper_limit/180.0*pi}" 
-               effort="${leg_body_upper_limb_effort}" 
-               velocity="${leg_body_upper_limb_velocity}" />
+        <limit lower="${hip_upper_limb_lower_limit/180.0*pi}" 
+               upper="${hip_upper_limb_upper_limit/180.0*pi}" 
+               effort="${hip_upper_limb_effort}" 
+               velocity="${hip_upper_limb_velocity}" />
         <axis xyz="0 1 0" />
     </joint>
 

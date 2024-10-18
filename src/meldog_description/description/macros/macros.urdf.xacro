@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="link_macro" params="prefix vis_name coll_name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz">
+    <!-- Macro for defining a link, please ensure that 
+    the visual and collision models coordinate 
+    systems are placed in joints -->
 
-        <link name="${prefix}_link">
+    <xacro:macro name="link_macro" params="name vis_name coll_name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz">
+
+        <link name="${name}">
             <visual>
                 <geometry>
                     <mesh filename="package://meldog_description/meshes/visual/${vis_name}" 
