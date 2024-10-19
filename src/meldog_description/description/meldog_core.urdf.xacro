@@ -5,9 +5,24 @@
     <xacro:include filename="macros/macros.urdf.xacro" />
     <xacro:include filename="trunk.urdf.xacro" />
 
+    <!-- Left front leg links -->
 
     <xacro:link_macro 
-        name="upper_limb_link" 
+        name="lf_hip_link" 
+        vis_name="${hip_vis_stl_name}" 
+        coll_name="${hip_coll_stl_name}" 
+
+        m="${hip_mass}" 
+        cm_x="${hip_cm_x}" 
+        cm_y="${hip_cm_y}" 
+        cm_z="${hip_cm_z}"
+
+        ixx="${hip_ixx}" ixy="${hip_ixy}" ixz="${hip_ixz}" 
+                         iyy="${hip_iyy}" iyz="${hip_iyz}" 
+                                          izz="${hip_izz}"/>
+
+    <xacro:link_macro 
+        name="lf_upper_limb_link" 
         vis_name="${upper_limb_vis_stl_name}" 
         coll_name="${upper_limb_coll_stl_name}" 
 
@@ -21,7 +36,7 @@
                                                         izz="${upper_limb_izz}"/>
 
     <xacro:link_macro 
-        name="lower_limb_link" 
+        name="lf_lower_limb_link" 
         vis_name="${lower_limb_vis_stl_name}" 
         coll_name="${lower_limb_coll_stl_name}" 
 
@@ -36,12 +51,14 @@
 
 
 
-    <link name="foot_link" />
+    <link name="lf_foot_link" />
+
+    <!-- Right front leg links -->
 
     <xacro:link_macro 
-        name="hip_link" 
-        vis_name="${hip_vis_stl_name}" 
-        coll_name="${hip_coll_stl_name}" 
+        name="rf_hip_link" 
+        vis_name="front_right_hip.stl" 
+        coll_name="front_right_hip_collision.stl" 
 
         m="${hip_mass}" 
         cm_x="${hip_cm_x}" 
@@ -52,9 +69,138 @@
                          iyy="${hip_iyy}" iyz="${hip_iyz}" 
                                           izz="${hip_izz}"/>
 
-    <joint name="hip_upper_limb_joint" type="revolute">
-        <parent link="hip_link" /> 
-        <child link="upper_limb_link" />
+    <xacro:link_macro 
+        name="rf_upper_limb_link" 
+        vis_name="r_upper_limb_vis.stl" 
+        coll_name="r_upper_limb_vis.stl" 
+
+        m="${upper_limb_mass}" 
+        cm_x="${upper_limb_cm_x}" 
+        cm_y="${upper_limb_cm_y}" 
+        cm_z="${upper_limb_cm_z}"
+
+        ixx="${upper_limb_ixx}" ixy="${upper_limb_ixy}" ixz="${upper_limb_ixz}" 
+                                iyy="${upper_limb_iyy}" iyz="${upper_limb_iyz}" 
+                                                        izz="${upper_limb_izz}"/>
+
+    <xacro:link_macro 
+        name="rf_lower_limb_link" 
+        vis_name="${lower_limb_vis_stl_name}" 
+        coll_name="${lower_limb_coll_stl_name}" 
+
+        m="${lower_limb_mass}" 
+        cm_x="${lower_limb_cm_x}" 
+        cm_y="${lower_limb_cm_y}" 
+        cm_z="${lower_limb_cm_z}"
+
+        ixx="${lower_limb_ixx}" ixy="${lower_limb_ixy}" ixz="${lower_limb_ixz}" 
+                                iyy="${lower_limb_iyy}" iyz="${lower_limb_iyz}" 
+                                                        izz="${lower_limb_izz}"/>
+
+
+
+    <link name="rf_foot_link" />
+
+    <!-- Left rear leg links -->
+
+    <xacro:link_macro 
+        name="lr_hip_link" 
+        vis_name="rear_left_hip.stl" 
+        coll_name="rear_left_hip.stl" 
+
+        m="${hip_mass}" 
+        cm_x="${hip_cm_x}" 
+        cm_y="${hip_cm_y}" 
+        cm_z="${hip_cm_z}"
+
+        ixx="${hip_ixx}" ixy="${hip_ixy}" ixz="${hip_ixz}" 
+                         iyy="${hip_iyy}" iyz="${hip_iyz}" 
+                                          izz="${hip_izz}"/>
+
+    <xacro:link_macro 
+        name="lr_upper_limb_link" 
+        vis_name="upper_limb_test.stl" 
+        coll_name="upper_limb_collision.stl" 
+
+        m="${upper_limb_mass}" 
+        cm_x="${upper_limb_cm_x}" 
+        cm_y="${upper_limb_cm_y}" 
+        cm_z="${upper_limb_cm_z}"
+
+        ixx="${upper_limb_ixx}" ixy="${upper_limb_ixy}" ixz="${upper_limb_ixz}" 
+                                iyy="${upper_limb_iyy}" iyz="${upper_limb_iyz}" 
+                                                        izz="${upper_limb_izz}"/>
+
+    <xacro:link_macro 
+        name="lr_lower_limb_link" 
+        vis_name="${lower_limb_vis_stl_name}" 
+        coll_name="${lower_limb_coll_stl_name}" 
+
+        m="${lower_limb_mass}" 
+        cm_x="${lower_limb_cm_x}" 
+        cm_y="${lower_limb_cm_y}" 
+        cm_z="${lower_limb_cm_z}"
+
+        ixx="${lower_limb_ixx}" ixy="${lower_limb_ixy}" ixz="${lower_limb_ixz}" 
+                                iyy="${lower_limb_iyy}" iyz="${lower_limb_iyz}" 
+                                                        izz="${lower_limb_izz}"/>
+
+
+
+    <link name="lr_foot_link" />
+
+
+    <!-- Right rear leg links -->
+
+    <xacro:link_macro 
+        name="rr_hip_link" 
+        vis_name="rear_right_hip.stl" 
+        coll_name="rear_right_hip.stl" 
+
+        m="${hip_mass}" 
+        cm_x="${hip_cm_x}" 
+        cm_y="${hip_cm_y}" 
+        cm_z="${hip_cm_z}"
+
+        ixx="${hip_ixx}" ixy="${hip_ixy}" ixz="${hip_ixz}" 
+                         iyy="${hip_iyy}" iyz="${hip_iyz}" 
+                                          izz="${hip_izz}"/>
+
+    <xacro:link_macro 
+        name="rr_upper_limb_link" 
+        vis_name="r_upper_limb_vis.stl" 
+        coll_name="r_upper_limb_vis.stl" 
+
+        m="${upper_limb_mass}" 
+        cm_x="${upper_limb_cm_x}" 
+        cm_y="${upper_limb_cm_y}" 
+        cm_z="${upper_limb_cm_z}"
+
+        ixx="${upper_limb_ixx}" ixy="${upper_limb_ixy}" ixz="${upper_limb_ixz}" 
+                                iyy="${upper_limb_iyy}" iyz="${upper_limb_iyz}" 
+                                                        izz="${upper_limb_izz}"/>
+
+    <xacro:link_macro 
+        name="rr_lower_limb_link" 
+        vis_name="${lower_limb_vis_stl_name}" 
+        coll_name="${lower_limb_coll_stl_name}" 
+
+        m="${lower_limb_mass}" 
+        cm_x="${lower_limb_cm_x}" 
+        cm_y="${lower_limb_cm_y}" 
+        cm_z="${lower_limb_cm_z}"
+
+        ixx="${lower_limb_ixx}" ixy="${lower_limb_ixy}" ixz="${lower_limb_ixz}" 
+                                iyy="${lower_limb_iyy}" iyz="${lower_limb_iyz}" 
+                                                        izz="${lower_limb_izz}"/>
+
+    <link name="rr_foot_link" />
+
+    
+    <!-- left front leg joints -->
+    <joint name="lf_hip_upper_limb_joint" type="revolute">
+        <parent link="lf_hip_link" /> 
+        <child link="lf_upper_limb_link" />
         <origin xyz="${hip_upper_limb_x}
                      ${hip_upper_limb_y}
                      ${hip_upper_limb_z}" 
@@ -66,9 +212,9 @@
         <axis xyz="0 1 0" />
     </joint>
 
-    <joint name="upper_limb_lower_limb_joint" type="revolute">
-        <parent link="upper_limb_link" />
-        <child link="lower_limb_link" />
+    <joint name="lf_upper_limb_lower_limb_joint" type="revolute">
+        <parent link="lf_upper_limb_link" />
+        <child link="lf_lower_limb_link" />
         <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
         <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
                upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
@@ -77,21 +223,152 @@
         <axis xyz="0 1 0" />
     </joint>
 
-    <joint name="lower_limb_foot_joint" type="fixed">
-        <parent link="lower_limb_link" />
-        <child link="foot_link" />
+    <joint name="lf_lower_limb_foot_joint" type="fixed">
+        <parent link="lf_lower_limb_link" />
+        <child link="lf_foot_link" />
         <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
     </joint>
 
-    <joint name="trunk_hip_joint" type="revolute">
+    <joint name="lf_trunk_hip_joint" type="revolute">
         <parent link="trunk_link" />
-        <child link="hip_link" />
+        <child link="lf_hip_link" />
         <origin xyz="${trunk_actuators_length/2.0} ${(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
         <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
                upper="${trunk_hip_upper_limit/180.0*pi}" 
                effort="${trunk_hip_effort}" 
                velocity="${trunk_hip_velocity}" />
         <axis xyz="1 0 0" />
+    </joint>
+
+
+    <!-- Right front leg joints -->
+    <joint name="rf_trunk_hip_joint" type="revolute">
+        <parent link="trunk_link" />
+        <child link="rf_hip_link" />
+        <origin xyz="${trunk_actuators_length/2.0} ${-(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
+        <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
+               upper="${trunk_hip_upper_limit/180.0*pi}" 
+               effort="${trunk_hip_effort}" 
+               velocity="${trunk_hip_velocity}" />
+        <axis xyz="-1 0 0" />
+    </joint>
+
+    <joint name="rf_hip_upper_limb_joint" type="revolute">
+        <parent link="rf_hip_link" /> 
+        <child link="rf_upper_limb_link" />
+        <origin xyz="${hip_upper_limb_x}
+                     ${-hip_upper_limb_y}
+                     ${hip_upper_limb_z}" 
+                rpy="0 0 0" />
+        <limit lower="${hip_upper_limb_lower_limit/180.0*pi}" 
+               upper="${hip_upper_limb_upper_limit/180.0*pi}" 
+               effort="${hip_upper_limb_effort}" 
+               velocity="${hip_upper_limb_velocity}" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="rf_upper_limb_lower_limb_joint" type="revolute">
+        <parent link="rf_upper_limb_link" />
+        <child link="rf_lower_limb_link" />
+        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
+        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
+               upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
+               effort="${upper_limb_lower_limb_effort}" 
+               velocity="${upper_limb_lower_limb_velocity}" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="rf_lower_limb_foot_joint" type="fixed">
+        <parent link="rf_lower_limb_link" />
+        <child link="rf_foot_link" />
+        <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
+    </joint>
+
+
+    <!-- Left rear leg joints -->
+    <joint name="lr_hip_upper_limb_joint" type="revolute">
+        <parent link="lr_hip_link" /> 
+        <child link="lr_upper_limb_link" />
+        <origin xyz="${-hip_upper_limb_x}
+                     ${hip_upper_limb_y}
+                     ${hip_upper_limb_z}" 
+                rpy="0 0 0" />
+        <limit lower="${hip_upper_limb_lower_limit/180.0*pi}" 
+               upper="${hip_upper_limb_upper_limit/180.0*pi}" 
+               effort="${hip_upper_limb_effort}" 
+               velocity="${hip_upper_limb_velocity}" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="lr_upper_limb_lower_limb_joint" type="revolute">
+        <parent link="lr_upper_limb_link" />
+        <child link="lr_lower_limb_link" />
+        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
+        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
+               upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
+               effort="${upper_limb_lower_limb_effort}" 
+               velocity="${upper_limb_lower_limb_velocity}" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="lr_lower_limb_foot_joint" type="fixed">
+        <parent link="lr_lower_limb_link" />
+        <child link="lr_foot_link" />
+        <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
+    </joint>
+
+    <joint name="lr_trunk_hip_joint" type="revolute">
+        <parent link="trunk_link" />
+        <child link="lr_hip_link" />
+        <origin xyz="${-trunk_actuators_length/2.0} ${(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
+        <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
+               upper="${trunk_hip_upper_limit/180.0*pi}" 
+               effort="${trunk_hip_effort}" 
+               velocity="${trunk_hip_velocity}" />
+        <axis xyz="1 0 0" />
+    </joint>
+
+    <!-- Right rear leg joints -->
+    <joint name="rr_trunk_hip_joint" type="revolute">
+        <parent link="trunk_link" />
+        <child link="rr_hip_link" />
+        <origin xyz="${-trunk_actuators_length/2.0} ${-(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
+        <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
+               upper="${trunk_hip_upper_limit/180.0*pi}" 
+               effort="${trunk_hip_effort}" 
+               velocity="${trunk_hip_velocity}" />
+        <axis xyz="-1 0 0" />
+    </joint>
+
+    <joint name="rr_hip_upper_limb_joint" type="revolute">
+        <parent link="rr_hip_link" /> 
+        <child link="rr_upper_limb_link" />
+        <origin xyz="${-hip_upper_limb_x}
+                     ${-hip_upper_limb_y}
+                     ${hip_upper_limb_z}" 
+                rpy="0 0 0" />
+        <limit lower="${hip_upper_limb_lower_limit/180.0*pi}" 
+               upper="${hip_upper_limb_upper_limit/180.0*pi}" 
+               effort="${hip_upper_limb_effort}" 
+               velocity="${hip_upper_limb_velocity}" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="rr_upper_limb_lower_limb_joint" type="revolute">
+        <parent link="rr_upper_limb_link" />
+        <child link="rr_lower_limb_link" />
+        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
+        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
+               upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
+               effort="${upper_limb_lower_limb_effort}" 
+               velocity="${upper_limb_lower_limb_velocity}" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="rr_lower_limb_foot_joint" type="fixed">
+        <parent link="rr_lower_limb_link" />
+        <child link="rr_foot_link" />
+        <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
     </joint>
 
 </robot>
