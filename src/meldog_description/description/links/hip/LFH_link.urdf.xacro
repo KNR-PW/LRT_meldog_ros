@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="../../base_properties.urdf.xacro" />
+    <xacro:include filename="../../macros/macros.urdf.xacro"/>
+
+
+    <xacro:link_macro 
+        name="lf_hip_link" 
+        vis_name="${hip_vis_stl_name}" 
+        coll_name="${hip_coll_stl_name}" 
+
+        m="${hip_mass}" 
+        cm_x="${hip_cm_x}" 
+        cm_y="${hip_cm_y}" 
+        cm_z="${hip_cm_z}"
+
+        ixx="${hip_ixx}" ixy="${hip_ixy}" ixz="${hip_ixz}" 
+                         iyy="${hip_iyy}" iyz="${hip_iyz}" 
+                                          izz="${hip_izz}"/>
+
+</robot>

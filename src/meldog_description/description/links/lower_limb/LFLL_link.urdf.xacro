@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="../../base_properties.urdf.xacro" />
+    <xacro:include filename="../../macros/macros.urdf.xacro"/>
+
+    <xacro:link_macro 
+        name="lf_lower_limb_link" 
+        vis_name="${lower_limb_vis_stl_name}" 
+        coll_name="${lower_limb_coll_stl_name}" 
+
+        m="${lower_limb_mass}" 
+        cm_x="${lower_limb_cm_x}" 
+        cm_y="${lower_limb_cm_y}" 
+        cm_z="${lower_limb_cm_z}"
+
+        ixx="${lower_limb_ixx}" ixy="${lower_limb_ixy}" ixz="${lower_limb_ixz}" 
+                                iyy="${lower_limb_iyy}" iyz="${lower_limb_iyz}" 
+                                                        izz="${lower_limb_izz}"/>
+
+</robot>
