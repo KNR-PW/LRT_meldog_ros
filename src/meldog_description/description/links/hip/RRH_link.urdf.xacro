@@ -6,7 +6,7 @@
 
 
     <xacro:link_macro 
-        name="rr_hip_link" 
+        name="RRH_link" 
         vis_name="rear_right_hip.stl" 
         coll_name="rear_right_hip_collision.stl" 
 

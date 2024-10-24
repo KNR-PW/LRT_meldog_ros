@@ -6,7 +6,7 @@
 
 
     <xacro:link_macro 
-        name="lf_hip_link" 
+        name="LFH_link" 
         vis_name="${hip_vis_stl_name}" 
         coll_name="${hip_coll_stl_name}" 
 

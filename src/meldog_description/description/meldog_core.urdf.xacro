@@ -65,8 +65,8 @@
     
     <!-- left front leg joints -->
     <joint name="lf_hip_upper_limb_joint" type="revolute">
-        <parent link="lf_hip_link" /> 
-        <child link="lf_upper_limb_link" />
+        <parent link="LFH_link" /> 
+        <child link="LFUL_link" />
         <origin xyz="${hip_upper_limb_x}
                      ${hip_upper_limb_y}
                      ${hip_upper_limb_z}" 
@@ -79,8 +79,8 @@
     </joint>
 
     <joint name="lf_upper_limb_lower_limb_joint" type="revolute">
-        <parent link="lf_upper_limb_link" />
-        <child link="lf_lower_limb_link" />
+        <parent link="LFUL_link" />
+        <child link="LFLL_link" />
         <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
         <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
                upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
@@ -90,14 +90,14 @@
     </joint>
 
     <joint name="lf_lower_limb_foot_joint" type="fixed">
-        <parent link="lf_lower_limb_link" />
-        <child link="lf_foot_link" />
+        <parent link="LFLL_link" />
+        <child link="LFF_link" />
         <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
     </joint>
 
     <joint name="lf_trunk_hip_joint" type="revolute">
         <parent link="trunk_link" />
-        <child link="lf_hip_link" />
+        <child link="LFH_link" />
         <origin xyz="${trunk_actuators_length/2.0} ${(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
         <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
                upper="${trunk_hip_upper_limit/180.0*pi}" 
@@ -110,7 +110,7 @@
     <!-- Right front leg joints -->
     <joint name="rf_trunk_hip_joint" type="revolute">
         <parent link="trunk_link" />
-        <child link="rf_hip_link" />
+        <child link="RFH_link" />
         <origin xyz="${trunk_actuators_length/2.0} ${-(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
         <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
                upper="${trunk_hip_upper_limit/180.0*pi}" 
@@ -120,8 +120,8 @@
     </joint>
 
     <joint name="rf_hip_upper_limb_joint" type="revolute">
-        <parent link="rf_hip_link" /> 
-        <child link="rf_upper_limb_link" />
+        <parent link="RFH_link" /> 
+        <child link="RFUL_link" />
         <origin xyz="${hip_upper_limb_x}
                      ${-hip_upper_limb_y}
                      ${hip_upper_limb_z}" 
@@ -134,8 +134,8 @@
     </joint>
 
     <joint name="rf_upper_limb_lower_limb_joint" type="revolute">
-        <parent link="rf_upper_limb_link" />
-        <child link="rf_lower_limb_link" />
+        <parent link="RFUL_link" />
+        <child link="RFLL_link" />
         <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
         <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
                upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
@@ -145,16 +145,16 @@
     </joint>
 
     <joint name="rf_lower_limb_foot_joint" type="fixed">
-        <parent link="rf_lower_limb_link" />
-        <child link="rf_foot_link" />
+        <parent link="RFLL_link" />
+        <child link="RFF_link" />
         <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
     </joint>
 
 
     <!-- Left rear leg joints -->
     <joint name="lr_hip_upper_limb_joint" type="revolute">
-        <parent link="lr_hip_link" /> 
-        <child link="lr_upper_limb_link" />
+        <parent link="LRH_link" /> 
+        <child link="LRUL_link" />
         <origin xyz="${-hip_upper_limb_x}
                      ${hip_upper_limb_y}
                      ${hip_upper_limb_z}" 
@@ -167,8 +167,8 @@
     </joint>
 
     <joint name="lr_upper_limb_lower_limb_joint" type="revolute">
-        <parent link="lr_upper_limb_link" />
-        <child link="lr_lower_limb_link" />
+        <parent link="LRUL_link" />
+        <child link="LRLL_link" />
         <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
         <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
                upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
@@ -178,14 +178,14 @@
     </joint>
 
     <joint name="lr_lower_limb_foot_joint" type="fixed">
-        <parent link="lr_lower_limb_link" />
-        <child link="lr_foot_link" />
+        <parent link="LRLL_link" />
+        <child link="LRF_link" />
         <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
     </joint>
 
     <joint name="lr_trunk_hip_joint" type="revolute">
         <parent link="trunk_link" />
-        <child link="lr_hip_link" />
+        <child link="LRH_link" />
         <origin xyz="${-trunk_actuators_length/2.0} ${(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
         <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
                upper="${trunk_hip_upper_limit/180.0*pi}" 
@@ -197,7 +197,7 @@
     <!-- Right rear leg joints -->
     <joint name="rr_trunk_hip_joint" type="revolute">
         <parent link="trunk_link" />
-        <child link="rr_hip_link" />
+        <child link="RRH_link" />
         <origin xyz="${-trunk_actuators_length/2.0} ${-(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
         <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
                upper="${trunk_hip_upper_limit/180.0*pi}" 
@@ -207,8 +207,8 @@
     </joint>
 
     <joint name="rr_hip_upper_limb_joint" type="revolute">
-        <parent link="rr_hip_link" /> 
-        <child link="rr_upper_limb_link" />
+        <parent link="RRH_link" /> 
+        <child link="RRUL_link" />
         <origin xyz="${-hip_upper_limb_x}
                      ${-hip_upper_limb_y}
                      ${hip_upper_limb_z}" 
@@ -221,8 +221,8 @@
     </joint>
 
     <joint name="rr_upper_limb_lower_limb_joint" type="revolute">
-        <parent link="rr_upper_limb_link" />
-        <child link="rr_lower_limb_link" />
+        <parent link="RRUL_link" />
+        <child link="RRLL_link" />
         <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
         <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
                upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
@@ -232,8 +232,8 @@
     </joint>
 
     <joint name="rr_lower_limb_foot_joint" type="fixed">
-        <parent link="rr_lower_limb_link" />
-        <child link="rr_foot_link" />
+        <parent link="RRLL_link" />
+        <child link="RRF_link" />
         <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
     </joint>
 

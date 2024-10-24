@@ -5,7 +5,7 @@
     <xacro:include filename="../../macros/macros.urdf.xacro"/>
 
     <xacro:link_macro 
-        name="lr_lower_limb_link" 
+        name="LRLL_link" 
         vis_name="${lower_limb_vis_stl_name}" 
         coll_name="${lower_limb_coll_stl_name}" 
 

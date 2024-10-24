@@ -5,7 +5,7 @@
     <xacro:include filename="../../macros/macros.urdf.xacro"/>
 
     <xacro:link_macro 
-        name="rf_upper_limb_link" 
+        name="RFUL_link" 
         vis_name="r_upper_limb_vis.stl" 
         coll_name="upper_limb_collision.stl" 
 
