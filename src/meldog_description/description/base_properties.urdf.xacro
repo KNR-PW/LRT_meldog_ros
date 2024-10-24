@@ -17,9 +17,9 @@
     <xacro:property name="upper_limb_length" value="0.25" />
     <xacro:property name="lower_limb_length_to_foot" value="0.25" />
 
-    <!-- inertial properties for each link -->
+    <!-- inertial properties for each link in left front leg-->
 
-        <!-- leg body link -->
+        <!-- hip link -->
 
             <!-- mass -->
             <xacro:property name="hip_mass" value="3.607"/>

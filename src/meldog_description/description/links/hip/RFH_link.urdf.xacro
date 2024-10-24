@@ -12,11 +12,11 @@
 
         m="${hip_mass}" 
         cm_x="${hip_cm_x}" 
-        cm_y="${hip_cm_y}" 
+        cm_y="${-hip_cm_y}" 
         cm_z="${hip_cm_z}"
 
-        ixx="${hip_ixx}" ixy="${hip_ixy}" ixz="${hip_ixz}" 
-                         iyy="${hip_iyy}" iyz="${hip_iyz}" 
+        ixx="${hip_ixx}" ixy="${-hip_ixy}" ixz="${hip_ixz}" 
+                         iyy="${hip_iyy}" iyz="${-hip_iyz}" 
                                           izz="${hip_izz}"/>
 
 </robot>

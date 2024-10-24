@@ -10,11 +10,11 @@
         coll_name="upper_limb_collision.stl" 
 
         m="${upper_limb_mass}" 
-        cm_x="${upper_limb_cm_x}" 
+        cm_x="${-upper_limb_cm_x}" 
         cm_y="${upper_limb_cm_y}" 
         cm_z="${upper_limb_cm_z}"
 
-        ixx="${upper_limb_ixx}" ixy="${upper_limb_ixy}" ixz="${upper_limb_ixz}" 
+        ixx="${upper_limb_ixx}" ixy="${-upper_limb_ixy}" ixz="${-upper_limb_ixz}" 
                                 iyy="${upper_limb_iyy}" iyz="${upper_limb_iyz}" 
                                                         izz="${upper_limb_izz}"/>
 
