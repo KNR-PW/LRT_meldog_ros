@@ -76,6 +76,8 @@
                effort="${hip_upper_limb_effort}" 
                velocity="${hip_upper_limb_velocity}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
+
     </joint>
 
     <joint name="lf_upper_limb_lower_limb_joint" type="revolute">
@@ -87,6 +89,7 @@
                effort="${upper_limb_lower_limb_effort}" 
                velocity="${upper_limb_lower_limb_velocity}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="lf_lower_limb_foot_joint" type="fixed">
@@ -104,6 +107,7 @@
                effort="${trunk_hip_effort}" 
                velocity="${trunk_hip_velocity}" />
         <axis xyz="1 0 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
 
@@ -117,6 +121,7 @@
                effort="${trunk_hip_effort}" 
                velocity="${trunk_hip_velocity}" />
         <axis xyz="-1 0 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="rf_hip_upper_limb_joint" type="revolute">
@@ -131,6 +136,7 @@
                effort="${hip_upper_limb_effort}" 
                velocity="${hip_upper_limb_velocity}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="rf_upper_limb_lower_limb_joint" type="revolute">
@@ -142,6 +148,7 @@
                effort="${upper_limb_lower_limb_effort}" 
                velocity="${upper_limb_lower_limb_velocity}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="rf_lower_limb_foot_joint" type="fixed">
@@ -164,6 +171,7 @@
                effort="${hip_upper_limb_effort}" 
                velocity="${hip_upper_limb_velocity}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="lr_upper_limb_lower_limb_joint" type="revolute">
@@ -175,6 +183,7 @@
                effort="${upper_limb_lower_limb_effort}" 
                velocity="${upper_limb_lower_limb_velocity}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="lr_lower_limb_foot_joint" type="fixed">
@@ -192,6 +201,7 @@
                effort="${trunk_hip_effort}" 
                velocity="${trunk_hip_velocity}" />
         <axis xyz="1 0 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <!-- Right rear leg joints -->
@@ -204,6 +214,7 @@
                effort="${trunk_hip_effort}" 
                velocity="${trunk_hip_velocity}" />
         <axis xyz="-1 0 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="rr_hip_upper_limb_joint" type="revolute">
@@ -218,6 +229,7 @@
                effort="${hip_upper_limb_effort}" 
                velocity="${hip_upper_limb_velocity}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="rr_upper_limb_lower_limb_joint" type="revolute">
@@ -229,6 +241,7 @@
                effort="${upper_limb_lower_limb_effort}" 
                velocity="${upper_limb_lower_limb_velocity}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="${test_damping}" friction="${test_friction}" />
     </joint>
 
     <joint name="rr_lower_limb_foot_joint" type="fixed">
