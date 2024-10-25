@@ -1,6 +1,6 @@
 controller manager:
   ros__parameters:
-    update_rate: 1000
+    update_rate: 1000.0
     use_sim_time: true
 
     joint_trajectory_controller:
@@ -8,3 +8,20 @@ controller manager:
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+
+    command_joints:
+
+
+    command_interfaces:
+      -position
+    state_interfaces:
+      -position
+      -velocity
+
+    action_monitor_rate: 1000.0
+    state_publish_rate: 1000.0
+    allow_nonzero_velocity_at_trajectory_end: false
