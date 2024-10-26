@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <joint name="LFK_joint" type="revolute">
+        <parent link="LFUL_link" />
+        <child link="LFLL_link" />
+        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
+        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
+            upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
+            effort="${upper_limb_lower_limb_effort}" 
+            velocity="${upper_limb_lower_limb_velocity}" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+</robot>
