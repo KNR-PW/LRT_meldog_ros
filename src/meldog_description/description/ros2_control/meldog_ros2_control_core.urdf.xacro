@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:inlude filename="ros2_control_macros.urdf.xacro" />
+
+    <!-- joints -->
+
+
+</robot>
