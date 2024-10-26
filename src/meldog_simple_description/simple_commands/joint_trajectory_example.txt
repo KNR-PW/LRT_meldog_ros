@@ -2,7 +2,7 @@
  
  ros2 action send_goal /joint_trajectory_controller/follow_joint_trajectory control_msgs/action/FollowJointTrajectory -f "{
     trajectory: {
-      joint_names: ['FLH_joint', 'FRH_joint', 'BLH_joint', 'BRH_joint', 'FLT_joint', 'FRT_joint', 'BLT_joint', 'BRT_joint', 'FLS_joint', 'FRS_joint', 'BLS_joint', 'BRS_joint'],
+      joint_names: ['LFT_joint', 'RFT_joint', 'LRT_joint', 'RRT_joint', 'LFH_joint', 'RFH_joint', 'LRH_joint', 'RRH_joint', 'LFK_joint', 'RFK_joint', 'LRK_joint', 'RRK_joint'],
       points: [
         { positions: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], time_from_start: { sec: 1 } },
         { positions: [0.0, 0.0, 0.0, 0.0, -0.78539, -0.78539, -0.78539, -0.78539, 1.5707, 1.5707, 1.5707, 1.5707], time_from_start: { sec: 6 } }    ]

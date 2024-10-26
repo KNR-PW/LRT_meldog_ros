@@ -4,9 +4,9 @@
     <xacro:include filename="ros2_control_macros.urdf.xacro" />
     <xacro:include filename="../base_properties.urdf.xacro" />
 
-    <ros2_control name="GazeboSimSystem" type="system">
+    <ros2_control name="IgnitionSystem" type="system">
         <hardware>
-          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+          <plugin>ign_ros2_control/IgnitionSystem</plugin>
         </hardware>
 
         <!-- joints -->
@@ -27,31 +27,40 @@
         <xacro:ros2_control_joint_macro name="RRK" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
 
         <!-- transmission -->
-        <xacro:simple_transmission joint="LFT" reduction="1" offset="0.0" />
-        <xacro:simple_transmission joint="LFH" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="LFT" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="LFH" reduction="10" offset="0.0" />
         <xacro:simple_transmission joint="LFK" reduction="1" offset="0.0" />
 
-        <xacro:simple_transmission joint="RFT" reduction="1" offset="0.0" />
-        <xacro:simple_transmission joint="RFH" reduction="1" offset="0.0" />
-        <xacro:simple_transmission joint="RFK" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="RFT" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="RFH" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="RFK" reduction="10" offset="0.0" />
 
-        <xacro:simple_transmission joint="LRT" reduction="1" offset="0.0" />
-        <xacro:simple_transmission joint="LRH" reduction="1" offset="0.0" />
-        <xacro:simple_transmission joint="LRK" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="LRT" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="LRH" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="LRK" reduction="10" offset="0.0" />
 
-        <xacro:simple_transmission joint="RRT" reduction="1" offset="0.0" />
-        <xacro:simple_transmission joint="RRH" reduction="1" offset="0.0" />
-        <xacro:simple_transmission joint="RRK" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="RRT" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="RRH" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="RRK" reduction="10" offset="0.0" />
     </ros2_control>
 
     <gazebo>
-        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+          <robot_param>robot_description</robot_param>
+          <robot_param_node>robot_state_publisher</robot_param_node>
+          <parameters>$(find meldog_description)/controllers/meldog_controllers.yaml</parameters>
+          <hold_joints>true</hold_joints>
+        </plugin>
+      </gazebo>
+
+    <!-- <gazebo>
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
             <robot_param>robot_description</robot_param>
             <robot_param_node>robot_state_publisher</robot_param_node>
             <parameters>$(find meldog_description)/controllers/meldog_controllers.yaml</parameters>
             <hold_joints>true</hold_joints>
             <controller_manager_name>controller_manager</controller_manager_name>
         </plugin>
-    </gazebo>
+    </gazebo> -->
 
 </robot>

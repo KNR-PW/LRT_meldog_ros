@@ -1,6 +1,7 @@
 from launch import LaunchDescription
 from launch_ros.parameter_descriptions import ParameterValue
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable, IncludeLaunchDescription, RegisterEventHandler
+from launch.event_handlers import OnProcessExit, OnProcessStart
 from launch_ros.actions import Node
 from launch.substitutions import Command
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -59,21 +60,46 @@ def generate_launch_description():
                                 '-name', 'Meldog'],
                     output='screen')
     
-    # gz_ros2_bridge = Node(
-    #     package='ros_gz_bridge',
-    #     executable='parameter_bridge',
-    #     arguments=[
-    #         "clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
-    #     ]
-    # )
+    
+    
+    gz_ros2_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            "clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
+        ]
+    )
+    
+    load_joint_state_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+             'joint_state_broadcaster'],
+        output='screen'
+    )
+
+    load_joint_trajectory_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_trajectory_controller'],
+        output='screen'
+    )   
 
     return LaunchDescription([
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=spawn_entity,
+                on_exit=[load_joint_state_broadcaster],
+            )
+        ),
+
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action= load_joint_state_broadcaster,
+                on_exit=[load_joint_trajectory_controller],
+            )
+        ),
         robot_state_publisher_node,
-        joint_state_publisher_gui_node,
-        rviz2_node,
         gazebo_resource_path,
         gazebo,
         spawn_entity,
+        gz_ros2_bridge
         # gz_ros2_bridge,
         
     ])
