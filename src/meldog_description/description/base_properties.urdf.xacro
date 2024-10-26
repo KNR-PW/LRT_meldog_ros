@@ -113,4 +113,7 @@
         <xacro:property name="upper_limb_lower_limb_velocity" value="100.0" />
         <xacro:property name="trunk_hip_velocity" value="100.0" />
 
+        <xacro:property name="test_damping" value="0"/>
+        <xacro:property name="test_friction" value="0"/>
+
 </robot>
