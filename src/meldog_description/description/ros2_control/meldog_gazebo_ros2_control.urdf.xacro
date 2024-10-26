@@ -8,8 +8,41 @@
         <hardware>
           <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </hardware>
-        <xacro:ros2_control_joint_macro name="lf_hip_upper_limb_joint" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
-      </ros2_control>
+
+        <!-- joints -->
+        <xacro:ros2_control_joint_macro name="LFT" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="LFH" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="LFK" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+
+        <xacro:ros2_control_joint_macro name="RFT" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="RFH" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="RFK" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+
+        <xacro:ros2_control_joint_macro name="LRT" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="LRH" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="LRK" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+
+        <xacro:ros2_control_joint_macro name="RRT" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="RRH" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="RRK" pos_min="${hip_upper_limb_lower_limit}" pos_max="${hip_upper_limb_upper_limit}" />
+
+        <!-- transmission -->
+        <xacro:simple_transmission joint="LFT" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="LFH" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="LFK" reduction="1" offset="0.0" />
+
+        <xacro:simple_transmission joint="RFT" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="RFH" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="RFK" reduction="1" offset="0.0" />
+
+        <xacro:simple_transmission joint="LRT" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="LRH" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="LRK" reduction="1" offset="0.0" />
+
+        <xacro:simple_transmission joint="RRT" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="RRH" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="RRK" reduction="1" offset="0.0" />
+    </ros2_control>
 
     <gazebo>
         <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
     <xacro:macro name="ros2_control_joint_macro" params="name pos_min pos_max">
         <joint name="${name}_joint">
 
@@ -24,4 +25,15 @@
 
           </joint>
     </xacro:macro>
+
+    <xacro:macro name="simple_transmission" params="joint reduction offset">
+      <transmission name="${name}_transmission">
+        <plugin>transmission_interface/SimpleTransmission</plugin>
+        <joint name="${name}_joint" role="joint1">
+            <mechanical_reduction>${reduction}</mechanical_reduction>
+            <offset>${offset}</offset>
+        </joint>
+      </transmission>
+    </xacro:macro>
+
 </robot>
