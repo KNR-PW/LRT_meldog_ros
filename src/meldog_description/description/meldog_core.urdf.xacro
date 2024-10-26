@@ -5,197 +5,126 @@
     <xacro:include filename="macros/macros.urdf.xacro" />
     <xacro:include filename="links/trunk.urdf.xacro" />
 
-    <!-- Left front leg links -->
+    <!-- LINKS -->
 
-        <!-- Left front hip link -->
-        <xacro:include filename="links/hip/LFH_link.urdf.xacro"/>
+        <!-- Left front leg links -->
 
-        <!-- Left front upper limb link -->
-        <xacro:include filename="links/upper_limb/LFUL_link.urdf.xacro"/>
+            <!-- Left front hip link -->
+            <xacro:include filename="links/hip/LFH_link.urdf.xacro"/>
 
-        <!-- Left front lower limb link -->
-        <xacro:include filename="links/lower_limb/LFLL_link.urdf.xacro"/>
+            <!-- Left front upper limb link -->
+            <xacro:include filename="links/upper_limb/LFUL_link.urdf.xacro"/>
 
-        <!-- Left front foot link -->
-        <xacro:include filename="links/foot/LFF_link.urdf.xacro"/>
+            <!-- Left front lower limb link -->
+            <xacro:include filename="links/lower_limb/LFLL_link.urdf.xacro"/>
 
-    <!-- Right front leg links -->
+            <!-- Left front foot link -->
+            <xacro:include filename="links/foot/LFF_link.urdf.xacro"/>
 
-        <!-- Right front hip link -->
-        <xacro:include filename="links/hip/RFH_link.urdf.xacro"/>
+        <!-- Right front leg links -->
 
-        <!-- Right front upper limb link -->
-        <xacro:include filename="links/upper_limb/RFUL_link.urdf.xacro"/>
+            <!-- Right front hip link -->
+            <xacro:include filename="links/hip/RFH_link.urdf.xacro"/>
 
-        <!-- Right front lower limb link -->
-        <xacro:include filename="links/lower_limb/RFLL_link.urdf.xacro"/>
+            <!-- Right front upper limb link -->
+            <xacro:include filename="links/upper_limb/RFUL_link.urdf.xacro"/>
 
-        <!-- Right front foot link -->
-        <xacro:include filename="links/foot/RFF_link.urdf.xacro"/>
+            <!-- Right front lower limb link -->
+            <xacro:include filename="links/lower_limb/RFLL_link.urdf.xacro"/>
 
-    <!-- Left rear leg links -->
+            <!-- Right front foot link -->
+            <xacro:include filename="links/foot/RFF_link.urdf.xacro"/>
 
-        <!-- Left rear hip link -->
-        <xacro:include filename="links/hip/LRH_link.urdf.xacro"/>
+        <!-- Left rear leg links -->
 
-        <!-- Left rear upper limb link -->
-        <xacro:include filename="links/upper_limb/LRUL_link.urdf.xacro"/>
+            <!-- Left rear hip link -->
+            <xacro:include filename="links/hip/LRH_link.urdf.xacro"/>
 
-        <!-- Left rear lower limb link -->
-        <xacro:include filename="links/lower_limb/LRLL_link.urdf.xacro"/>
+            <!-- Left rear upper limb link -->
+            <xacro:include filename="links/upper_limb/LRUL_link.urdf.xacro"/>
 
-        <!-- Left rear foot link -->
-        <xacro:include filename="links/foot/LRF_link.urdf.xacro"/>
+            <!-- Left rear lower limb link -->
+            <xacro:include filename="links/lower_limb/LRLL_link.urdf.xacro"/>
+
+            <!-- Left rear foot link -->
+            <xacro:include filename="links/foot/LRF_link.urdf.xacro"/>
 
 
-    <!-- Right rear leg links -->
+        <!-- Right rear leg links -->
 
-        <!-- Right rear hip link -->
-        <xacro:include filename="links/hip/RRH_link.urdf.xacro"/>
+            <!-- Right rear hip link -->
+            <xacro:include filename="links/hip/RRH_link.urdf.xacro"/>
 
-        <!-- Right rear upper limb link -->
-        <xacro:include filename="links/upper_limb/RRUL_link.urdf.xacro"/>
+            <!-- Right rear upper limb link -->
+            <xacro:include filename="links/upper_limb/RRUL_link.urdf.xacro"/>
 
-        <!-- Right rear lower limb link -->
-        <xacro:include filename="links/lower_limb/RRLL_link.urdf.xacro"/>
+            <!-- Right rear lower limb link -->
+            <xacro:include filename="links/lower_limb/RRLL_link.urdf.xacro"/>
 
-        <!-- Right rear foot link -->
-        <xacro:include filename="links/foot/RRF_link.urdf.xacro"/>
+            <!-- Right rear foot link -->
+            <xacro:include filename="links/foot/RRF_link.urdf.xacro"/>
 
     
-    <!-- left front leg joints -->
-    <joint name="LFH_joint" type="revolute">
-        <parent link="LFH_link" /> 
-        <child link="LFUL_link" />
-        <origin xyz="${hip_upper_limb_x}
-                     ${hip_upper_limb_y}
-                     ${hip_upper_limb_z}" 
-                rpy="0 0 0" />
-        <limit lower="${hip_upper_limb_lower_limit/180.0*pi}" 
-               upper="${hip_upper_limb_upper_limit/180.0*pi}" 
-               effort="${hip_upper_limb_effort}" 
-               velocity="${hip_upper_limb_velocity}" />
-        <axis xyz="0 1 0" />
-    </joint>
+    <!-- JOINTS -->
 
-    <joint name="LFK_joint" type="revolute">
-        <parent link="LFUL_link" />
-        <child link="LFLL_link" />
-        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
-        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
-               upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
-               effort="${upper_limb_lower_limb_effort}" 
-               velocity="${upper_limb_lower_limb_velocity}" />
-        <axis xyz="0 1 0" />
-    </joint>
+        <!-- Left front leg joints -->
 
-    <joint name="LFF_joint" type="fixed">
-        <parent link="LFLL_link" />
-        <child link="LFF_link" />
-        <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
-    </joint>
+            <!-- Left front trunk joint -->
+            <xacro:include filename="joints/trunk/LFT_joint.urdf.xacro"/>
 
-    <joint name="LFT_joint" type="revolute">
-        <parent link="trunk_link" />
-        <child link="LFH_link" />
-        <origin xyz="${trunk_actuators_length/2.0} ${(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
-        <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
-               upper="${trunk_hip_upper_limit/180.0*pi}" 
-               effort="${trunk_hip_effort}" 
-               velocity="${trunk_hip_velocity}" />
-        <axis xyz="1 0 0" />
-    </joint>
+            <!-- Left front hip joint -->
+            <xacro:include filename="joints/hip/LFH_joint.urdf.xacro"/>
 
+            <!-- Left front knee joint -->
+            <xacro:include filename="joints/knee/LFK_joint.urdf.xacro"/>
 
-    <!-- Right front leg joints -->
-    <joint name="RFT_joint" type="revolute">
-        <parent link="trunk_link" />
-        <child link="RFH_link" />
-        <origin xyz="${trunk_actuators_length/2.0} ${-(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
-        <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
-               upper="${trunk_hip_upper_limit/180.0*pi}" 
-               effort="${trunk_hip_effort}" 
-               velocity="${trunk_hip_velocity}" />
-        <axis xyz="-1 0 0" />
-    </joint>
+            <!-- Left front foot joint -->
+            <xacro:include filename="joints/foot/LFF_joint.urdf.xacro"/>
 
-    <joint name="RFH_joint" type="revolute">
-        <parent link="RFH_link" /> 
-        <child link="RFUL_link" />
-        <origin xyz="${hip_upper_limb_x}
-                     ${-hip_upper_limb_y}
-                     ${hip_upper_limb_z}" 
-                rpy="0 0 0" />
-        <limit lower="${hip_upper_limb_lower_limit/180.0*pi}" 
-               upper="${hip_upper_limb_upper_limit/180.0*pi}" 
-               effort="${hip_upper_limb_effort}" 
-               velocity="${hip_upper_limb_velocity}" />
-        <axis xyz="0 1 0" />
-    </joint>
+        <!-- Right front leg joints -->
 
-    <joint name="RFK_joint" type="revolute">
-        <parent link="RFUL_link" />
-        <child link="RFLL_link" />
-        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
-        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
-               upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
-               effort="${upper_limb_lower_limb_effort}" 
-               velocity="${upper_limb_lower_limb_velocity}" />
-        <axis xyz="0 1 0" />
-    </joint>
+            <!-- Right front trunk joint -->
+            <xacro:include filename="joints/trunk/RFT_joint.urdf.xacro"/>
 
-    <joint name="rf_lower_limb_foot_joint" type="fixed">
-        <parent link="RFLL_link" />
-        <child link="RFF_link" />
-        <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
-    </joint>
+            <!-- Right front hip joint -->
+            <xacro:include filename="joints/hip/RFH_joint.urdf.xacro"/>
 
+            <!-- Right front knee joint -->
+            <xacro:include filename="joints/knee/RFK_joint.urdf.xacro"/>
 
-    <!-- Left rear leg joints -->
-    <joint name="LRH_joint" type="revolute">
-        <parent link="LRH_link" /> 
-        <child link="LRUL_link" />
-        <origin xyz="${-hip_upper_limb_x}
-                     ${hip_upper_limb_y}
-                     ${hip_upper_limb_z}" 
-                rpy="0 0 0" />
-        <limit lower="${hip_upper_limb_lower_limit/180.0*pi}" 
-               upper="${hip_upper_limb_upper_limit/180.0*pi}" 
-               effort="${hip_upper_limb_effort}" 
-               velocity="${hip_upper_limb_velocity}" />
-        <axis xyz="0 1 0" />
-    </joint>
+            <!-- Right front foot joint -->
+            <xacro:include filename="joints/foot/RFF_joint.urdf.xacro"/>
 
-    <joint name="LRK_joint" type="revolute">
-        <parent link="LRUL_link" />
-        <child link="LRLL_link" />
-        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
-        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
-               upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
-               effort="${upper_limb_lower_limb_effort}" 
-               velocity="${upper_limb_lower_limb_velocity}" />
-        <axis xyz="0 1 0" />
-    </joint>
+        <!-- Left rear leg joints -->
 
-    <joint name="LRF_joint" type="fixed">
-        <parent link="LRLL_link" />
-        <child link="LRF_link" />
-        <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
-    </joint>
+            <!-- Left rear trunk joint -->
+            <xacro:include filename="joints/trunk/LRT_joint.urdf.xacro"/>
 
-    <joint name="LRT_joint" type="revolute">
-        <parent link="trunk_link" />
-        <child link="LRH_link" />
-        <origin xyz="${-trunk_actuators_length/2.0} ${(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
-        <limit lower="${trunk_hip_lower_limit/180.0*pi}" 
-               upper="${trunk_hip_upper_limit/180.0*pi}" 
-               effort="${trunk_hip_effort}" 
-               velocity="${trunk_hip_velocity}" />
-        <axis xyz="1 0 0" />
-    </joint>
+            <!-- Left rear hip joint -->
+            <xacro:include filename="joints/hip/LRH_joint.urdf.xacro"/>
+
+            <!-- Left rear knee joint -->
+            <xacro:include filename="joints/knee/LRK_joint.urdf.xacro"/>
+
+            <!-- Left rear foot joint -->
+            <xacro:include filename="joints/foot/LRF_joint.urdf.xacro"/>
+
+        <!-- Right rear leg joints -->
+
+            <!-- Right rear trunk joint -->
+            <xacro:include filename="joints/trunk/RRT_joint.urdf.xacro"/>
+
+            <!-- Right rear hip joint -->
+            <xacro:include filename="joints/hip/RRH_joint.urdf.xacro"/>
+
+            <!-- Right rear knee joint -->
+            <xacro:include filename="joints/knee/RRK_joint.urdf.xacro"/>
+
+            <!-- Right rear foot joint -->
+            <xacro:include filename="joints/foot/RRF_joint.urdf.xacro"/>
 
     <!-- Right rear leg joints -->
-    <joint name="RRT_joint" type="revolute">
+    <!-- <joint name="RRT_joint" type="revolute">
         <parent link="trunk_link" />
         <child link="RRH_link" />
         <origin xyz="${-trunk_actuators_length/2.0} ${-(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
@@ -204,9 +133,9 @@
                effort="${trunk_hip_effort}" 
                velocity="${trunk_hip_velocity}" />
         <axis xyz="-1 0 0" />
-    </joint>
+    </joint> -->
 
-    <joint name="RRH_joint" type="revolute">
+    <!-- <joint name="RRH_joint" type="revolute">
         <parent link="RRH_link" /> 
         <child link="RRUL_link" />
         <origin xyz="${-hip_upper_limb_x}
@@ -218,9 +147,9 @@
                effort="${hip_upper_limb_effort}" 
                velocity="${hip_upper_limb_velocity}" />
         <axis xyz="0 1 0" />
-    </joint>
+    </joint> -->
 
-    <joint name="RRK_joint" type="revolute">
+    <!-- <joint name="RRK_joint" type="revolute">
         <parent link="RRUL_link" />
         <child link="RRLL_link" />
         <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
@@ -229,12 +158,12 @@
                effort="${upper_limb_lower_limb_effort}" 
                velocity="${upper_limb_lower_limb_velocity}" />
         <axis xyz="0 1 0" />
-    </joint>
+    </joint> -->
 
-    <joint name="RRF_joint" type="fixed">
+    <!-- <joint name="RRF_joint" type="fixed">
         <parent link="RRLL_link" />
         <child link="RRF_link" />
         <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
-    </joint>
+    </joint> -->
 
 </robot>
