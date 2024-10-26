@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- meshes -->
+    <xacro:property name="upper_limb_vis_stl_name" value="upper_limb_test.stl" />
+    <xacro:property name="upper_limb_coll_stl_name" value="upper_limb_collision.stl" />
+
+    <!-- inertial properties -->
+
+        <!-- mass -->
+        <xacro:property name="upper_limb_mass" value="0.474"/>
+
+        <!-- center of mass -->
+        <xacro:property name="upper_limb_cm_x" value="-1.185"/>
+        <xacro:property name="upper_limb_cm_y" value="-4.308"/>
+        <xacro:property name="upper_limb_cm_z" value="-94.203"/>
+
+        <!-- moments of inertia -->
+        <xacro:property name="upper_limb_ixx" value="4064.505"/>
+        <xacro:property name="upper_limb_ixy" value="1.241"/>
+        <xacro:property name="upper_limb_ixz" value="19.989"/>
+
+        <xacro:property name="upper_limb_iyy" value="4150.05"/>
+        <xacro:property name="upper_limb_iyz" value="235.648"/>
+
+        <xacro:property name="upper_limb_izz" value="424.555"/>
+
+</robot>
