@@ -1,4 +1,28 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- meshes -->
+    <xacro:property name="foot_vis_stl_name" value="foot_vis.stl" />
+    <xacro:property name="foot_coll_stl_name" value="foot_collision.stl" />
+
+    <!-- inertial properties -->
+
+        <!-- mass -->
+        <xacro:property name="foot_mass" value="0.037"/>
+
+        <!-- center of mass -->
+        <xacro:property name="foot_cm_x" value="0.0"/>
+        <xacro:property name="foot_cm_y" value="0.0"/>
+        <xacro:property name="foot_cm_z" value="-8.417"/>
+
+        <!-- tensor of inertia -->
+        <xacro:property name="foot_ixx" value="14.919"/>
+        <xacro:property name="foot_ixy" value="0.0"/>
+        <xacro:property name="foot_ixz" value="0.0"/>
+
+        <xacro:property name="foot_iyy" value="25.291"/>
+        <xacro:property name="foot_iyz" value="0.0"/>
+
+        <xacro:property name="foot_izz" value="23.390"/>
+
 </robot>

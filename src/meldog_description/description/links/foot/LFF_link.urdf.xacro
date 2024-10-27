@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <link name="LFF_link" />
+    <xacro:link_macro 
+        name="LFF_link" 
+        vis_name="${foot_vis_stl_name}" 
+        coll_name="${foot_coll_stl_name}" 
+
+        m="${foot_mass}" 
+        cm_x="${foot_cm_x}" 
+        cm_y="${foot_cm_y}" 
+        cm_z="${foot_cm_z}"
+
+        ixx="${foot_ixx}" ixy="${foot_ixy}" ixz="${foot_ixz}" 
+                          iyy="${foot_iyy}" iyz="${foot_iyz}" 
+                                            izz="${foot_izz}"/>
 
 </robot>
