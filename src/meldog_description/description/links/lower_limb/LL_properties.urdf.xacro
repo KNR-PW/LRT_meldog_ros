@@ -5,6 +5,9 @@
     <xacro:property name="lower_limb_vis_stl_name" value="lower_limb_test.stl" />
     <xacro:property name="lower_limb_coll_stl_name" value="lower_limb_collision.stl" />
 
+    <!-- Limb dimensions -->
+    <xacro:property name="lower_limb_length_to_foot" value="0.25" />
+
     <!-- inertial properties -->
 
         <!-- mass -->

@@ -5,6 +5,9 @@
     <xacro:property name="upper_limb_vis_stl_name" value="upper_limb_test.stl" />
     <xacro:property name="upper_limb_coll_stl_name" value="upper_limb_collision.stl" />
 
+    <!-- limb dimensions -->
+    <xacro:property name="upper_limb_length" value="0.25" />
+
     <!-- inertial properties -->
 
         <!-- mass -->
