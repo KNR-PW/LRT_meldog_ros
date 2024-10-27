@@ -40,7 +40,7 @@ joint_trajectory_controller:
       - RRK_joint
 
     command_interfaces:
-      - effort
+      - position
     state_interfaces:
       - position
       - velocity
@@ -51,74 +51,74 @@ joint_trajectory_controller:
 
     gains:
       LFT_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 1.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       LFH_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       LFK_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       RFT_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       RFH_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       RFK_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       LRT_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       LRH_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       LRK_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       RRT_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       RRH_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
       RRK_joint:
-        d: 10.0
+        d: 5.0
         ff_velocity_scale: 0.0
-        i: 200.0
-        i_clamp: 500.0
-        p: 500.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 100.0
