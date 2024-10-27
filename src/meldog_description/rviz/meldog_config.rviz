@@ -53,15 +53,41 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        foot_link:
+        LFF_link:
           Value: true
-        hip_link:
+        LFH_link:
           Value: true
-        lower_limb_link:
+        LFLL_link:
+          Value: true
+        LFUL_link:
+          Value: true
+        LRF_link:
+          Value: true
+        LRH_link:
+          Value: true
+        LRLL_link:
+          Value: true
+        LRUL_link:
+          Value: true
+        RFF_link:
+          Value: true
+        RFH_link:
+          Value: true
+        RFLL_link:
+          Value: true
+        RFUL_link:
+          Value: true
+        RRF_link:
+          Value: true
+        RRH_link:
+          Value: true
+        RRLL_link:
+          Value: true
+        RRUL_link:
+          Value: true
+        base_link:
           Value: true
         trunk_link:
-          Value: true
-        upper_limb_link:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -69,12 +95,28 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        trunk_link:
-          hip_link:
-            upper_limb_link:
-              lower_limb_link:
-                foot_link:
-                  {}
+        base_link:
+          trunk_link:
+            LFH_link:
+              LFUL_link:
+                LFLL_link:
+                  LFF_link:
+                    {}
+            LRH_link:
+              LRUL_link:
+                LRLL_link:
+                  LRF_link:
+                    {}
+            RFH_link:
+              RFUL_link:
+                RFLL_link:
+                  RFF_link:
+                    {}
+            RRH_link:
+              RRUL_link:
+                RRLL_link:
+                  RRF_link:
+                    {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -94,27 +136,88 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
+        LFF_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LFH_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LFLL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LFUL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LRF_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        LRH_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LRLL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LRUL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Link Tree Style: Links in Alphabetic Order
-        foot_link:
+        RFF_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        hip_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lower_limb_link:
+        RFH_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
+        RFLL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RFUL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RRF_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        RRH_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RRLL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RRUL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         trunk_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        upper_limb_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -130,7 +233,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: trunk_link
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -173,25 +276,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.8604696989059448
+      Distance: 2.7226903438568115
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.04734990745782852
+        Y: -0.05209023505449295
+        Z: 0.03704112023115158
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.31039848923683167
+      Pitch: 0.3203985393047333
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.9004016518592834
+      Yaw: 0.9404014348983765
     Saved: ~
 Window Geometry:
   Displays:
