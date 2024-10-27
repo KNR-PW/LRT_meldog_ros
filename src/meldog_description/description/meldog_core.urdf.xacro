@@ -4,7 +4,16 @@
     <xacro:include filename="base_properties.urdf.xacro" />
     <xacro:include filename="macros/macros.urdf.xacro" />
 
+    <!-- Link properties -->
+    <xacro:include filename="links/foot/F_properties.urdf.xacro"/>
+    <xacro:include filename="links/hip/H_properties.urdf.xacro"/>
+    <xacro:include filename="links/lower_limb/LL_properties.urdf.xacro"/>
+    <xacro:include filename="links/upper_limb/UL_properties.urdf.xacro"/>
+
     <!-- LINKS -->
+
+        <!-- Base link -->
+        <link name="base_link" />
 
         <!-- Trunk link -->
         <xacro:include filename="links/trunk.urdf.xacro" />
@@ -68,6 +77,13 @@
 
     
     <!-- JOINTS -->
+
+        <!-- Base joint -->
+        <joint name="base_joint" type="fixed">
+            <parent link="base_link" />
+            <child link="trunk_link" />
+            <origin xyz="0 0 0.55" rpy="0 0 0" />
+        </joint>
 
         <!-- Left front leg joints -->
 
