@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <robot name="meldog_core" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!-- <xacro:include filename="base_properties.urdf.xacro" /> -->
-    <xacro:include filename="macros/macros.urdf.xacro" />
+    <!-- Xacro macros -->
+    <xacro:include filename="macros/link_macro.urdf.xacro" />
 
     <!-- Link properties -->
     <xacro:include filename="links/properties/F_properties.urdf.xacro"/>
