@@ -9,7 +9,7 @@
                upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
                effort="${upper_limb_lower_limb_effort}" 
                velocity="${upper_limb_lower_limb_velocity}" />
-        <axis xyz="0 1 0" />
+        <axis xyz="0 -1 0" />
     </joint>
 
 </robot>
