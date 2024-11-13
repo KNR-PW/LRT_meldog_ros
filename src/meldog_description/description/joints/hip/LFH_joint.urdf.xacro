@@ -4,14 +4,14 @@
     <joint name="LFH_joint" type="revolute">
         <parent link="LFH_link" /> 
         <child link="LFUL_link" />
-        <origin xyz="${hip_upper_limb_x}
-                     ${hip_upper_limb_y}
-                     ${hip_upper_limb_z}" 
+        <origin xyz="${H_x}
+                     ${H_y}
+                     ${H_z}" 
                 rpy="0 0 0" />
-        <limit lower="${hip_upper_limb_lower_limit/180.0*pi}" 
-               upper="${hip_upper_limb_upper_limit/180.0*pi}" 
-               effort="${hip_upper_limb_effort}" 
-               velocity="${hip_upper_limb_velocity}" />
+        <limit lower="${H_lower_limit/180.0*pi}" 
+               upper="${H_upper_limit/180.0*pi}" 
+               effort="${H_effort}" 
+               velocity="${H_velocity}" />
         <axis xyz="0 -1 0" />
     </joint>
 

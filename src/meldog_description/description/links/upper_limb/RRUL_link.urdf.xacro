@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:include filename="../../base_properties.urdf.xacro" />
-    <xacro:include filename="../../macros/macros.urdf.xacro"/>
-
     <xacro:link_macro 
         name="RRUL_link" 
         vis_name="r_upper_limb_vis.stl" 

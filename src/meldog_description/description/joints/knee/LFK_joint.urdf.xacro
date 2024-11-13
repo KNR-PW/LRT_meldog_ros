@@ -5,10 +5,10 @@
         <parent link="LFUL_link" />
         <child link="LFLL_link" />
         <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
-        <limit lower="${upper_limb_lower_limb_lower_limit/180.0*pi}" 
-            upper="${upper_limb_lower_limb_upper_limit/180.0*pi}" 
-            effort="${upper_limb_lower_limb_effort}" 
-            velocity="${upper_limb_lower_limb_velocity}" />
+        <limit lower="${K_lower_limit/180.0*pi}" 
+            upper="${K_upper_limit/180.0*pi}" 
+            effort="${K_effort}" 
+            velocity="${K_velocity}" />
         <axis xyz="0 -1 0" />
     </joint>
 
