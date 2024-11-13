@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:include filename="../../base_properties.urdf.xacro" />
-    <xacro:include filename="../../macros/macros.urdf.xacro"/>
-
-
     <xacro:link_macro 
         name="LRH_link" 
         vis_name="rear_left_hip.stl" 
@@ -16,7 +12,7 @@
         cm_z="${hip_cm_z}"
 
         ixx="${hip_ixx}" ixy="${-hip_ixy}" ixz="${-hip_ixz}" 
-                         iyy="${hip_iyy}" iyz="${hip_iyz}" 
-                                          izz="${hip_izz}"/>
+                         iyy="${hip_iyy}"  iyz="${hip_iyz}" 
+                                           izz="${hip_izz}"/>
 
 </robot>

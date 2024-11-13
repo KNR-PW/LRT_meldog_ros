@@ -1,14 +1,31 @@
 <?xml version="1.0"?>
 <robot name="meldog_core" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:include filename="base_properties.urdf.xacro" />
-    <xacro:include filename="macros/macros.urdf.xacro" />
-    <xacro:include filename="links/trunk.urdf.xacro" />
+    <!-- Xacro macros -->
+    <xacro:include filename="macros/link_macro.urdf.xacro" />
+
+    <!-- Link properties -->
+    <xacro:include filename="links/properties/F_properties.urdf.xacro"/>
+    <xacro:include filename="links/properties/H_properties.urdf.xacro"/>
+    <xacro:include filename="links/properties/LL_properties.urdf.xacro"/>
+    <xacro:include filename="links/properties/UL_properties.urdf.xacro"/>
+
+    <!-- Joint properties -->
+    <xacro:include filename="joints/properties/T_joint_properties.urdf.xacro"/>
+    <xacro:include filename="joints/properties/H_joint_properties.urdf.xacro"/>
+    <xacro:include filename="joints/properties/K_joint_properties.urdf.xacro"/>
+
+    <!-- ROS2 Control -->
     <xacro:include filename="ros2_control/meldog_gazebo_ros2_control.urdf.xacro"/>
+
 
     <!-- LINKS -->
 
+        <!-- Base link -->
         <link name="base_link" />
+
+        <!-- Trunk link -->
+        <xacro:include filename="links/trunk.urdf.xacro" />
 
         <!-- Left front leg links -->
 
