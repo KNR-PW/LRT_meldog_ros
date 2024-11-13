@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <joint name="LRF_joint" type="fixed">
+        <parent link="LRLL_link" />
+        <child link="LRF_link" />
+        <origin xyz="0 0 ${-lower_limb_length_to_foot}" rpy="0 0 0" />
+    </joint>
+
+</robot>
