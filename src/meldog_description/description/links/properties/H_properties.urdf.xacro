@@ -8,21 +8,21 @@
     <!-- inertial properties -->
 
         <!-- mass -->
-        <xacro:property name="hip_mass" value="3.607"/>
+        <xacro:property name="hip_mass" value="2.276"/>
 
         <!-- center of mass -->
-        <xacro:property name="hip_cm_x" value="125.497"/>
-        <xacro:property name="hip_cm_y" value="20.770"/>
-        <xacro:property name="hip_cm_z" value="0.248"/>
+        <xacro:property name="hip_cm_x" value="126.369"/>
+        <xacro:property name="hip_cm_y" value="14.729"/>
+        <xacro:property name="hip_cm_z" value="0.160"/>
 
         <!-- tensor of inertia -->
-        <xacro:property name="hip_ixx" value="4660.408"/>
-        <xacro:property name="hip_ixy" value="-338.226"/>
-        <xacro:property name="hip_ixz" value="0.847"/>
+        <xacro:property name="hip_ixx" value="3609.753"/>
+        <xacro:property name="hip_ixy" value="-371.167"/>
+        <xacro:property name="hip_ixz" value="0.550"/>
 
-        <xacro:property name="hip_iyy" value="14607.423"/>
-        <xacro:property name="hip_iyz" value="49.927"/>
+        <xacro:property name="hip_iyy" value="8775.172"/>
+        <xacro:property name="hip_iyz" value="17.541"/>
 
-        <xacro:property name="hip_izz" value="13707.172"/>
+        <xacro:property name="hip_izz" value="9362.116"/>
 
 </robot>
