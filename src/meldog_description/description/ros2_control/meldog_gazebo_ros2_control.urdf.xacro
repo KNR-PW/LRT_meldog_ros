@@ -44,6 +44,7 @@
         <xacro:simple_transmission joint="RRT" reduction="10" offset="0.0" />
         <xacro:simple_transmission joint="RRH" reduction="10" offset="0.0" />
         <xacro:simple_transmission joint="RRK" reduction="10" offset="0.0" />
+        
     </ros2_control>
 
     <gazebo>
@@ -54,15 +55,5 @@
           <hold_joints>true</hold_joints>
         </plugin>
       </gazebo>
-
-    <!-- <gazebo>
-        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-            <robot_param>robot_description</robot_param>
-            <robot_param_node>robot_state_publisher</robot_param_node>
-            <parameters>$(find meldog_description)/controllers/meldog_controllers.yaml</parameters>
-            <hold_joints>true</hold_joints>
-            <controller_manager_name>controller_manager</controller_manager_name>
-        </plugin>
-    </gazebo> -->
 
 </robot>
