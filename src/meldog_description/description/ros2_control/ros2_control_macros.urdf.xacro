@@ -1,23 +1,25 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="ros2_control_joint_macro" params="name pos_min pos_max">
+    <xacro:macro name="ros2_control_joint_macro" params="name pos_min pos_max vel_max eff_max">
         <joint name="${name}_joint">
 
-            <command_interface name="position">
+          <!-- co jesli joint continuous? -->
+
+            <command_interface name="position">  
               <param name="min">${pos_min}</param>
               <param name="max">${pos_max}</param>
             </command_interface>
 
-            <!-- <command_interface name="velocity" >
-              <param name="min">-1000</param>
-              <param name="max">1000</param>
-            </command_interface> -->
+            <command_interface name="velocity" >
+              <param name="min">${-vel_max/60.0*2*pi}</param>
+              <param name="max">${vel_max/60.0*2*pi}</param>
+            </command_interface>
 
-            <!-- <command_interface name="effort">
-              <param name="min">-1000</param>
-              <param name="max">1000</param>
-            </command_interface> -->
+            <command_interface name="effort">
+              <param name="min">${-eff_max/actuator_reduction}</param>
+              <param name="max">${eff_max/actuator_reduction}</param>
+            </command_interface>
 
             <state_interface name="position" />
             <state_interface name="velocity"/>

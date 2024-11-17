@@ -2,6 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:include filename="ros2_control_macros.urdf.xacro" />
+    <xacro:include filename="hardware_properties.urdf.xacro" />
     <xacro:include filename="../joints/properties/H_joint_properties.urdf.xacro" />
     <xacro:include filename="../joints/properties/K_joint_properties.urdf.xacro" />
     <xacro:include filename="../joints/properties/T_joint_properties.urdf.xacro" />
@@ -12,38 +13,38 @@
         </hardware>
 
         <!-- joints -->
-        <xacro:ros2_control_joint_macro name="LFT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" />
-        <xacro:ros2_control_joint_macro name="LFH" pos_min="${H_lower_limit}" pos_max="${H_upper_limit}" />
-        <xacro:ros2_control_joint_macro name="LFK" pos_min="${K_lower_limit}" pos_max="${K_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="LFT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
+        <xacro:ros2_control_joint_macro name="LFH" pos_min="${H_lower_limit}" pos_max="${H_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
+        <xacro:ros2_control_joint_macro name="LFK" pos_min="${K_lower_limit}" pos_max="${K_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
 
-        <xacro:ros2_control_joint_macro name="RFT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" />
-        <xacro:ros2_control_joint_macro name="RFH" pos_min="${H_lower_limit}" pos_max="${H_upper_limit}" />
-        <xacro:ros2_control_joint_macro name="RFK" pos_min="${K_lower_limit}" pos_max="${K_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="RFT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
+        <xacro:ros2_control_joint_macro name="RFH" pos_min="${H_lower_limit}" pos_max="${H_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
+        <xacro:ros2_control_joint_macro name="RFK" pos_min="${K_lower_limit}" pos_max="${K_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
 
-        <xacro:ros2_control_joint_macro name="LRT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" />
-        <xacro:ros2_control_joint_macro name="LRH" pos_min="${H_lower_limit}" pos_max="${H_upper_limit}" />
-        <xacro:ros2_control_joint_macro name="LRK" pos_min="${K_lower_limit}" pos_max="${K_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="LRT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
+        <xacro:ros2_control_joint_macro name="LRH" pos_min="${H_lower_limit}" pos_max="${H_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
+        <xacro:ros2_control_joint_macro name="LRK" pos_min="${K_lower_limit}" pos_max="${K_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
 
-        <xacro:ros2_control_joint_macro name="RRT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" />
-        <xacro:ros2_control_joint_macro name="RRH" pos_min="${H_lower_limit}" pos_max="${H_upper_limit}" />
-        <xacro:ros2_control_joint_macro name="RRK" pos_min="${K_lower_limit}" pos_max="${K_upper_limit}" />
+        <xacro:ros2_control_joint_macro name="RRT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
+        <xacro:ros2_control_joint_macro name="RRH" pos_min="${H_lower_limit}" pos_max="${H_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
+        <xacro:ros2_control_joint_macro name="RRK" pos_min="${K_lower_limit}" pos_max="${K_upper_limit}" vel_max="${motor_max_vel}" eff_max="${motor_max_eff}"/>
 
         <!-- transmission -->
-        <xacro:simple_transmission joint="LFT" reduction="10" offset="0.0" />
-        <xacro:simple_transmission joint="LFH" reduction="10" offset="0.0" />
-        <xacro:simple_transmission joint="LFK" reduction="1" offset="0.0" />
+        <xacro:simple_transmission joint="LFT" reduction="${actuator_reduction}" offset="0.0" />
+        <xacro:simple_transmission joint="LFH" reduction="${actuator_reduction}" offset="0.0" />
+        <xacro:simple_transmission joint="LFK" reduction="${actuator_reduction}" offset="0.0" />
 
-        <xacro:simple_transmission joint="RFT" reduction="10" offset="0.0" />
-        <xacro:simple_transmission joint="RFH" reduction="10" offset="0.0" />
-        <xacro:simple_transmission joint="RFK" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="RFT" reduction="${actuator_reduction}" offset="0.0" />
+        <xacro:simple_transmission joint="RFH" reduction="${actuator_reduction}" offset="0.0" />
+        <xacro:simple_transmission joint="RFK" reduction="${actuator_reduction}" offset="0.0" />
 
-        <xacro:simple_transmission joint="LRT" reduction="10" offset="0.0" />
-        <xacro:simple_transmission joint="LRH" reduction="10" offset="0.0" />
-        <xacro:simple_transmission joint="LRK" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="LRT" reduction="${actuator_reduction}" offset="0.0" />
+        <xacro:simple_transmission joint="LRH" reduction="${actuator_reduction}" offset="0.0" />
+        <xacro:simple_transmission joint="LRK" reduction="${actuator_reduction}" offset="0.0" />
 
-        <xacro:simple_transmission joint="RRT" reduction="10" offset="0.0" />
-        <xacro:simple_transmission joint="RRH" reduction="10" offset="0.0" />
-        <xacro:simple_transmission joint="RRK" reduction="10" offset="0.0" />
+        <xacro:simple_transmission joint="RRT" reduction="${actuator_reduction}" offset="0.0" />
+        <xacro:simple_transmission joint="RRH" reduction="${actuator_reduction}" offset="0.0" />
+        <xacro:simple_transmission joint="RRK" reduction="${actuator_reduction}" offset="0.0" />
         
     </ros2_control>
 
