@@ -3,6 +3,7 @@
 
     <xacro:link_macro 
         name="LRUL_link" 
+        is_foot="0"
         vis_name="upper_limb_test.stl" 
         coll_name="upper_limb_collision.stl" 
 

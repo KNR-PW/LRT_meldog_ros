@@ -40,6 +40,29 @@
 
             <!-- Left front foot link -->
             <xacro:include filename="links/foot/LFF_link.urdf.xacro"/>
+            <!-- <link name="LFF_link">
+                <visual>
+                    <geometry>
+                        <sphere radius="0.035" />
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                </visual>
+
+                <collision>
+                    <geometry>
+                        <sphere radius="0.035" />
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                </collision>
+
+                <inertial>
+                    <mass value="${foot_mass}" />
+                    <origin xyz="${foot_cm_x*0.001} ${foot_cm_y*0.001} ${foot_cm_z*0.001}" rpy="0 0 0" />
+                    <inertia ixx="${foot_ixx*0.000001}" ixy="${foot_ixy*0.000001}" ixz="${foot_ixz*0.000001}" 
+                                               iyy="${foot_iyy*0.000001}" iyz="${foot_iyz*0.000001}" 
+                                                                     izz="${foot_izz*0.000001}" />
+                </inertial>
+            </link> -->
 
         <!-- Right front leg links -->
 
@@ -54,6 +77,29 @@
 
             <!-- Right front foot link -->
             <xacro:include filename="links/foot/RFF_link.urdf.xacro"/>
+            <!-- <link name="RFF_link">
+                <visual>
+                    <geometry>
+                        <sphere radius="0.035" />
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                </visual>
+
+                <collision>
+                    <geometry>
+                        <sphere radius="0.035" />
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                </collision>
+
+                <inertial>
+                    <mass value="${foot_mass}" />
+                    <origin xyz="${foot_cm_x*0.001} ${foot_cm_y*0.001} ${foot_cm_z*0.001}" rpy="0 0 0" />
+                    <inertia ixx="${foot_ixx*0.000001}" ixy="${foot_ixy*0.000001}" ixz="${foot_ixz*0.000001}" 
+                                               iyy="${foot_iyy*0.000001}" iyz="${foot_iyz*0.000001}" 
+                                                                     izz="${foot_izz*0.000001}" />
+                </inertial>
+            </link> -->
 
         <!-- Left rear leg links -->
 
@@ -68,6 +114,29 @@
 
             <!-- Left rear foot link -->
             <xacro:include filename="links/foot/LRF_link.urdf.xacro"/>
+            <!-- <link name="LRF_link">
+                <visual>
+                    <geometry>
+                        <sphere radius="0.035" />
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                </visual>
+
+                <collision>
+                    <geometry>
+                        <sphere radius="0.035" />
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                </collision>
+
+                <inertial>
+                    <mass value="${foot_mass}" />
+                    <origin xyz="${foot_cm_x*0.001} ${foot_cm_y*0.001} ${foot_cm_z*0.001}" rpy="0 0 0" />
+                    <inertia ixx="${foot_ixx*0.000001}" ixy="${foot_ixy*0.000001}" ixz="${foot_ixz*0.000001}" 
+                                               iyy="${foot_iyy*0.000001}" iyz="${foot_iyz*0.000001}" 
+                                                                     izz="${foot_izz*0.000001}" />
+                </inertial>
+            </link> -->
 
 
         <!-- Right rear leg links -->
@@ -83,6 +152,29 @@
 
             <!-- Right rear foot link -->
             <xacro:include filename="links/foot/RRF_link.urdf.xacro"/>
+            <!-- <link name="RRF_link">
+                <visual>
+                    <geometry>
+                        <sphere radius="0.035" />
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                </visual>
+
+                <collision>
+                    <geometry>
+                        <sphere radius="0.035" />
+                    </geometry>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                </collision>
+
+                <inertial>
+                    <mass value="${foot_mass}" />
+                    <origin xyz="${foot_cm_x*0.001} ${foot_cm_y*0.001} ${foot_cm_z*0.001}" rpy="0 0 0" />
+                    <inertia ixx="${foot_ixx*0.000001}" ixy="${foot_ixy*0.000001}" ixz="${foot_ixz*0.000001}" 
+                                               iyy="${foot_iyy*0.000001}" iyz="${foot_iyz*0.000001}" 
+                                                                     izz="${foot_izz*0.000001}" />
+                </inertial>
+            </link> -->
 
     
     <!-- JOINTS -->

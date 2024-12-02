@@ -3,6 +3,7 @@
 
     <xacro:link_macro 
         name="RFH_link" 
+        is_foot="0"
         vis_name="front_right_hip.stl" 
         coll_name="front_right_hip_collision.stl" 
 

@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- foot radius -->
+    <xacro:property name="foot_radius" value="0.035" />
+
     <!-- meshes -->
     <xacro:property name="foot_vis_stl_name" value="foot_vis.stl" />
     <xacro:property name="foot_coll_stl_name" value="foot_collision.stl" />
