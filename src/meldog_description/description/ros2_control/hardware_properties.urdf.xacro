@@ -3,7 +3,7 @@
 
     <xacro:property name="motor_max_eff" value="3.5" />
     <xacro:property name="motor_max_vel" value="1800" /> 
-    <xacro:property name="actuator_reduction" value="0.0625" />
+    <xacro:property name="actuator_reduction" value="9.97" />
 
 
 </robot>

@@ -6,8 +6,8 @@
     <xacro:property name="K_upper_limit" value="160" />
 
     <!-- Knee joint effort and velocity limits -->
-    <xacro:property name="K_effort" value="100.0" />
-    <xacro:property name="K_velocity" value="100.0" />
+    <xacro:property name="K_effort" value="${motor_max_eff*actuator_reduction}" />
+    <xacro:property name="K_velocity" value="${motor_max_vel*pi/30.0/actuator_reduction}" />
 
     <!-- Knee joint friction and damping -->
     <xacro:property name="K_damping" value="0"/>

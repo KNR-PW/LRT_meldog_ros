@@ -1,0 +1,174 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 500
+
+    joint_controller:
+      type: joint_controller/JointController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+joint_controller:
+  ros__parameters:
+    joint_names:
+      - LFT_joint
+      - LFH_joint
+      - LFK_joint
+      - RFT_joint
+      - RFH_joint
+      - RFK_joint
+      - LRT_joint
+      - LRH_joint
+      - LRK_joint
+      - RRT_joint
+      - RRH_joint
+      - RRK_joint
+
+    joint_params:
+      LFT_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      LFH_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      LFK_joint: 
+        position_max: 2.793
+        position_min: -2.793
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      RFT_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      RFH_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      RFK_joint: 
+        position_max: 2.793
+        position_min: -2.793
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      LRT_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      LRH_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      LRK_joint: 
+        position_max: 2.793
+        position_min: -2.793
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      RRT_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+      
+      RRH_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      RRK_joint: 
+        position_max: 2.793
+        position_min: -2.793
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+    frequency: 500.0
+
+    pid_gains:
+      LFT_joint:
+        p: 1.0
+        d: 0.0
+        i: 0.0
+        ilimit: 0.0
+      LFH_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      LFK_joint:
+        p: 1.0
+        d: 0.0
+        i: 5.0
+        ilimit: 0.0
+      RFT_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      RFH_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      RFK_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      LRT_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      LRH_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      LRK_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      RRT_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      RRH_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
+      RRK_joint:
+        p: 1.0
+        d: 0.00
+        i: 0.0
+        ilimit: 0.0
