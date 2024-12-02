@@ -6,8 +6,8 @@
     <xacro:property name="T_upper_limit" value="45" />
 
     <!-- Trunk joint effort and velocity limits -->
-    <xacro:property name="T_effort" value="100.0" />
-    <xacro:property name="T_velocity" value="100.0" />
+    <xacro:property name="T_effort" value="${motor_max_eff*actuator_reduction}" />
+    <xacro:property name="T_velocity" value="${motor_max_vel*pi/30.0/actuator_reduction}" />
 
     <!-- Trunk joint friction and damping -->
     <xacro:property name="T_damping" value="0"/>

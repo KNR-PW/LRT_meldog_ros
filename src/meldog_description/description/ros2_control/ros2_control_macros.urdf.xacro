@@ -12,13 +12,13 @@
             </command_interface>
 
             <command_interface name="velocity" >
-              <param name="min">${-vel_max/60.0*2*pi}</param>
-              <param name="max">${vel_max/60.0*2*pi}</param>
+              <param name="min">${-vel_max}</param>
+              <param name="max">${vel_max}</param>
             </command_interface>
 
             <command_interface name="effort">
-              <param name="min">${-eff_max/actuator_reduction}</param>
-              <param name="max">${eff_max/actuator_reduction}</param>
+              <param name="min">${-eff_max}</param>
+              <param name="max">${eff_max}</param>
             </command_interface>
 
             <state_interface name="position" />
@@ -36,6 +36,26 @@
             <offset>${offset}</offset>
         </joint>
       </transmission>
+    </xacro:macro>
+
+    <xacro:macro name="FourBarLinkageTransmission" params="first_joint_name second_joint_name">
+        <transmission name="FourBarLinkageTransmission_${first_joint_name}_${second_joint_name}">
+            <plugin>transmission_interface/FourBarLinkageTransmission</plugin>
+            <!-- <actuator name="${first_joint_name}_actuator" role="actuator1">
+                <mechanical_reduction>${reduction}</mechanical_reduction>
+            </actuator>
+            <actuator name="${second_joint_name}_actuator" role="actuator2">
+                <mechanical_reduction>${reduction}</mechanical_reduction>
+            </actuator> -->
+            <joint name="${first_joint_name}_joint" role="joint1">
+                <mechanical_reduction>1.0</mechanical_reduction>
+                <offset>0.0</offset>
+            </joint>
+            <joint name="${second_joint_name}_joint" role="joint2">
+                <mechanical_reduction>1.0</mechanical_reduction>
+                <offset>0.0</offset>
+            </joint>
+        </transmission>
     </xacro:macro>
 
 </robot>
