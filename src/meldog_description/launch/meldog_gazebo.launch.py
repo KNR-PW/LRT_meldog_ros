@@ -17,9 +17,6 @@ def generate_launch_description():
 
     robot_description = ParameterValue(Command(['xacro ',urdf_path]),
                                        value_type=str)
-    
-    rviz_config_path = os.path.join(get_package_share_path('meldog_description'),
-                                    'rviz','meldog_config.rviz')
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -31,14 +28,6 @@ def generate_launch_description():
     joint_state_publisher_gui_node = Node(
         package="joint_state_publisher_gui",
         executable="joint_state_publisher_gui"
-    )
-    
-    rviz2_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        arguments=[
-            '-d', rviz_config_path
-        ]
     )
     
     ros_distro = os.environ["ROS_DISTRO"]
@@ -76,7 +65,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    load_joint_trajectory_controller = ExecuteProcess(
+    load_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_controller'],
         output='screen'
     )   
@@ -92,7 +81,7 @@ def generate_launch_description():
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action= load_joint_state_broadcaster,
-                on_exit=[load_joint_trajectory_controller],
+                on_exit=[load_controller],
             )
         ),
         robot_state_publisher_node,
@@ -100,6 +89,5 @@ def generate_launch_description():
         gazebo,
         spawn_entity,
         gz_ros2_bridge
-        # gz_ros2_bridge,
         
     ])

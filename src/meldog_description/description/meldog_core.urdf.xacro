@@ -15,6 +15,10 @@
     <xacro:include filename="joints/properties/H_joint_properties.urdf.xacro"/>
     <xacro:include filename="joints/properties/K_joint_properties.urdf.xacro"/>
 
+    <!-- Gazebo -->
+    <xacro:include filename="gazebo/gazebo_properties.urdf.xacro" />
+    <xacro:include filename="gazebo/meldog_gazebo.urdf.xacro" />
+
     <!-- ROS2 Control -->
     <xacro:include filename="ros2_control/meldog_gazebo_ros2_control.urdf.xacro"/>
 
