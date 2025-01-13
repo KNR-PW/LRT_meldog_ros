@@ -9,6 +9,7 @@
                upper="${T_upper_limit/180.0*pi}" 
                effort="${T_effort}" 
                velocity="${T_velocity}" />
+        <dynamics friction="${T_friction}" damping="${T_damping}" />
         <axis xyz="1 0 0" />
     </joint>
 
