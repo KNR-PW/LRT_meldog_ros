@@ -9,6 +9,7 @@
             upper="${K_upper_limit/180.0*pi}" 
             effort="${K_effort}" 
             velocity="${K_velocity}" />
+        <dynamics friction="${K_friction}" damping="${K_damping}" />
         <axis xyz="0 -1 0" />
     </joint>
 
