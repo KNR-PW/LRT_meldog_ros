@@ -180,7 +180,8 @@ async def soundTest(controller: moteus.Controller,
   oneEpisodeIter = maxIter / 3
 
   velocity = maxVelocity / 3
-  startPos = startState.values[moteus.Register.POSITION]
+
+  state = startState
 
   startTime = time.perf_counter()
 
@@ -189,6 +190,7 @@ async def soundTest(controller: moteus.Controller,
     if(i == 0):
       velocity = maxVelocity / 3
       print(f"First episode: {velocity} rad/s ")
+      startPos = state.values[moteus.Register.POSITION]
       startTime = time.perf_counter()
 
     elif(i == oneEpisodeIter):
@@ -196,6 +198,7 @@ async def soundTest(controller: moteus.Controller,
       print("New episode in 10 seconds..")
       await asyncio.sleep(10)
       print(f"Second episode: {velocity} rad/s ")
+      startPos = state.values[moteus.Register.POSITION]
       startTime = time.perf_counter()
     
     elif(i == 2 * oneEpisodeIter):
@@ -203,6 +206,7 @@ async def soundTest(controller: moteus.Controller,
       print("New episode in 10 seconds..")
       await asyncio.sleep(10)
       print(f"Third episode: {velocity} rad/s ")
+      startPos = state.values[moteus.Register.POSITION]
       startTime = time.perf_counter()
 
     current_time = time.perf_counter()
@@ -216,7 +220,7 @@ async def soundTest(controller: moteus.Controller,
     if(i // oneSecondInIter == 0):
       diagnosticMessage = "Current State: "
       for diagnosticName, diagnosticValue in zip(diagnosticNames, diagnosticDict.values()):
-        diagnosticMessage += f"{diagnosticName} = {diagnosticValue:.2f} "
+        diagnosticMessage += f"{diagnosticName} = {diagnosticValue[i]:.2f} "
       print(diagnosticMessage, end="\r", flush=True)
 
     while(time.perf_counter() - current_time < oneIterTime):
