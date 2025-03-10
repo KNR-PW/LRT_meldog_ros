@@ -40,7 +40,7 @@ joint_trajectory_controller:
       - RRK_joint
 
     command_interfaces:
-      - effort
+      - position
     state_interfaces:
       - position
       - velocity
