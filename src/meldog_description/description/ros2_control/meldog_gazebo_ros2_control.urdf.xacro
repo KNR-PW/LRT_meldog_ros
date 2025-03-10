@@ -46,19 +46,19 @@
         <xacro:simple_transmission joint="RRH" reduction="${actuator_reduction}" offset="0.0" />
         <xacro:simple_transmission joint="RRK" reduction="${actuator_reduction}" offset="0.0" /> -->
 
-        <xacro:FourBarLinkageTransmission first_joint_name="LFH" second_joint_name="LFK" />
+        <!-- <xacro:FourBarLinkageTransmission first_joint_name="LFH" second_joint_name="LFK" />
         <xacro:FourBarLinkageTransmission first_joint_name="RFH" second_joint_name="RFK" />
         <xacro:FourBarLinkageTransmission first_joint_name="LRH" second_joint_name="LRK" />
-        <xacro:FourBarLinkageTransmission first_joint_name="RRH" second_joint_name="RRK" />
+        <xacro:FourBarLinkageTransmission first_joint_name="RRH" second_joint_name="RRK" /> -->
         
     </ros2_control>
 
     <gazebo>
         <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-          <!-- <robot_param>robot_description</robot_param>
-          <robot_param_node>robot_state_publisher</robot_param_node> -->
-          <parameters>$(find meldog_description)/controllers/joint_controller.yaml</parameters>
-          <!-- <hold_joints>true</hold_joints> -->
+          <robot_param>robot_description</robot_param>
+          <robot_param_node>robot_state_publisher</robot_param_node>
+          <parameters>$(find meldog_description)/controllers/meldog_controllers.yaml</parameters>
+          <hold_joints>true</hold_joints>
         </plugin>
       </gazebo>
 
