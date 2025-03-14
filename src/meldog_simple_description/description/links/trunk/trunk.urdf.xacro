@@ -7,7 +7,7 @@
     <xacro:property name="trunk_base_height" value="0.1" />
 
     <xacro:property name="trunk_actuators_length" value="0.3" />
-    <xacro:property name="trunk_actuators_width" value="0.2" />
+    <xacro:property name="trunk_actuators_width" value="0.1" />
     <xacro:property name="trunk_actuators_height" value="0.1" />
 
     <xacro:property name="trunk_mass" value="8.0"/>
