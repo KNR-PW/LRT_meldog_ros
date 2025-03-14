@@ -174,7 +174,7 @@
     </joint>
 
     <!-- Shank front right to Feet right left -->
-    <joint name="RLF_joint" type="fixed">
+    <joint name="FRF_joint" type="fixed">
         <origin xyz="0.0 0.0 ${-shank_length}" rpy="0.0 0.0 0.0"/>
         <parent link="shank_front_right_link"/>
         <child link="feet_front_right_link"/>
