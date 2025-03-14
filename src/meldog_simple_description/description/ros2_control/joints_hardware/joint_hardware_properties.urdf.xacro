@@ -8,7 +8,4 @@
     <xacro:property name="motor_lower_limit" value="-${100}"/>
     <xacro:property name="motor_upper_limit" value="${100}"/>
 
-
-    
-
 </robot>

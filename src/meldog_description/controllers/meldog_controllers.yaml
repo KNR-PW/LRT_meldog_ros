@@ -1,0 +1,124 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000
+    use_sim_time: true
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - LFT_joint
+      - LFH_joint
+      - LFK_joint
+      - RFT_joint
+      - RFH_joint
+      - RFK_joint
+      - LRT_joint
+      - LRH_joint
+      - LRK_joint
+      - RRT_joint
+      - RRH_joint
+      - RRK_joint
+
+    command_joints:
+      - LFT_joint
+      - LFH_joint
+      - LFK_joint
+      - RFT_joint
+      - RFH_joint
+      - RFK_joint
+      - LRT_joint
+      - LRH_joint
+      - LRK_joint
+      - RRT_joint
+      - RRH_joint
+      - RRK_joint
+
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+    action_monitor_rate: 1000.0
+    state_publish_rate: 1000.0
+    allow_nonzero_velocity_at_trajectory_end: false
+
+    gains:
+      LFT_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      LFH_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      LFK_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      RFT_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      RFH_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      RFK_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      LRT_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      LRH_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      LRK_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      RRT_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      RRH_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
+      RRK_joint:
+        d: 1.5
+        ff_velocity_scale: 0.0
+        i: 15.0
+        i_clamp: 30.0
+        p: 70.0
