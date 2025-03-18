@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <joint name="LRT_joint" type="revolute">
+        <parent link="trunk_link" />
+        <child link="LRH_link" />
+        <origin xyz="-0.05 0 0" rpy="0 0 0" />
+        <limit lower="${T_lower_limit/180.0*pi}" 
+               upper="${T_upper_limit/180.0*pi}" 
+               effort="${T_effort}" 
+               velocity="${T_velocity}" />
+        <axis xyz="1 0 0" />
+    </joint>
+
+</robot>
