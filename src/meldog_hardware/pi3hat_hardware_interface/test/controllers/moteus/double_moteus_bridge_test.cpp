@@ -104,13 +104,13 @@ int main(int argc, char** argv)
     moteus_2_command.velocity_limit = params_2.velocity_max_;
 
 
-    std::vector<controller_interface::ControllerBridge> controllers;
+    std::vector<controller_interface::Controller> controllers;
     std::vector<controller_interface::ControllerCommand> controller_commands;
     std::vector<controller_interface::ControllerState> controller_states;
 
    
-    controller_interface::ControllerBridge controller_1("moteus", params_1); 
-    controller_interface::ControllerBridge controller_2("moteus", params_2); 
+    controller_interface::Controller controller_1("moteus", params_1); 
+    controller_interface::Controller controller_2("moteus", params_2); 
 
     controllers.push_back(std::move(controller_1));
     controllers.push_back(std::move(controller_2));
