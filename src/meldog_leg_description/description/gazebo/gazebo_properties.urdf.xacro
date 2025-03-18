@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Set to 1 to enable gazebo link physic parameters -->
+    <xacro:property name="use_gz_links" value="1" />
+
+    <!-- Set to 1 to enable gazebo joint physic parameters -->
+    <xacro:property name="use_gz_joints" value="1" />
+
+    <!-- Gazebo joint parameters -->
+    <xacro:property name="implicitSpringDamper_value" value="0" />
+    <xacro:property name="springStiffness_value" value="0" />
+    <xacro:property name="springReference_value" value="0" />
+    <xacro:property name="implicitSpringDamper_value" value="0" />
+    <xacro:property name="stopErp_value" value="0" />
+    <xacro:property name="stopCfm_value" value="0" />
+
+    <!-- Gazebo link parameters for all links except feet-->
+    <xacro:property name="mu1_value" value="0" />
+    <xacro:property name="mu2_value" value="0" />
+    <xacro:property name="kp_value" value="0" />
+    <xacro:property name="kd_value" value="0" />
+    <xacro:property name="maxVel_value" value="0" />
+    <xacro:property name="dampingFactor_value" value="0" />
+
+    <!-- Gazsebo link parameters for feet -->
+    <xacro:property name="mu1_value_foot" value="0" />
+    <xacro:property name="mu2_value_foot" value="0" />
+    <xacro:property name="kp_value_foot" value="0" />
+    <xacro:property name="kd_value_foot" value="0" />
+    <xacro:property name="maxVel_value_foot" value="0" />
+    <xacro:property name="dampingFactor_value_foot" value="0" />
+
+</robot>

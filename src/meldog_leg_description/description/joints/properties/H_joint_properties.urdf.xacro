@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Hip joint origin -->
+    <xacro:property name="H_x" value="0.174"/>
+    <xacro:property name="H_y" value="0.0925"/>
+    <xacro:property name="H_z" value="0"/>
+
+    <!-- Hip upper limb joint movement limits -->
+    <xacro:property name="H_lower_limit" value="-120" />
+    <xacro:property name="H_upper_limit" value="120" />
+
+    <!-- Hip joint effort and velocity limits -->
+    <xacro:property name="H_effort" value="${motor_max_eff*actuator_reduction}" />
+    <xacro:property name="H_velocity" value="${motor_max_vel*pi/30.0/actuator_reduction}" />
+
+    <!-- Hip joint friction and damping -->
+    <xacro:property name="H_damping" value="0"/>
+    <xacro:property name="H_friction" value="0"/>
+
+</robot>

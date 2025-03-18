@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.8)
+project(meldog_leg_description)
+
+
+
+
+find_package(ament_cmake REQUIRED)
+
+
+install(
+  DIRECTORY description launch meshes rviz controllers
+  DESTINATION share/${PROJECT_NAME}
+)
+
+
+ament_package()
