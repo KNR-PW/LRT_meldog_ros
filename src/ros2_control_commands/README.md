@@ -37,3 +37,6 @@ ros2 control set_hardware_component_state_A inactive
 ```
 
 Controller and hardware component respectively will change their states from active to inactive while calling function onDeactivate()
+
+
+![Life cycle](https://design.ros2.org/img/node_lifecycle/life_cycle_sm.png)
