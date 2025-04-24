@@ -27,11 +27,8 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="log",
-        # arguments=["-d", rviz_config_file],
         condition=IfCondition(gui),
     )
-
-
 
     nodes = [
         rviz_node 
