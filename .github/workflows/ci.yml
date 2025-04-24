@@ -18,11 +18,26 @@ jobs:
           required-ros-distributions: humble
       - uses: ros-tooling/action-ros-ci@v0.3
         with:
-          package-name: meldog_logger
+          package-name: meldog_leg_tests
           target-ros2-distro: humble
           skip-tests: true
       - uses: ros-tooling/action-ros-ci@v0.3
         with:
-          package-name: meldog_bridge
+          package-name: meldog_interfaces_tests
           target-ros2-distro: humble
           skip-tests: true
+      - uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          package-name: meldog_description
+          target-ros2-distro: humble
+          skip-tests: true
+      - uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          package-name: meldog_simple_description
+          target-ros2-distro: humble
+          skip-tests: true
+      - uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          package-name: meldog_launch_tests
+          target-ros2-distro: humble
+          skip-tests: true 
