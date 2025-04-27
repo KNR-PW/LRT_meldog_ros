@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>612</width>
+    <height>617</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+  font-family: Arial;
+  font-size: 12pt;
+}
+
+QPushButton {
+  background-color: #008cff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-family: Arial;
+  font-size: 12pt;
+}
+
+QPushButton:hover {
+  background-color: #0066cc;
+}
+
+QLineEdit {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+  font-family: Arial;
+  font-size: 12pt;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_10">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333333;
+    background-color: rgb(153, 193, 241);
+    padding: 4px;
+    border-bottom: 2px solid #cccccc;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Moteus UI</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #555;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}</string>
+         </property>
+         <property name="text">
+          <string>Choose Moteus:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QComboBox {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    background-color: white;
+    selection-background-color: #DA2E2E;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left-width: 1px;
+    border-left-color: gray;
+    border-left-style: solid;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+QComboBox::hover {
+    border: 1px solid #DA2E2E;
+}
+
+QComboBox::pressed {
+    border: 1px solid #DA2E2E;
+    background-color: #DA2E2E;
+    color: white;
+}</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="lineWidth">
+      <number>4</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    font-size: 25px;
+    font-weight: bold;
+    color: #333333;
+    background-color: #f2f2f2;
+    padding: 4px;
+    border-bottom: 2px solid #cccccc;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>Moteus Control</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #555;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}</string>
+         </property>
+         <property name="text">
+          <string>position</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+         <property name="styleSheet">
+          <string notr="true">QDoubleSpinBox {
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    padding: 3px;
+    font-size: 14px;
+    font-family: Arial;
+    color: #4d4d4d;
+}
+</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #555;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}</string>
+         </property>
+         <property name="text">
+          <string>velocity</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+         <property name="styleSheet">
+          <string notr="true">QDoubleSpinBox {
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    padding: 3px;
+    font-size: 14px;
+    font-family: Arial;
+    color: #4d4d4d;
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #555;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}</string>
+         </property>
+         <property name="text">
+          <string>torque</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <property name="styleSheet">
+          <string notr="true">QDoubleSpinBox {
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    padding: 3px;
+    font-size: 14px;
+    font-family: Arial;
+    color: #4d4d4d;
+}
+
+</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="minimumSize">
+          <size>
+           <width>128</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+    background-color: rgb(53, 132, 228);
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: bold 25px;
+	color: white;
+    min-width: 4em;
+    padding: 4px;
+}</string>
+         </property>
+         <property name="text">
+          <string>SET</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>19</width>
+           <height>100</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    font-size: 25px;
+    font-weight: bold;
+    color: #333333;
+    background-color: #f2f2f2;
+    padding: 4px;
+    border-bottom: 2px solid #cccccc;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>Moteus State</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #555;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}</string>
+         </property>
+         <property name="text">
+          <string>current position</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="lcdNumber_2">
+         <property name="styleSheet">
+          <string notr="true">QLCDNumber {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #434343, stop:1 #2b2b2b);
+    color: #b3b3b3;
+    border-radius: 10px;
+    padding: 5px;
+    border: none;
+}
+QLCDNumber::number {
+    background-color: none;
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #555;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}</string>
+         </property>
+         <property name="text">
+          <string>current velocity</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="lcdNumber">
+         <property name="styleSheet">
+          <string notr="true">QLCDNumber {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #434343, stop:1 #2b2b2b);
+    color: #b3b3b3;
+    border-radius: 10px;
+    padding: 5px;
+    border: none;
+}
+QLCDNumber::number {
+    background-color: none;
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    color: #555;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>current torque</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="lcdNumber_3">
+         <property name="styleSheet">
+          <string notr="true">QLCDNumber {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #434343, stop:1 #2b2b2b);
+    color: #b3b3b3;
+    border-radius: 10px;
+    padding: 5px;
+    border: none;
+}
+QLCDNumber::number {
+    background-color: none;
+}
+</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="minimumSize">
+          <size>
+           <width>132</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+    background-color: rgb(224, 27, 36);
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: bold 25px;
+	color: white;
+    min-width: 4em;
+    padding: 6px;
+}</string>
+         </property>
+         <property name="text">
+          <string>STOP</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="autoRepeatInterval">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

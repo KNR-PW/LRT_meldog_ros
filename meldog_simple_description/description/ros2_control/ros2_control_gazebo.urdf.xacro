@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "meldog_ros2_control_gazebo">
+
+    <!-- ROS2 Control for Gazebo -->
+    <ros2_control name="meldog_gazebo" type="system">
+        <hardware>  
+            <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </hardware>
+
+        <!-- ROS2 Control core xacro file -->
+        <xacro:include filename="ros2_control_core.urdf.xacro"/>   
+
+    </ros2_control>
+
+    <gazebo>
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+          <parameters>$(find meldog_simple_description)/test_controllers/joint_trajectory_controller_test.yaml</parameters>
+        </plugin>
+    </gazebo>
+</robot>
