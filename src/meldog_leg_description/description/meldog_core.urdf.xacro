@@ -24,12 +24,21 @@
 
 
     <!-- LINKS -->
-     
-        <!-- Base link -->
-        <link name="base_link" />
+        
+        <link name="world"/> 
 
-        <!-- Trunk link -->
-        <xacro:include filename="links/trunk.urdf.xacro" />
+        <joint name="world_joint" type="fixed">
+            <parent link="world"/>
+            <child link="base_link"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </joint>
+
+        
+        <!-- Base link -->  
+            <link name="base_link"/>
+
+            <!-- Trunk link -->
+            <xacro:include filename="links/trunk.urdf.xacro" />
 
         
         
@@ -53,18 +62,22 @@
     
     <!-- JOINTS -->
 
+
+    
+        
         <joint name="base_joint" type="fixed">
             <parent link="base_link" />
             <child link="trunk_link" />
-            <origin xyz="0 0 0.55" rpy="0 0 0" />
+            <origin xyz="0 0 0.6" rpy="0 0 0" />
         </joint>
 
         
+
         <!-- Left rear leg joints -->
 
             <!-- Left rear trunk joint -->
             <xacro:include filename="joints/trunk/LRT_joint.urdf.xacro"/>
-
+            
             <!-- Left rear hip joint -->
             <xacro:include filename="joints/hip/LRH_joint.urdf.xacro"/>
 

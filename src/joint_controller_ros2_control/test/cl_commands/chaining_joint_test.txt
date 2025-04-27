@@ -1,0 +1,5 @@
+// Sending position 1.0 for joint "body_1_joint" through forward_position_controller
+
+
+ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiArray "data:
+- 0.5"

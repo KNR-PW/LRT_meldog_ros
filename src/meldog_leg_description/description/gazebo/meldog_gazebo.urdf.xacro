@@ -40,9 +40,7 @@
                        kp="${kp_value}" kd="${kd_value}" 
                        maxVel="${maxVel_value}" dampingFactor="${dampingFactor_value}" />
 
-
-        
-
+  
         <!-- Left rear leg -->
         <xacro:gz_link name="LRH" mu1="${mu1_value}" mu2="${mu2_value}" 
                        kp="${kp_value}" kd="${kd_value}" 

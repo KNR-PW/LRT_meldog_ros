@@ -11,6 +11,6 @@
 
     <!-- Knee joint friction and damping -->
     <xacro:property name="K_damping" value="0"/>
-    <xacro:property name="K_friction" value="0.0312"/>
+    <xacro:property name="K_friction" value="0"/>
 
 </robot>

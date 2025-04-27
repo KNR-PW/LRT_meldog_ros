@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="multiple_joints_test">
+
+<xacro:property name="PI" value="3.141592"/>
+
+    <xacro:property name="rotor_inertia" value="1.0"/>
+    <xacro:property name="rotor_position_max" value="${10*PI}"/>
+    <xacro:property name="rotor_position_min" value="${-10*PI}"/>
+    <xacro:property name="rotor_velocity_max" value="10.0"/>
+    <xacro:property name="rotor_effort_max" value="10.0"/>
+    
+    <link name="world"/>
+    
+    <!-- Single joint macro -->
+    <xacro:include filename="core/single_joint.urdf.xacro"/>
+
+    <xacro:single_joint_macro name="body_1" parent_name="world" x="0.0" y="0.0" inertia="${rotor_inertia}" pos_max="${rotor_position_max}" pos_min="${rotor_position_min}" vel_max="${rotor_velocity_max}" effort_max="${rotor_effort_max}"/>
+    <xacro:single_joint_macro name="body_2" parent_name="world" x="1.0" y="0.0" inertia="${rotor_inertia}" pos_max="${rotor_position_max}" pos_min="${rotor_position_min}" vel_max="${rotor_velocity_max}" effort_max="${rotor_effort_max}"/>
+    <xacro:single_joint_macro name="body_3" parent_name="world" x="-1.0" y="0.0" inertia="${rotor_inertia}" pos_max="${rotor_position_max}" pos_min="${rotor_position_min}" vel_max="${rotor_velocity_max}" effort_max="${rotor_effort_max}"/>
+    <xacro:single_joint_macro name="body_4" parent_name="world" x="0.0" y="1.0" inertia="${rotor_inertia}" pos_max="${rotor_position_max}" pos_min="${rotor_position_min}" vel_max="${rotor_velocity_max}" effort_max="${rotor_effort_max}"/>
+    <xacro:single_joint_macro name="body_5" parent_name="world" x="0.0" y="-1.0" inertia="${rotor_inertia}" pos_max="${rotor_position_max}" pos_min="${rotor_position_min}" vel_max="${rotor_velocity_max}" effort_max="${rotor_effort_max}"/>
+
+    <ros2_control name="multiple_joints_test" type="system">
+        <hardware>  
+            <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </hardware>
+        <!-- Add joint hardware interfaces -->
+        <xacro:include filename="core/joint_hardware_macros.urdf.xacro"/>   
+        <xacro:joint_hardware_macro name="body_1" pos_min="rotor_position_min" pos_max="rotor_position_max" vel_max="rotor_velocity_max" effort_max="rotor_effort_max"/>
+        <xacro:joint_hardware_macro name="body_2" pos_min="rotor_position_min" pos_max="rotor_position_max" vel_max="rotor_velocity_max" effort_max="rotor_effort_max"/>
+        <xacro:joint_hardware_macro name="body_3" pos_min="rotor_position_min" pos_max="rotor_position_max" vel_max="rotor_velocity_max" effort_max="rotor_effort_max"/>
+        <xacro:joint_hardware_macro name="body_4" pos_min="rotor_position_min" pos_max="rotor_position_max" vel_max="rotor_velocity_max" effort_max="rotor_effort_max"/>
+        <xacro:joint_hardware_macro name="body_5" pos_min="rotor_position_min" pos_max="rotor_position_max" vel_max="rotor_velocity_max" effort_max="rotor_effort_max"/>
+    </ros2_control>
+
+    <gazebo>
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+            <parameters>$(find joint_controller)/config/multiple_joints_test.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+
+
+
+</robot>
