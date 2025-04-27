@@ -1,9 +1,0 @@
-<library path="joint_controller">
-    <class name="joint_controller/JointController"
-           type="joint_controller::JointController"
-           base_class_type="controller_interface::ChainableControllerInterface">
-        <description>
-            Joint controller for simulation which only support effort command input
-        </description>
-    </class>
-</library>
