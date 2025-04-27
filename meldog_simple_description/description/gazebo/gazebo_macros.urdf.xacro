@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "gazebo_macros">
+
+
+    <!-- Gazebo macro for links -->
+    <xacro:property name="kp_value" value="25000.0"/>
+    <xacro:property name="kd_value" value="0.15"/>
+    <xacro:property name="mu2_value" value="0.9"/>
+    <xacro:property name="mu2_value" value="0.9"/>
+    <xacro:property name="maxVel_value" value="0.25"/>
+    <xacro:property name="dampingFactor_value" value="0.00"/>
+
+    <xacro:macro name="gazebo_link" params="link_name color selfCollide_value">
+        <gazebo reference="${link_name}_link">
+            <material>Gazebo/${color}</material>
+            <mu1 value="${mu2_value}"/>
+            <mu2 value="${mu2_value}"/>
+            <kp value="${kp_value}" />
+            <kd value="${kd_value}" />
+            <maxVel value="${maxVel_value}"/>
+            <dampingFactor value="${dampingFactor_value}"/>
+            <selfCollide value="${selfCollide_value}"/>
+        </gazebo>
+    </xacro:macro>
+
+    
+    <!-- Gazebo macro for joints -->
+    <xacro:property name="implicitSpringDamper_value" value="true"/>
+    <xacro:property name="springStiffness_value" value="0.0"/>
+    <xacro:property name="springReference_value" value="0.0"/>
+    <xacro:property name="stopErp_value" value="0.0"/>
+    <xacro:property name="stopCfm_value" value="0.0"/> 
+
+    <xacro:macro name="gazebo_joint" params="joint_name">
+        <gazebo reference="${joint_name}_joint">
+            <implicitSpringDamper>${implicitSpringDamper_value}</implicitSpringDamper>
+            <springStiffness>${springStiffness_value}</springStiffness>
+            <springReference>${springReference_value}</springReference>
+            <stopErp>${stopErp_value}</stopErp>
+            <stopCfm>${stopCfm_value}</stopCfm>
+        </gazebo> 
+    </xacro:macro>  
+    
+
+</robot>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name ="joint_hardware_macros">
+
+    <!-- JMotor and actuator macro for ros2_control hardware interface -->
+    <xacro:macro name="joint_hardware_macro" params="joint_name upper lower">
+        <joint name="${joint_name}_joint">
+            <command_interface name="position">
+                <param name="min">${lower}</param>
+                <param name="max">${upper}</param>
+            </command_interface>
+            <command_interface name="velocity">
+                <param name="min">-${motor_max_velocity}</param>
+                <param name="max">${motor_max_velocity}</param>
+            </command_interface>
+            <command_interface name="effort">
+                <param name="min">-${motor_max_torque}</param>
+                <param name="max">${motor_max_torque}</param>
+            </command_interface>                  
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+    </xacro:macro>
+
+</robot>

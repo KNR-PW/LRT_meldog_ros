@@ -1,0 +1,119 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # Hz
+    use_sim_time: true
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+#     imu_sensor_broadcaster:
+#       type: imu_sensor_broadcaster/IMUSensorBroadcaster # TODO: DODAJ IMU
+
+# imu_sensor_broadcaster:
+#   ros__parameters:
+#     sensor_name: MPU6050sensor
+#     frame_id:  imu
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - FLH_joint
+      - FRH_joint
+      - BLH_joint
+      - BRH_joint
+      - FLT_joint
+      - FRT_joint
+      - BLT_joint
+      - BRT_joint
+      - FLS_joint
+      - FRS_joint
+      - BLS_joint
+      - BRS_joint
+
+    command_joints:
+      - FLH_joint
+      - FRH_joint
+      - BLH_joint
+      - BRH_joint
+      - FLT_joint
+      - FRT_joint
+      - BLT_joint
+      - BRT_joint
+      - FLS_joint
+      - FRS_joint
+      - BLS_joint
+      - BRS_joint
+
+    command_interfaces:
+      - effort
+    state_interfaces:
+      - position
+      - velocity
+    action_monitor_rate: 1000.0
+    state_publish_rate: 1000.0  # Hz
+    allow_nonzero_velocity_at_trajectory_end: false
+
+    gains:
+      FLH_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      FRH_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      BLH_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      BRH_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      FLT_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      FRT_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      BLT_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      BRT_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      FLS_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      FRS_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      BLS_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
+      BRS_joint:
+        d: 100.0
+        i: 0.0
+        i_clamp: 0.0
+        p: 1500.0
