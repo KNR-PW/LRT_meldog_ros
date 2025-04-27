@@ -11,6 +11,6 @@
 
     <!-- Trunk joint friction and damping -->
     <xacro:property name="T_damping" value="0"/>
-    <xacro:property name="T_friction" value="0.0312"/>
+    <xacro:property name="T_friction" value="0"/>
 
 </robot>

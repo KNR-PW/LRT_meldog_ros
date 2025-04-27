@@ -46,7 +46,7 @@ def generate_launch_description():
     
     spawn_entity = Node(package='ros_gz_sim', executable='create',
                     arguments=['-topic', 'robot_description',
-                                '-name', 'Meldog'],
+                                '-name', 'Meldog_leg'],
                     output='screen')
     
     
@@ -65,11 +65,12 @@ def generate_launch_description():
         output='screen'
     )
 
+
     load_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_controller'],
         output='screen'
     )   
-
+    
     return LaunchDescription([
         RegisterEventHandler(
             event_handler=OnProcessExit(
@@ -88,6 +89,7 @@ def generate_launch_description():
         gazebo_resource_path,
         gazebo,
         spawn_entity,
-        gz_ros2_bridge
+        gz_ros2_bridge,
+        joint_state_publisher_gui_node
         
     ])

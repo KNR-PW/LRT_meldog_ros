@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:property name="trunk_mass" value="0.001"/>
+    <xacro:property name="trunk_mass" value="0.1"/>
     
 
     <link name="trunk_link">
@@ -27,5 +27,8 @@
                 <box size="0.1 0.1 0.1"/>
             </geometry>
         </collision>
+        <gazebo reference="trunk_link">
+            <kinematic>false</kinematic> 
+        </gazebo>
     </link>
 </robot>

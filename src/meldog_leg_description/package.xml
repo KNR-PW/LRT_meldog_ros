@@ -3,16 +3,22 @@
 <package format="3">
   <name>meldog_leg_description</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="alex@todo.todo">alex</maintainer>
-  <license>TODO: License declaration</license>
+  <description>URDF description and simulation files for Meldog robot</description>
+  <maintainer email="alex@todo.todo">Alex</maintainer>
+  <license>Apache License 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>ament_index_cpp</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>joint_controller</depend>
+
+  <exec_depend>joint_controller_msgs</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
-
-  <exec_depend>ros_gz_sim</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

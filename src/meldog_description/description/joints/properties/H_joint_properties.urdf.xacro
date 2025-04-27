@@ -16,6 +16,6 @@
 
     <!-- Hip joint friction and damping -->
     <xacro:property name="H_damping" value="0"/>
-    <xacro:property name="H_friction" value="0.0312"/>
+    <xacro:property name="H_friction" value="0"/>
 
 </robot>

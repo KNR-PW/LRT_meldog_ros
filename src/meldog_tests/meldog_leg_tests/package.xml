@@ -12,7 +12,7 @@
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
   <test_depend>python3-moteus</test_depend>
-  <test_depend>python3-asyncio</test_depend>
+  <!--<test_depend>python3-asyncio</test_depend>-->
   <exec_depend>ros2launch</exec_depend>
   <depend>meldog_interfaces_tests</depend>
   <export>
