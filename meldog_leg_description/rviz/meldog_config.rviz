@@ -53,17 +53,17 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        LRF_link:
+        F_link:
           Value: true
-        LRH_link:
+        H_link:
           Value: true
-        LRLL_link:
+        LL_link:
           Value: true
-        LRUL_link:
+        UL_link:
           Value: true
         base_link:
           Value: true
-        trunk_link:
+        mount_link:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -72,11 +72,11 @@ Visualization Manager:
       Show Names: false
       Tree:
         base_link:
-          trunk_link:
-            LRH_link:
-              LRUL_link:
-                LRLL_link:
-                  LRF_link:
+          mount_link:
+            H_link:
+              UL_link:
+                LL_link:
+                  F_link:
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -96,21 +96,21 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        LRF_link:
+        F_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        LRH_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LRLL_link:
+        H_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        LRUL_link:
+        LL_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        UL_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -120,7 +120,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        trunk_link:
+        mount_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false

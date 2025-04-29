@@ -13,7 +13,7 @@ from ament_index_python.packages import get_package_share_path
 def generate_launch_description():
 
     urdf_path = os.path.join(get_package_share_path('meldog_leg_description'),
-                             'description','meldog_core.urdf.xacro')
+                             'description','leg_core.urdf.xacro')
 
     robot_description = ParameterValue(Command(['xacro ',urdf_path]),
                                        value_type=str)
@@ -49,22 +49,11 @@ def generate_launch_description():
                                 '-name', 'Meldog_leg'],
                     output='screen')
     
-    
-    
-    gz_ros2_bridge = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        arguments=[
-            "clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
-        ]
-    )
-    
     load_joint_state_broadcaster = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'joint_state_broadcaster'],
         output='screen'
     )
-
 
     load_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_controller'],
@@ -89,7 +78,6 @@ def generate_launch_description():
         gazebo_resource_path,
         gazebo,
         spawn_entity,
-        gz_ros2_bridge,
         joint_state_publisher_gui_node
         
     ])
