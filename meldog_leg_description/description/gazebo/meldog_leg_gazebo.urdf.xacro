@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="gz_link" params="name mu1 mu2 kp kd maxVel dampingFactor">
+
+        <gazebo reference="${name}_link">
+            <visual>
+                <material>
+                    <diffuse>0 0 1 1 </diffuse>
+                </material>
+            </visual>
+            <mu1 value="${mu1}"/>
+            <mu2 value="${mu2}"/>
+            <kp value="${kp}" />
+            <kd value="${kd}" />
+            <maxVel value="${maxVel}"/>
+            <dampingFactor value="${dampingFactor}"/>
+        </gazebo>
+
+    </xacro:macro>
+
+    <xacro:macro name="gz_joint" params="name isd s_stiff s_ref stopErp stopCfm">
+
+        <gazebo reference="${name}_joint">
+            <implicitSpringDamper>${isd}</implicitSpringDamper>
+            <springStiffness>${s_stiff}</springStiffness>
+            <springReference>${s_ref}</springReference>
+            <stopErp>${stopErp}</stopErp>
+            <stopCfm>${stopCfm}</stopCfm>
+        </gazebo>
+
+    </xacro:macro>
+
+    <!-- If using gazebo link parameters -->
+
+    <xacro:if value="${use_gz_links==1}">
+
+        <!-- Mount link -->
+        <xacro:gz_link name="mount" mu1="${mu1_value}" mu2="${mu2_value}" 
+                       kp="${kp_value}" kd="${kd_value}" 
+                       maxVel="${maxVel_value}" dampingFactor="${dampingFactor_value}" />
+
+  
+        <!-- Leg links -->
+        <xacro:gz_link name="H" mu1="${mu1_value}" mu2="${mu2_value}" 
+                       kp="${kp_value}" kd="${kd_value}" 
+                       maxVel="${maxVel_value}" dampingFactor="${dampingFactor_value}" />
+                    
+        <xacro:gz_link name="UL" mu1="${mu1_value}" mu2="${mu2_value}" 
+                       kp="${kp_value}" kd="${kd_value}" 
+                       maxVel="${maxVel_value}" dampingFactor="${dampingFactor_value}" />
+
+        <xacro:gz_link name="LL" mu1="${mu1_value}" mu2="${mu2_value}" 
+                       kp="${kp_value}" kd="${kd_value}" 
+                       maxVel="${maxVel_value}" dampingFactor="${dampingFactor_value}" />
+
+        <xacro:gz_link name="F" mu1="${mu1_value_foot}" mu2="${mu2_value_foot}" 
+                       kp="${kp_value_foot}" kd="${kd_value_foot}" 
+                       maxVel="${maxVel_value_foot}" dampingFactor="${dampingFactor_value_foot}" />
+
+    </xacro:if>
+
+    <!-- if using gazebo joint parameters -->
+
+    <xacro:if value="${use_gz_joints==1}">
+
+        <!-- Leg joints -->
+        <xacro:gz_joint name="M" isd="${implicitSpringDamper_value}" 
+                       s_stiff="${springStiffness_value}" s_ref="${springReference_value}" 
+                       stopErp="${stopErp_value}" stopCfm="${stopCfm_value}" />
+
+        <xacro:gz_joint name="H" isd="${implicitSpringDamper_value}" 
+                       s_stiff="${springStiffness_value}" s_ref="${springReference_value}" 
+                       stopErp="${stopErp_value}" stopCfm="${stopCfm_value}" />
+
+        <xacro:gz_joint name="K" isd="${implicitSpringDamper_value}" 
+                       s_stiff="${springStiffness_value}" s_ref="${springReference_value}" 
+                       stopErp="${stopErp_value}" stopCfm="${stopCfm_value}" />
+
+    </xacro:if>
+
+</robot>

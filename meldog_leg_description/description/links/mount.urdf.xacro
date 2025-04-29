@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="mount_mass" value="0.1"/>
+    
+    <link name="mount_link">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="${mount_mass}"/> 
+            <inertia ixx="${1/12*mount_mass*(0.1*0.1 + 0.1*0.1)}" ixy="0.0" ixz="0.0" iyy="${1/12*mount_mass*(0.1*0.1 + 0.1*0.1)}" iyz=".0" izz="${1/12*mount_mass*(0.1*0.1 + 0.1*0.1)}"/> 
+        </inertial>
+        
+        <visual name="mount_base_visual">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </visual>
+
+        <collision name="mount_base_collision">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+    </link>
+</robot>

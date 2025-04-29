@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Mount joint movement limits -->
+    <xacro:property name="M_lower_limit" value="-45" />
+    <xacro:property name="M_upper_limit" value="45" />
+
+    <!-- Mount joint effort and velocity limits -->
+    <xacro:property name="M_effort" value="${motor_max_eff*actuator_reduction}" />
+    <xacro:property name="M_velocity" value="${motor_max_vel*pi/30.0/actuator_reduction}" />
+
+    <!-- Mount joint friction and damping -->
+    <xacro:property name="M_damping" value="0"/>
+    <xacro:property name="M_friction" value="0"/>
+
+</robot>

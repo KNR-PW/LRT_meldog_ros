@@ -42,7 +42,6 @@
                                                iyy="${iyy*0.000001}" iyz="${iyz*0.000001}" 
                                                                      izz="${izz*0.000001}" />
             </inertial>
-
         </link>
 
     </xacro:macro>

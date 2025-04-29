@@ -12,14 +12,14 @@ controller_manager:
 joint_trajectory_controller:
   ros__parameters:
     joints:
-      - LRT_joint
-      - LRH_joint
-      - LRK_joint
+      - M_joint
+      - H_joint
+      - K_joint
 
     command_joints:
-      - LRT_joint
-      - LRH_joint
-      - LRK_joint
+      - M_joint
+      - H_joint
+      - K_joint
 
 
     command_interfaces:
@@ -33,19 +33,19 @@ joint_trajectory_controller:
     allow_nonzero_velocity_at_trajectory_end: false
     
     gains:
-      LRT_joint:
+      M_joint:
         d: 1.5
         ff_velocity_scale: 0.0
         i: 15.0
         i_clamp: 30.0
         p: 70.0
-      LRH_joint:
+      H_joint:
         d: 1.5
         ff_velocity_scale: 0.0
         i: 15.0
         i_clamp: 30.0
         p: 70.0
-      LRK_joint:
+      K_joint:
         d: 1.5
         ff_velocity_scale: 0.0
         i: 15.0

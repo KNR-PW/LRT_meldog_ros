@@ -1,5 +1,5 @@
 <launch>
-    <let name="urdf_path" value="$(find-pkg-share meldog_leg_description)/description/meldog_core.urdf.xacro" />
+    <let name="urdf_path" value="$(find-pkg-share meldog_leg_description)/description/leg_core.urdf.xacro" />
 
     <let name="rviz_config" value="$(find-pkg-share meldog_leg_description)/rviz/meldog_config.rviz" />
 
