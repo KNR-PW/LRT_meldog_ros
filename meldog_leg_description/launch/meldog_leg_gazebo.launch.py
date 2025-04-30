@@ -25,14 +25,6 @@ def generate_launch_description():
                      "use_sim_time" : True}]
     )
     
-    joint_state_publisher_gui_node = Node(
-        package="joint_state_publisher_gui",
-        executable="joint_state_publisher_gui"
-    )
-    
-    ros_distro = os.environ["ROS_DISTRO"]
-    physics_engine="" if ros_distro=="humble" else "--physics-engine gz-physics-bullet-featherstone-plugin"
-    
     gazebo_resource_path = SetEnvironmentVariable(
         name='GZ_SIM_RESOURCE_PATH',
         value=[str(Path(get_package_share_directory('meldog_leg_description')).parent.resolve())]
@@ -78,6 +70,4 @@ def generate_launch_description():
         gazebo_resource_path,
         gazebo,
         spawn_entity,
-        joint_state_publisher_gui_node
-        
     ])
