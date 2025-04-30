@@ -1,0 +1,59 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 500
+
+    joint_controller:
+      type: joint_controller/JointController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+joint_controller:
+  ros__parameters:
+    joint_names:
+      - M_joint
+      - H_joint
+      - K_joint
+
+    joint_params:
+
+      M_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      H_joint: 
+        position_max: 3.14
+        position_min: -3.14
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+      K_joint: 
+        position_max: 2.793
+        position_min: -2.793
+        position_offset: 0.0
+        velocity_max: 18.906
+        effort_max: 34.895
+
+    frequency: 500.0
+
+    pid_gains:
+
+      M_joint:
+        p: 100.0
+        d: 1.00
+        i: 0.0
+        ilimit: 0.0
+      H_joint:
+        p: 100.0
+        d: 1.00
+        i: 0.0
+        ilimit: 0.0
+      K_joint:
+        p: 100.0
+        d: 1.00
+        i: 0.0
+        ilimit: 0.0

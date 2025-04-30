@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <joint name="K_joint" type="revolute">
+        <parent link="UL_link" />
+        <child link="LL_link" />
+        <origin xyz="0 0 ${-upper_limb_length}" rpy="0 0 0" />
+        <limit lower="${K_lower_limit/180.0*pi}" 
+               upper="${K_upper_limit/180.0*pi}" 
+               effort="${K_effort}" 
+               velocity="${K_velocity}" />
+        <axis xyz="0 -1 0" />
+    </joint>
+
+</robot>
