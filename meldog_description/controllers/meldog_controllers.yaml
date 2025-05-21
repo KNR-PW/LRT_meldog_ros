@@ -10,7 +10,7 @@ controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
 
     imu_broadcaster:
-      type: imu_broadcaster/IMUSensorBroadcaster
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
       
     
 
