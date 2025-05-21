@@ -23,6 +23,10 @@
     <xacro:include filename="ros2_control/meldog_gazebo_ros2_control.urdf.xacro"/>
 
 
+
+
+
+
     <!-- LINKS -->
 
         <!-- Base link -->
@@ -30,6 +34,9 @@
 
         <!-- Trunk link -->
         <xacro:include filename="links/trunk.urdf.xacro" />
+
+        <!-- IMU link -->
+        <xacro:include filename="links/sensors/imu_link.urdf.xacro" />
 
         <!-- Left front leg links -->
 
@@ -95,6 +102,9 @@
             <origin xyz="0 0 0.55" rpy="0 0 0" />
         </joint>
 
+        <!-- IMU joint -->
+        <xacro:include filename="joints/sensors/imu_joint.urdf.xacro"/>
+
         <!-- Left front leg joints -->
 
             <!-- Left front trunk joint -->
@@ -150,5 +160,10 @@
 
             <!-- Right rear foot joint -->
             <xacro:include filename="joints/foot/RRF_joint.urdf.xacro"/>
+
+
+            <!-- IMU gazebo strup (noise) -->
+    <xacro:include filename="ros2_control/imu_gazebo_setup.urdf.xacro"/>
+
 
 </robot>
