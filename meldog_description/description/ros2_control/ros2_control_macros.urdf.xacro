@@ -28,6 +28,10 @@
           </joint>
     </xacro:macro>
 
+
+
+
+
     <xacro:macro name="simple_transmission" params="joint reduction offset">
       <transmission name="${joint}_transmission">
         <plugin>transmission_interface/SimpleTransmission</plugin>

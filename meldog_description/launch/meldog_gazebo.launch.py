@@ -69,6 +69,16 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_trajectory_controller'],
         output='screen'
     )   
+    load_trajectory_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_trajectory_controller'],
+        output='screen'
+    )
+    load_imu_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'imu_sensor_broadcaster'],
+        output='screen'
+    )
+
+
 
     return LaunchDescription([
         RegisterEventHandler(
@@ -82,6 +92,13 @@ def generate_launch_description():
             event_handler=OnProcessExit(
                 target_action= load_joint_state_broadcaster,
                 on_exit=[load_controller],
+            )
+        ),
+
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=load_trajectory_controller,
+                on_exit=[load_imu_broadcaster],
             )
         ),
         robot_state_publisher_node,
