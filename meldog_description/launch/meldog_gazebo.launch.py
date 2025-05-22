@@ -47,6 +47,17 @@ def generate_launch_description():
                     output='screen')
     
     
+    
+    gz_ros2_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            "clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+            '/imu@sensor_msgs/msg/Imu@gz.msgs.IMU',
+            '--ros-args', '-r', '/imu:=/imu/data_raw'  # opcjonalna zmiana nazwy tematu
+        ]
+    )
+    
     load_joint_state_broadcaster = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'joint_state_broadcaster'],
@@ -57,14 +68,7 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_trajectory_controller'],
         output='screen'
     )   
-    load_trajectory_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_trajectory_controller'],
-        output='screen'
-    )
-    load_imu_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'imu_sensor_broadcaster'],
-        output='screen'
-    )
+
 
 
 
@@ -83,14 +87,10 @@ def generate_launch_description():
             )
         ),
 
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=load_controller,
-                on_exit=[load_imu_broadcaster],
-            )
-        ),
+
         robot_state_publisher_node,
         gazebo_resource_path,
         gazebo,
         spawn_entity,
+        gz_ros2_bridge
     ])
