@@ -13,21 +13,18 @@
         </hardware>
 
 
-
-              <!-- IMU Sensor -->      <!-- wzięte z chatagpt bo ciężko sie dogrzebać-->
-
-              <!-- ten cały blok niepotrzebny???-->
-  <!--      <sensor name="imu_sensor" type="imu">
-          <ros2_control name="imu_sensor" type="sensor_interface/ImuSensor">      
-         
+              <!-- IMU Sensor -->
+        <sensor name="imu_sensor" type="imu">
+          <ros2_control name="imu_sensor" type="sensor_interface/ImuSensor">       <!-- wzięte z chatagpt bo ciężko sie dogrzebać-->
+            <!-- jak często odpytywać silnik Gazebo (Hz) -->
             <param name="update_rate">200.0</param>
           </ros2_control>
 
-        
+          <!-- Rejestrujemy wszystkie 9 stanów IMU -->
           <state_interface name="orientation.x"/>
           <state_interface name="orientation.y"/>
           <state_interface name="orientation.z"/>
-                                                                        
+
           <state_interface name="angular_velocity.x"/>
           <state_interface name="angular_velocity.y"/>
           <state_interface name="angular_velocity.z"/>
@@ -36,8 +33,9 @@
           <state_interface name="linear_acceleration.y"/>
           <state_interface name="linear_acceleration.z"/>
 
+          <!-- dodatkowy parametr: nazwa ramki TF -->
           <param name="imu">imu_link</param>
-        </sensor>                                       --> 
+        </sensor>
 
 
         <!-- joints -->
@@ -86,14 +84,13 @@
 
 
     <gazebo>
-        <plugin filename="ign_ros2_control-system"
-          name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <plugin filename="gz_ros2_control-system"
+          name="gz_ros2_control::GazeboSimROS2ControlPlugin">
           <robot_param>robot_description</robot_param>
           <robot_param_node>robot_state_publisher</robot_param_node>
           <parameters>$(find meldog_description)/controllers/meldog_controllers.yaml</parameters>
           <hold_joints>true</hold_joints>
         </plugin>
-        
       </gazebo>
 
 </robot>
