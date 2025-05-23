@@ -25,12 +25,9 @@ def generate_launch_description():
                      "use_sim_time" : True}]
     )
     
-    joint_state_publisher_gui_node = Node(
-        package="joint_state_publisher_gui",
-        executable="joint_state_publisher_gui"
-    )
-    
     ros_distro = os.environ["ROS_DISTRO"]
+
+    # Not used
     physics_engine="" if ros_distro=="humble" else "--physics-engine gz-physics-bullet-featherstone-plugin"
     
     gazebo_resource_path = SetEnvironmentVariable(
@@ -50,15 +47,6 @@ def generate_launch_description():
                     output='screen')
     
     
-    
-    gz_ros2_bridge = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        arguments=[
-            "clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
-        ]
-    )
-    
     load_joint_state_broadcaster = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'joint_state_broadcaster'],
@@ -69,6 +57,16 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_trajectory_controller'],
         output='screen'
     )   
+    load_trajectory_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_trajectory_controller'],
+        output='screen'
+    )
+    load_imu_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'imu_sensor_broadcaster'],
+        output='screen'
+    )
+
+
 
     return LaunchDescription([
         RegisterEventHandler(
@@ -84,10 +82,15 @@ def generate_launch_description():
                 on_exit=[load_controller],
             )
         ),
+
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=load_controller,
+                on_exit=[load_imu_broadcaster],
+            )
+        ),
         robot_state_publisher_node,
         gazebo_resource_path,
         gazebo,
         spawn_entity,
-        gz_ros2_bridge
-        
     ])

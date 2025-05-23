@@ -13,6 +13,11 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v3.3.0
+      - name: Upgrade pip
+        run: |
+          python3 -m venv venv
+    	  source venv/bin/activate
+    	  python -m pip install --upgrade pip
       - uses: ros-tooling/setup-ros@0.6.1
         with:
           required-ros-distributions: humble
