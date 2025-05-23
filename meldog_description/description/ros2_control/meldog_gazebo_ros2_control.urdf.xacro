@@ -11,8 +11,6 @@
         <hardware>
           <plugin>gz_ros2_control/GazeboSimSystem</plugin>      <!--   HARDWARE INTERFACE  -->
         </hardware>
-
-
               <!-- IMU Sensor -->
         <sensor name="imu_sensor" type="imu">
           <ros2_control name="imu_sensor" type="sensor_interface/ImuSensor">       <!-- wzięte z chatagpt bo ciężko sie dogrzebać-->
@@ -24,6 +22,7 @@
           <state_interface name="orientation.x"/>
           <state_interface name="orientation.y"/>
           <state_interface name="orientation.z"/>
+          <state_interface name="orientation.w"/>
 
           <state_interface name="angular_velocity.x"/>
           <state_interface name="angular_velocity.y"/>
