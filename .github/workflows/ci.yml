@@ -14,7 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3.3.0
       - name: Upgrade pip
-        run: python3 -m pip install --upgrade pip
+        run: |
+          python3 -m ensurepip --upgrade
+          python3 -m pip install --upgrade --user pip
       - uses: ros-tooling/setup-ros@0.6.1
         with:
           required-ros-distributions: humble

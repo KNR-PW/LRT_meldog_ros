@@ -4,6 +4,7 @@
         <!--   GAZEBO SENSOR DEFINITION FROM STACK EXTANGE, connects via bridge and topic-->
 
     <gazebo reference="imu_link">
+    <gravity>true</gravity>
        <sensor name="imu" type="imu">
            <plugin filename="libignition-gazebo-imu-system.so"
                 name="ignition::gazebo::systems::Imu">
@@ -14,6 +15,7 @@
             <gz_frame_id>imu_link</gz_frame_id>
            <topic>imu</topic>
            <imu>
+            
                <angular_velocity>
                    <x>
                        <noise type="gaussian">
