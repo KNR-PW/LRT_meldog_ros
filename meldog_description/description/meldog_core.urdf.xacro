@@ -18,13 +18,11 @@
     <!-- Gazebo -->
     <xacro:include filename="gazebo/gazebo_properties.urdf.xacro" />
     <xacro:include filename="gazebo/meldog_gazebo.urdf.xacro" />
+    <!-- IMU gazebo setup -->
+    <xacro:include filename="gazebo/imu_gazebo_setup.urdf.xacro"/>
 
     <!-- ROS2 Control -->
     <xacro:include filename="ros2_control/meldog_gazebo_ros2_control.urdf.xacro"/>
-
-
-
-
 
 
     <!-- LINKS -->
@@ -162,8 +160,6 @@
             <xacro:include filename="joints/foot/RRF_joint.urdf.xacro"/>
 
 
-            <!-- IMU gazebo strup (noise) -->
-    <xacro:include filename="ros2_control/imu_gazebo_setup.urdf.xacro"/>
 
 
 </robot>
