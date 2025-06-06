@@ -9,6 +9,18 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
+    LFS_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+    LRS_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+    RFS_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
+    RRS_sensor_broadcaster:
+      type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
+
 joint_trajectory_controller:
   ros__parameters:
     joints:
@@ -122,3 +134,25 @@ joint_trajectory_controller:
         i: 15.0
         i_clamp: 30.0
         p: 70.0
+
+LFS_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: LFS_sensor
+    frame_id: LFF_link
+
+LRS_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: LRS_sensor
+    frame_id: LRS_link
+
+RFS_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: RFS_sensor
+    frame_id: RFF_link
+
+RRS_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: RRS_sensor
+    frame_id: RRF_link
+    
+
