@@ -15,11 +15,9 @@
 
         <!-- IMU Sensor -->
         <sensor name="imu_sensor" type="imu">
-
           <!--  !!! name has to be the same as in meldog_controllers.yaml !!! -->
-          <ros2_control name="imu_sensor" type="sensor_interface/ImuSensor"></ros2_control> 
           
-          <!-- Rejestrujemy wszystkie 9(+1) stanów IMU -->
+          <!-- reset of all 9+1 parameters of IMU -->
           <state_interface name="orientation.x"/>
           <state_interface name="orientation.y"/>
           <state_interface name="orientation.z"/>
