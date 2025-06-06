@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+
+
+  <!-- macro defining the noise block for a single axis -->
+  <xacro:macro name="imu_noise_axis" params="mean stddev bias_mean bias_stddev">
+    <noise type="gaussian">
+      <mean>${mean}</mean>
+      <stddev>${stddev}</stddev>
+      <bias_mean>${bias_mean}</bias_mean>
+      <bias_stddev>${bias_stddev}</bias_stddev>
+    </noise>
+  </xacro:macro>
+
+ 
+  <!-- IMU sensor definition in Gazebo with noise configured, all parameters defined in gazebo_properties.urdf.xacro -->
+  <gazebo reference="imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <plugin filename="libignition-gazebo-imu-system.so"
+              name="ignition::gazebo::systems::Imu">
+        <initial_orientation_as_reference>false</initial_orientation_as_reference>
+      </plugin>
+      <always_on>true</always_on>
+      <update_rate>1000</update_rate>  <!-- since controller manager runs on 1000Hz, the same goes with IMU-->
+      <visualize>true</visualize>
+
+      <imu>
+        <angular_velocity>
+          <x><xacro:imu_noise_axis mean="${ang_mean}" stddev="${ang_stddev}" bias_mean="${ang_bias_mean}" bias_stddev="${ang_bias_stddev}"/></x>
+          <y><xacro:imu_noise_axis mean="${ang_mean}" stddev="${ang_stddev}" bias_mean="${ang_bias_mean}" bias_stddev="${ang_bias_stddev}"/></y>
+          <z><xacro:imu_noise_axis mean="${ang_mean}" stddev="${ang_stddev}" bias_mean="${ang_bias_mean}" bias_stddev="${ang_bias_stddev}"/></z>
+        </angular_velocity>
+
+        <linear_acceleration>
+          <x><xacro:imu_noise_axis mean="${lin_mean}" stddev="${lin_stddev}" bias_mean="${lin_bias_mean}" bias_stddev="${lin_bias_stddev}"/></x>
+          <y><xacro:imu_noise_axis mean="${lin_mean}" stddev="${lin_stddev}" bias_mean="${lin_bias_mean}" bias_stddev="${lin_bias_stddev}"/></y>
+          <z><xacro:imu_noise_axis mean="${lin_mean}" stddev="${lin_stddev}" bias_mean="${lin_bias_mean}" bias_stddev="${lin_bias_stddev}"/></z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+  </gazebo>
+
+</robot>
