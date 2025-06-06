@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- inertial properties -->
+
+        <!-- mass -->
+        <xacro:property name="sensor_mass" value="0.01"/>
+
+        <!-- center of mass -->
+        <xacro:property name="sensor_cm_x" value="0.0"/>
+        <xacro:property name="sensor_cm_y" value="0.0"/>
+        <xacro:property name="sensor_cm_z" value="0.0"/>
+
+        <!-- tensor of inertia -->
+        <xacro:property name="sensor_ixx" value="0.0"/>
+        <xacro:property name="sensor_ixy" value="0.0"/>
+        <xacro:property name="sensor_ixz" value="0.0"/>
+
+        <xacro:property name="sensor_iyy" value="0.0"/>
+        <xacro:property name="sensor_iyz" value="0.0"/>
+
+        <xacro:property name="sensor_izz" value="0.0"/>
+
+</robot>
