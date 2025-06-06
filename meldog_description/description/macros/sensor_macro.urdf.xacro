@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Macro for defining a link, please ensure that 
+    the visual and collision models coordinate 
+    systems are placed in joints -->
+
+    <xacro:macro name="sensor_macro" params="name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz">
+
+        <link name="${name}">
+
+            <collision>
+                <geometry>
+                    <sphere radius="0.02" />
+                </geometry>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+            </collision>
+
+            <inertial>
+                <mass value="${m}" />
+                <origin xyz="${cm_x*0.001} ${cm_y*0.001} ${cm_z*0.001}" rpy="0 0 0" />
+                <inertia ixx="${ixx*0.000001}" ixy="${ixy*0.000001}" ixz="${ixz*0.000001}" 
+                                               iyy="${iyy*0.000001}" iyz="${iyz*0.000001}" 
+                                                                     izz="${izz*0.000001}" />
+            </inertial>
+
+        </link>
+
+    </xacro:macro>
+
+</robot>

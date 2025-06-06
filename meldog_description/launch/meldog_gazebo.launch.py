@@ -68,7 +68,28 @@ def generate_launch_description():
     load_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_trajectory_controller'],
         output='screen'
-    )   
+    )
+
+    load_LFS_sensor_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'LFS_sensor_broadcaster'],
+        output='screen'
+    )
+
+    load_LRS_sensor_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'LRS_sensor_broadcaster'],
+        output='screen'
+    )
+
+    load_RFS_sensor_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'RFS_sensor_broadcaster'],
+        output='screen'
+    )
+
+    load_RRS_sensor_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'RRS_sensor_broadcaster'],
+        output='screen'
+    )
+   
 
     return LaunchDescription([
         RegisterEventHandler(
@@ -84,10 +105,20 @@ def generate_launch_description():
                 on_exit=[load_controller],
             )
         ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=load_controller,
+                on_exit=[
+                    load_LFS_sensor_broadcaster,
+                    load_LRS_sensor_broadcaster,
+                    load_RFS_sensor_broadcaster,
+                    load_RRS_sensor_broadcaster,
+                ],
+            )
+        ),
         robot_state_publisher_node,
         gazebo_resource_path,
         gazebo,
         spawn_entity,
-        gz_ros2_bridge
-        
+        gz_ros2_bridge   
     ])

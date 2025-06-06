@@ -6,6 +6,7 @@
     <xacro:include filename="../joints/properties/H_joint_properties.urdf.xacro" />
     <xacro:include filename="../joints/properties/K_joint_properties.urdf.xacro" />
     <xacro:include filename="../joints/properties/T_joint_properties.urdf.xacro" />
+    <xacro:include filename="czujnik.urdf.xacro" />
 
     <ros2_control name="IgnitionSystem" type="system">
         <hardware>
@@ -50,7 +51,7 @@
         <xacro:FourBarLinkageTransmission first_joint_name="RFH" second_joint_name="RFK" />
         <xacro:FourBarLinkageTransmission first_joint_name="LRH" second_joint_name="LRK" />
         <xacro:FourBarLinkageTransmission first_joint_name="RRH" second_joint_name="RRK" /> -->
-        
+        <xacro:czujnik />
     </ros2_control>
 
     <gazebo>
@@ -60,6 +61,6 @@
           <parameters>$(find meldog_description)/controllers/meldog_controllers.yaml</parameters>
           <hold_joints>true</hold_joints>
         </plugin>
-      </gazebo>
+    </gazebo>
 
 </robot>
