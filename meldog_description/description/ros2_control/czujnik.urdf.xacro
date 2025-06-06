@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="czujnik" params="">
+    <gazebo reference="LFS_link">
+      <sensor name="LFS_sensor" type="force_torque">
+        <pose>0 0 0 0 0 0</pose>
+        <update_rate>100</update_rate>
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <plugin name="ignition::gazebo::systems::ForceTorque"
+                filename="ignition-gazebo-forcetorque-system.so">
+          <frame_id>LFS_link</frame_id>
+          <measured_link_id>LFF_link</measured_link_id>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>
