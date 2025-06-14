@@ -21,6 +21,10 @@
       filename="ignition-gazebo-contact-system"
       name="gz::sim::systems::Contact">
     </plugin>
+    <plugin
+        filename="ignition-gazebo-imu-system"
+        name="ignition::gazebo::systems::Imu">
+    </plugin>
 
     <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
