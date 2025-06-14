@@ -4,7 +4,7 @@
 
 
 
-  <!-- macro defining the noise block for a single axis -->
+  <!-- Macro defining the noise block for a single axis -->
   <xacro:macro name="imu_noise_axis" params="mean stddev bias_mean bias_stddev">
     <noise type="gaussian">
       <mean>${mean}</mean>
