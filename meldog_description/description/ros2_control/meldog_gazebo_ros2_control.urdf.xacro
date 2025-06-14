@@ -83,7 +83,7 @@
           name="gz_ros2_control::GazeboSimROS2ControlPlugin">
           <robot_param>robot_description</robot_param>
           <robot_param_node>robot_state_publisher</robot_param_node>
-          <parameters>$(find meldog_description)/controllers/meldog_controllers.yaml</parameters>
+          <parameters>$(find meldog_description)/controllers/meldog_joint_controllers.yaml</parameters>
           <hold_joints>true</hold_joints>
         </plugin>
       </gazebo>
