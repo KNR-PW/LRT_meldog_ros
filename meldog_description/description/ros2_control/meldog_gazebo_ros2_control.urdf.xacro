@@ -17,7 +17,7 @@
         <sensor name="imu_sensor" type="imu">
           <!--  !!! name has to be the same as in meldog_controllers.yaml !!! -->
           
-          <!-- reset of all 9+1 parameters of IMU -->
+          <!-- IMU state -->
           <state_interface name="orientation.x"/>
           <state_interface name="orientation.y"/>
           <state_interface name="orientation.z"/>
