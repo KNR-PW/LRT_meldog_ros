@@ -35,15 +35,23 @@
     <!--      GAZEBO IMU NOICE PARAMETERS      -->
 
         <!-- Angular velocity noise parameters -->
-        <xacro:property name="ang_mean" value="0.0"/>
+        <!-- <xacro:property name="ang_mean" value="0.0"/>
         <xacro:property name="ang_stddev" value="2e-4"/>
         <xacro:property name="ang_bias_mean" value="0.0000075"/>
-        <xacro:property name="ang_bias_stddev" value="0.0000008"/>
+        <xacro:property name="ang_bias_stddev" value="0.0000008"/> -->
+        <xacro:property name="ang_mean" value="0.0"/>
+        <xacro:property name="ang_stddev" value="0.0"/>
+        <xacro:property name="ang_bias_mean" value="0.0"/>
+        <xacro:property name="ang_bias_stddev" value="0.0"/>
 
         <!-- Linear acceleration noise parameters -->
-        <xacro:property name="lin_mean" value="0.0"/>
+        <!-- <xacro:property name="lin_mean" value="0.0"/>
         <xacro:property name="lin_stddev" value="1.7e-2"/>
         <xacro:property name="lin_bias_mean" value="0.1"/>
-        <xacro:property name="lin_bias_stddev" value="0.001"/>
+        <xacro:property name="lin_bias_stddev" value="0.001"/> -->
+        <xacro:property name="lin_mean" value="0.0"/>
+        <xacro:property name="lin_stddev" value="0.0"/>
+        <xacro:property name="lin_bias_mean" value="0.0"/>
+        <xacro:property name="lin_bias_stddev" value="0.0"/>
 
 </robot>
