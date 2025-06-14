@@ -3,12 +3,14 @@ from launch_ros.parameter_descriptions import ParameterValue
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable, IncludeLaunchDescription, RegisterEventHandler
 from launch.event_handlers import OnProcessExit, OnProcessStart
 from launch_ros.actions import Node
-from launch.substitutions import Command
+from launch.substitutions import Command, PathJoinSubstitution
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 import os
 from pathlib import Path
 from ament_index_python.packages import get_package_share_directory
 from ament_index_python.packages import get_package_share_path
+
+from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
@@ -34,11 +36,20 @@ def generate_launch_description():
         name='GZ_SIM_RESOURCE_PATH',
         value=[str(Path(get_package_share_directory('meldog_description')).parent.resolve())]
     )
+
+     # Load world for gazebo sim
+    world = PathJoinSubstitution(
+        [
+            FindPackageShare('meldog_description'),
+            "worlds",
+            'simple.sdf'
+        ]
+    )
     
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('ros_gz_sim'), 'launch'), '/gz_sim.launch.py']),
-            launch_arguments={'gz_args': ['-r -v -v4 empty.sdf'], 'on_exit_shutdown': 'true'}.items()
+            launch_arguments={'gz_args': ['-r -v -v4 ', world], 'on_exit_shutdown': 'true'}.items()
         )
     
     spawn_entity = Node(package='ros_gz_sim', executable='create',
