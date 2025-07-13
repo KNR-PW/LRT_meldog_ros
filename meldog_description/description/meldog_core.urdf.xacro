@@ -9,6 +9,7 @@
     <xacro:include filename="links/properties/H_properties.urdf.xacro"/>
     <xacro:include filename="links/properties/LL_properties.urdf.xacro"/>
     <xacro:include filename="links/properties/UL_properties.urdf.xacro"/>
+    <xacro:include filename="links/properties/S_properties.urdf.xacro"/>
 
     <!-- Joint properties -->
     <xacro:include filename="joints/properties/T_joint_properties.urdf.xacro"/>
@@ -50,6 +51,9 @@
             <!-- Left front foot link -->
             <xacro:include filename="links/foot/LFF_link.urdf.xacro"/>
 
+            <!-- Left front sensor link -->
+            <xacro:include filename="links/sensors/LFS_link.urdf.xacro"/>
+
         <!-- Right front leg links -->
 
             <!-- Right front hip link -->
@@ -63,6 +67,9 @@
 
             <!-- Right front foot link -->
             <xacro:include filename="links/foot/RFF_link.urdf.xacro"/>
+
+            <!-- Right front sensor link -->
+            <xacro:include filename="links/sensors/RFS_link.urdf.xacro"/>
 
         <!-- Left rear leg links -->
 
@@ -78,6 +85,9 @@
             <!-- Left rear foot link -->
             <xacro:include filename="links/foot/LRF_link.urdf.xacro"/>
 
+            <!-- Left rear sensor link -->
+            <xacro:include filename="links/sensors/LRS_link.urdf.xacro"/>
+
         <!-- Right rear leg links -->
 
             <!-- Right rear hip link -->
@@ -91,6 +101,9 @@
 
             <!-- Right rear foot link -->
             <xacro:include filename="links/foot/RRF_link.urdf.xacro"/>
+
+            <!-- Right rear sensor link -->
+            <xacro:include filename="links/sensors/RRS_link.urdf.xacro"/>
     
     <!-- JOINTS -->
 
@@ -117,6 +130,9 @@
             <!-- Left front foot joint -->
             <xacro:include filename="joints/foot/LFF_joint.urdf.xacro"/>
 
+            <!-- Left front sensor joint -->
+            <xacro:include filename="joints/sensors/LFS_joint.urdf.xacro"/>
+
         <!-- Right front leg joints -->
 
             <!-- Right front trunk joint -->
@@ -130,6 +146,9 @@
 
             <!-- Right front foot joint -->
             <xacro:include filename="joints/foot/RFF_joint.urdf.xacro"/>
+
+            <!-- Right front sensor joint -->
+            <xacro:include filename="joints/sensors/RFS_joint.urdf.xacro"/>
 
         <!-- Left rear leg joints -->
 
@@ -145,6 +164,9 @@
             <!-- Left rear foot joint -->
             <xacro:include filename="joints/foot/LRF_joint.urdf.xacro"/>
 
+            <!-- Left rear sensor joint -->
+            <xacro:include filename="joints/sensors/LRS_joint.urdf.xacro"/>
+
         <!-- Right rear leg joints -->
 
             <!-- Right rear trunk joint -->
@@ -159,7 +181,7 @@
             <!-- Right rear foot joint -->
             <xacro:include filename="joints/foot/RRF_joint.urdf.xacro"/>
 
-
-
+            <!-- Right rear sensor joint -->
+            <xacro:include filename="joints/sensors/RRS_joint.urdf.xacro"/>
 
 </robot>
