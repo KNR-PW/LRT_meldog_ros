@@ -11,10 +11,27 @@ controller_manager:
     imu_sensor_broadcaster:
       type: imu_sensor_broadcaster/IMUSensorBroadcaster
 
+    contact_sensors_broadcaster:
+      type: contact_sensors_broadcaster/ContactSensorsBroadcaster
+
 imu_sensor_broadcaster:
   ros__parameters:
     sensor_name: "imu_sensor"
     frame_id: "imu"
+
+
+contact_sensors_broadcaster:
+  ros__parameters:
+    frame_ids:
+    - LFF_link
+    - RFF_link
+    - LRF_link
+    - RLF_link
+    sensor_names:
+    - LFF_contact
+    - RFF_contact
+    - LRF_contact
+    - RRF_contact
 
 joint_controller:
   ros__parameters:
