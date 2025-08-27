@@ -32,6 +32,21 @@
           <state_interface name="linear_acceleration.z"/>
         </sensor>
 
+        <sensor name="LFF_contact" type = "contact_sensor">
+          <state_interface name="contact"/>
+        </sensor>
+
+        <sensor name="RFF_contact" type = "contact_sensor">
+          <state_interface name="contact"/>
+        </sensor>
+
+        <sensor name="LRF_contact" type = "contact_sensor">
+          <state_interface name="contact"/>
+        </sensor>
+        
+        <sensor name="RRF_contact" type = "contact_sensor">
+          <state_interface name="contact"/>
+        </sensor>
 
         <!-- joints -->
         <xacro:ros2_control_joint_macro name="LFT" pos_min="${T_lower_limit}" pos_max="${T_upper_limit}" vel_max="${T_velocity}" eff_max="${T_effort}"/>
@@ -75,9 +90,6 @@
     </ros2_control>
 
 
-
-
-
     <gazebo>
         <plugin filename="gz_ros2_control-system"
           name="gz_ros2_control::GazeboSimROS2ControlPlugin">
@@ -86,6 +98,6 @@
           <parameters>$(find meldog_description)/controllers/meldog_joint_controllers.yaml</parameters>
           <hold_joints>true</hold_joints>
         </plugin>
-      </gazebo>
+    </gazebo>
 
 </robot>
