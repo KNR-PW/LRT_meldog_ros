@@ -21,7 +21,8 @@ import moteus
 from threading import Lock
 from copy import deepcopy
 from asyncio import sleep
-from typing import List
+from typing import List, Dict
+from math import pi
 
 # Class to control moteuses for calibration purposes
 class MoteusController:
@@ -44,7 +45,7 @@ class MoteusController:
           positions = deepcopy(self.currentPositions)
       return positions
   
-  # Spawn moteuses
+  # Spawn or despawn moteuses
   async def spawn(self):
     commands = [servo.make_stop(query = True) for servo in self.servos.values()]
     return await self.transport.cycle(commands)
@@ -73,7 +74,7 @@ class MoteusController:
     results = await self.spawn()
     with self.lock:
       for result in results:
-        self.currentPositions[result.id] = result.values[moteus.Register.POSITION]
+        self.currentPositions[result.id] = result.values[moteus.Register.POSITION] / (2 * pi)
 
     # Main control loop:
     while True:   
@@ -82,5 +83,5 @@ class MoteusController:
 
       with self.lock:
         for result in results:
-          self.currentPositions[result.id] = result.values[moteus.Register.POSITION]
+          self.currentPositions[result.id] = result.values[moteus.Register.POSITION] / (2 * pi)
       await sleep(self.sleepTime)
