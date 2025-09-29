@@ -1,0 +1,86 @@
+# Copyright (c) 2025, Koło Naukowe Robotyków
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+# Authors: Bartłomiej Krajewski (https://github.com/BartlomiejK2)
+ 
+
+import moteus
+from threading import Lock
+from copy import deepcopy
+from asyncio import sleep
+from typing import List
+
+# Class to control moteuses for calibration purposes
+class MoteusController:
+  def __init__(self, ids: List[int], transport: moteus.Transport, frequency: float):
+    self.ids = ids
+    self.transport = transport
+    self.sleepTime = 1 / frequency
+    self.currentPositions = {id: 0.0 for id in self.ids}
+    self.lockedIds = []
+    
+    self.lock = Lock()
+    
+    # Connect to moteuses:
+    self.servos = {id: moteus.Controller(id=id, transport=self.transport) 
+                   for id in self.ids}
+  
+  # Get current positions in thread-safe manner
+  def getPositions(self):
+      with self.lock:
+          positions = deepcopy(self.currentPositions)
+      return positions
+  
+  # Spawn moteuses
+  async def spawn(self):
+    commands = [servo.make_stop(query = True) for servo in self.servos.values()]
+    return await self.transport.cycle(commands)
+  
+  # Query moteuses
+  async def query(self):
+    commands = [servo.make_query() for servo in self.servos.values()]
+    return await self.transport.cycle(commands)
+
+  # Query or lock moteuses
+  async def queryOrLock(self):
+    commands = []
+    for id in self.ids:
+      if id in self.lockedIds:
+         command = self.servos[id].make_position(position= self.currentPositions[id], 
+                                            maximum_torque = 0.1, 
+                                            query=True)
+      else:
+         command = self.servos[id].make_query()
+      commands.append(command)
+    return await self.transport.cycle(commands)
+       
+  
+  async def run(self):
+    # Restart moteuses:
+    results = await self.spawn()
+    with self.lock:
+      for result in results:
+        self.currentPositions[result.id] = result.values[moteus.Register.POSITION]
+
+    # Main control loop:
+    while True:   
+      
+      results = await self.queryOrLock()
+
+      with self.lock:
+        for result in results:
+          self.currentPositions[result.id] = result.values[moteus.Register.POSITION]
+      await sleep(self.sleepTime)
