@@ -118,7 +118,7 @@ class TerminalInterface:
     layout = Layout(name="root")
     layout.split(
       Layout(name="header", size=3), 
-      Layout(name="main", size=25),
+      Layout(name="main", size=30),
       Layout(name="commandline"))
     return layout
   
