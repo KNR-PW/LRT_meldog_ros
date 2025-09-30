@@ -17,8 +17,9 @@
 # Authors: Bartłomiej Krajewski (https://github.com/BartlomiejK2)
 
 from typing import List
+from datetime import datetime
 
-class UrdfOffsetParser:
+class UrdfOffsetGenerator:
   def __init__(self, filePath: str, jointNames: str):
    self.filePath = filePath
    self.jointNames = jointNames
@@ -33,6 +34,11 @@ class UrdfOffsetParser:
     with open(self.filePath, "w") as file:
       file.write("<?xml version=\"1.0\"?>\n")
       file.write("<robot xmlns:xacro=\"http://www.ros.org/wiki/xacro\">\n")
+      file.write("\n")
+      file.write(f"<!-- This file contains staring offsets for motors (meaning \"zero\" joint position) -->\n")
+      file.write("<!-- Authors: Bartłomiej Krajewski (https://github.com/BartlomiejK2) -->\n")
+      file.write(f"<!-- Generation time: {datetime.now().ctime()} -->\n")
+      file.write("\n")
       for jointName, position in zip(self.jointNames, self.currentPositions):
         file.write(f"\t<!-- {jointName} offset -->\n")
         file.write(f"\t<xacro:property name=\"{jointName}_motor_offset\" value=\"{position}\"/>\n")
@@ -44,9 +50,9 @@ def main():
   jointNames = ["Amogus", "Sus", "A", "aAA"]
   positions = [0.1, 0.2, 0.3, 0.4]
   filePath = "test.urdf.xacro"
-  parser = UrdfOffsetParser(filePath, jointNames)
-  parser.setPositions(positions)
-  parser.saveToFile()
+  generator = UrdfOffsetGenerator(filePath, jointNames)
+  generator.setPositions(positions)
+  generator.saveToFile()
 
 if __name__ == "__main__":
     main()
