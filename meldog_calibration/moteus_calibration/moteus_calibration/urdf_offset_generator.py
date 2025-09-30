@@ -55,4 +55,4 @@ def main():
   generator.saveToFile()
 
 if __name__ == "__main__":
-    main()
+  main()
