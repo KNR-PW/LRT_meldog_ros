@@ -8,6 +8,7 @@
   <license>GPL-3.0-only</license>
 
   <depend>python3-moteus-pip</depend>
+  <depend>python3-moteus-pi3hat-pip</depend>
   <depend>python3-rich</depend>
 
   <test_depend>ament_copyright</test_depend>
