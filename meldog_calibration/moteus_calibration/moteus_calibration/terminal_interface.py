@@ -65,6 +65,8 @@ class TerminalInterface:
   def run(self):
     with Live(self.layout, refresh_per_second=10, screen=True) as live:
       while True:
+        if self.escape:
+          break
         time.sleep(self.sleepTime)
         self.layout["header"].update(self.generateHeader())
         self.layout["main"].update(self.generateTable())
@@ -148,4 +150,4 @@ def main():
   terminalInterface.run()
 
 if __name__ == "__main__":
-    main()
+  main()
