@@ -33,7 +33,10 @@ class MoteusController:
     self.currentPositions = {id: 0.0 for id in self.ids}
     self.lockedIds = []
     
-    self.lock = Lock()
+    self.positionLock = Lock()
+    self.escapeFlagLock = Lock()
+
+    self.escapeFlag = False
     
     # Connect to moteuses:
     self.servos = {id: moteus.Controller(id=id, transport=self.transport) 
@@ -41,7 +44,7 @@ class MoteusController:
   
   # Get current positions in thread-safe manner
   def getPositions(self):
-      with self.lock:
+      with self.positionLock:
           positions = deepcopy(self.currentPositions)
       return positions
   
@@ -54,6 +57,11 @@ class MoteusController:
   async def query(self):
     commands = [servo.make_query() for servo in self.servos.values()]
     return await self.transport.cycle(commands)
+  
+  # Set escape flag
+  def setEscapeFlag(self, flag):
+    with self.positionLock:
+      self.escapeFlag = flag
 
   # Query or lock moteuses
   async def queryOrLock(self):
@@ -68,20 +76,24 @@ class MoteusController:
       commands.append(command)
     return await self.transport.cycle(commands)
        
-  
+  # Main funtion
   async def run(self):
     # Restart moteuses:
     results = await self.spawn()
-    with self.lock:
+    with self.positionLock:
       for result in results:
         self.currentPositions[result.id] = result.values[moteus.Register.POSITION] / (2 * pi)
 
     # Main control loop:
     while True:   
-      
+      with self.escapeFlagLock:
+        if(self.escapeFlag):
+          await self.spawn()
+          return
+        
       results = await self.queryOrLock()
 
-      with self.lock:
+      with self.positionLock:
         for result in results:
           self.currentPositions[result.id] = result.values[moteus.Register.POSITION] / (2 * pi)
       await sleep(self.sleepTime)
