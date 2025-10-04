@@ -43,12 +43,12 @@ class UrdfOffsetGenerator:
       for jointName, position in zip(self.jointNames, self.currentPositions):
         file.write(f"\t<!-- {jointName} offset -->\n")
         if self.type == "offset":
-          file.write(f"\t<xacro:property name=\"{jointName}_motor_offset\" value=\"{position}\"/>\n")
+          file.write(f"  <xacro:property name=\"{jointName}_motor_offset\" value=\"{position}\"/>\n")
         elif self.type == "maximum":
-          file.write(f"\t<xacro:property name=\"{jointName}_motor_maximum_position\" value=\"{position}\"/>\n")
+          file.write(f"  <xacro:property name=\"{jointName}_motor_maximum_position\" value=\"{position}\"/>\n")
         elif self.type == "minimum":
-          file.write(f"\t<xacro:property name=\"{jointName}_motor_minimum_position\" value=\"{position}\"/>\n")
-        file.write("\t\n")
+          file.write(f"  <xacro:property name=\"{jointName}_motor_minimum_position\" value=\"{position}\"/>\n")
+        file.write("  \n")
       file.write("</robot>")
 
 
