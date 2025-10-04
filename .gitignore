@@ -53,5 +53,8 @@ qtcreator-*
 CATKIN_IGNORE
 
 
-#vscode
+# vscode
 .vscode/
+
+# Package path generated header files 
+package_path.h
