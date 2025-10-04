@@ -7,8 +7,11 @@
   <maintainer email="bartlomiejk@vp.pl">bartek</maintainer>
   <license>GPL-3.0-only</license>
 
-  <depend>lrt_inverse_kinematics</depend>
-  <depend>joint_controller_msgs</depend>
+  <depend>multi_end_effector_kinematics</depend>
+
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

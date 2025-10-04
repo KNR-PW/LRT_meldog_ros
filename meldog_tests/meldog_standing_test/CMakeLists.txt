@@ -19,15 +19,37 @@ configure_file (
 
 find_package(ament_cmake REQUIRED)
 set(THIS_PACKAGE_DEPENDS
-  lrt_inverse_kinematics
-  joint_controller_msgs
+  multi_end_effector_kinematics
+
+  rclcpp
+  std_msgs
+  sensor_msgs
 )
 
-# find dependencies
-find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+foreach(Dependency IN ITEMS ${THIS_PACKAGE_DEPENDS})
+  find_package(${Dependency} REQUIRED)
+endforeach()
+
+add_executable(base_controller
+  src/main.cpp
+  src/BaseControllerNode.cpp
+  src/core/BaseController.cpp
+)
+
+target_include_directories(base_controller PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+)
+
+ament_target_dependencies(base_controller ${THIS_PACKAGE_DEPENDS})
+
+install(TARGETS base_controller
+    DESTINATION lib/${PROJECT_NAME})
+
+install(
+  DIRECTORY bringup
+  DESTINATION share/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -41,4 +63,5 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+ament_export_dependencies(${THIS_PACKAGE_DEPENDS})
 ament_package()
