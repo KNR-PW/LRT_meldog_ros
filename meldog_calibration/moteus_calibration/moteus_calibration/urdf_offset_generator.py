@@ -20,10 +20,11 @@ from typing import List
 from datetime import datetime
 
 class UrdfOffsetGenerator:
-  def __init__(self, filePath: str, jointNames: str):
-   self.filePath = filePath
-   self.jointNames = jointNames
-   self.currentPositions = []
+  def __init__(self, filePath: str, jointNames: str, type: str):
+    self.filePath = filePath
+    self.jointNames = jointNames
+    self.currentPositions = []
+    self.type = type
     
   def setPositions(self, currentPositions: List[float]):
     self.currentPositions = currentPositions
@@ -41,16 +42,23 @@ class UrdfOffsetGenerator:
       file.write("\n")
       for jointName, position in zip(self.jointNames, self.currentPositions):
         file.write(f"\t<!-- {jointName} offset -->\n")
-        file.write(f"\t<xacro:property name=\"{jointName}_motor_offset\" value=\"{position}\"/>\n")
+        if self.type == "offset":
+          file.write(f"\t<xacro:property name=\"{jointName}_motor_offset\" value=\"{position}\"/>\n")
+        elif self.type == "maximum":
+          file.write(f"\t<xacro:property name=\"{jointName}_motor_maximum_position\" value=\"{position}\"/>\n")
+        elif self.type == "minimum":
+          file.write(f"\t<xacro:property name=\"{jointName}_motor_minimum_position\" value=\"{position}\"/>\n")
         file.write("\t\n")
       file.write("</robot>")
 
 
 def main():
-  jointNames = ["Amogus", "Sus", "A", "aAA"]
-  positions = [0.1, 0.2, 0.3, 0.4]
-  filePath = "test.urdf.xacro"
-  generator = UrdfOffsetGenerator(filePath, jointNames)
+  jointNames = ["LFT", "LFH", "LFK", "RFT", "RFH", "RFK", 
+                "LRT", "LRH", "LRK", "RRT", "RRH", "RRK"]
+  positions = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  filePath = "motor_offsets.urdf.xacro"
+  type = "offset"
+  generator = UrdfOffsetGenerator(filePath, jointNames, type)
   generator.setPositions(positions)
   generator.saveToFile()
 

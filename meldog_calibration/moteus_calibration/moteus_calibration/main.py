@@ -42,6 +42,8 @@ async def main():
   parser.add_argument('-j', '--joints', nargs='+', help='List of joint names', required=True)
   parser.add_argument('-i', '--ids', nargs='+', help='List of motor ids', required=True)
   parser.add_argument('-o', '--output', help='File path for output', required=True)
+  parser.add_argument('-t', '--type', help='Type of data: [offset, maximum, minimum]', 
+                      choices=['offset', 'maximum,' 'minimum'], required=True)
   args = parser.parse_args()
 
   ids = []
