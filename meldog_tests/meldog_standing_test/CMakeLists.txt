@@ -24,6 +24,8 @@ set(THIS_PACKAGE_DEPENDS
   rclcpp
   std_msgs
   sensor_msgs
+  geometry_msgs
+  tf2_ros
 )
 
 foreach(Dependency IN ITEMS ${THIS_PACKAGE_DEPENDS})

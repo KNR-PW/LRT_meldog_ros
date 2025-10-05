@@ -24,6 +24,7 @@
 #include <meldog_standing_test/core/BaseController.hpp>
 
 #include <rclcpp/rclcpp.hpp>
+#include <tf2_ros/transform_broadcaster.h>
 
 #include <std_msgs/msg/float64.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
@@ -82,6 +83,7 @@ namespace meldog_standing_test
       rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr jointStateSubscriber_;
       rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr jointCommandPublisher_;
       rclcpp::TimerBase::SharedPtr controldTimer_;
+      std::shared_ptr<tf2_ros::TransformBroadcaster> baseTransformBroadcaster_;
       
   };
 }; // namespace meldog_standing_test

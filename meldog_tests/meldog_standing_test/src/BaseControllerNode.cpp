@@ -30,6 +30,8 @@ namespace meldog_standing_test
     controldTimer_ = create_wall_timer(timerPeriod, 
       std::bind(&BaseControllerNode::controlLoopCallback, this));
 
+    baseTransformBroadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(*this);
+
     const auto jointModelNames = baseController_.getJointNames();
 
     if(jointNamesInControllers_.size() != jointModelNames.size())
@@ -99,6 +101,13 @@ namespace meldog_standing_test
     }
 
     baseController_.updateCurrentHeight(currentJointPositions_);
+
+    geometry_msgs::msg::TransformStamped baseTransform;
+    baseTransform.header = message->header;
+    baseTransform.header.frame_id = "base_link";
+    baseTransform.child_frame_id = "trunk_link";
+    baseTransform.transform.translation.z = baseController_.getCurrentHeight();
+    baseTransformBroadcaster_->sendTransform(baseTransform);
 
     if((now() - previousCllbackTime) > rclcpp::Duration(1, 0))
     {
