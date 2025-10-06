@@ -31,8 +31,11 @@ MAIN_THREAD_FREQUENCY = 100
 CONTROLLER_FREQUENCY = 100
 TERMINAL_FREQUENCY = 10
 
+def start_background_loop(loop: asyncio.AbstractEventLoop) -> None:
+    asyncio.set_event_loop(loop)
+    loop.run_forever()
 
-async def main():
+def main():
   parser = argparse.ArgumentParser(
                     prog='ros2 run moteus_calibration moteus_calibration',
                     description='Program to calibrate moteus motors, set starting ' \
@@ -56,7 +59,7 @@ async def main():
   filePath = args.output
 
   try:
-    transport = moteus_pi3hat.Pi3HatRouter()
+    transport = moteus_pi3hat.Pi3HatRouter(servo_bus_map={1: [5], 2: [4], 3: [6]})
   except RuntimeError:
     print("Could not find pi3hat transport!")
     sys.exit()
@@ -65,17 +68,20 @@ async def main():
   terminalInterface = TerminalInterface(ids, joints, TERMINAL_FREQUENCY)
   urdfOffsetGenerator = UrdfOffsetGenerator(filePath, joints)
 
-  async def moteusControllerTarget():
+  async def moteusControllerAsync():
     await moteusController.run()
+
+  def moteusControllerTarget():
+    asyncio.run(moteusControllerAsync())
 
   def terminalInterfaceTarget():
     terminalInterface.run()
 
-  terminalThread = threading.Thread(target=terminalInterfaceTarget())
-  moteusThread = threading.Thread(target=moteusControllerTarget())
+  terminalThread = threading.Thread(target=terminalInterfaceTarget)
+  moteusThread = threading.Thread(target=moteusControllerTarget)
 
-  terminalThread.start()
   moteusThread.start()
+  terminalThread.start()
 
   sleepTime = 1 / MAIN_THREAD_FREQUENCY
   currentPositions = {}
@@ -88,14 +94,16 @@ async def main():
 
     currentPositions = moteusController.getPositions()
     terminalInterface.setPositions(currentPositions)
+    # lockedIds= terminalInterface.getLockedInPlace()
+    # moteusController.setLockedIds(lockedIds)
 
     time.sleep(sleepTime)
 
   terminalThread.join()
-  moteusController.join()
+  moteusThread.join()
 
   urdfOffsetGenerator.setPositions(currentPositions)
   urdfOffsetGenerator.saveToFile()
 
 if __name__ == "__main__":
-  asyncio.run(main())
+  main()
