@@ -129,9 +129,12 @@ class TerminalInterface:
       self.currentPositions = currentPositions
   
   def getLockedInPlace(self):
+    lockedIds = []
     with self.lock:
-      lockedInPlace =  deepcopy(self.lockedInPlace)
-    return lockedInPlace
+      for i in range(self.lockedInPlace.values()):
+        if self.lockedInPlace.values()[i]:
+          lockedIds.append(self.lockedInPlace.keys()[i])
+    return lockedIds
   
   def readUserChar(self):
     output = ""

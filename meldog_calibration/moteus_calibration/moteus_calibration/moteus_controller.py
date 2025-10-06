@@ -48,6 +48,9 @@ class MoteusController:
           positions = deepcopy(self.currentPositions)
       return positions
   
+  def setLockedIds(self, ids):
+    self.lockedIds = ids
+  
   # Spawn or despawn moteuses
   async def spawn(self):
     commands = [servo.make_stop(query = True) for servo in self.servos.values()]
@@ -69,7 +72,7 @@ class MoteusController:
     for id in self.ids:
       if id in self.lockedIds:
          command = self.servos[id].make_position(position= self.currentPositions[id], 
-                                            maximum_torque = 0.1, 
+                                            maximum_torque = 0.2, 
                                             query=True)
       else:
          command = self.servos[id].make_query()
@@ -82,7 +85,7 @@ class MoteusController:
     results = await self.spawn()
     with self.positionLock:
       for result in results:
-        self.currentPositions[result.id] = result.values[moteus.Register.POSITION] / (2 * pi)
+        self.currentPositions[result.id] = result.values[moteus.Register.POSITION] * 2 * pi
 
     # Main control loop:
     while True:   
