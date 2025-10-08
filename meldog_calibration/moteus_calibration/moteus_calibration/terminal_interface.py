@@ -51,7 +51,7 @@ class TerminalInterface:
     self.oldConsolSettings = termios.tcgetattr(sys.stdin)
     tty.setcbreak(sys.stdin.fileno())
 
-    self.lock = Lock()
+    self.idLock = Lock()
 
     self.console = Console()
     self.layout = self.generateLayout()
@@ -108,7 +108,9 @@ class TerminalInterface:
       self.userInput = self.userInput.strip('\n')
       if self.userInput.isdigit():
         try:
-          self.lockedInPlace[int(self.userInput)] = not self.lockedInPlace[int(self.userInput)]
+          with self.idLock:
+            self.lockedInPlace[int(self.userInput)] = not self.lockedInPlace[
+              int(self.userInput)]
         except KeyError:
           pass
       self.userInput = ""
@@ -129,12 +131,8 @@ class TerminalInterface:
       self.currentPositions = currentPositions
   
   def getLockedInPlace(self):
-    lockedIds = []
-    with self.lock:
-      for i in range(self.lockedInPlace.values()):
-        if self.lockedInPlace.values()[i]:
-          lockedIds.append(self.lockedInPlace.keys()[i])
-    return lockedIds
+    with self.idLock:
+      return deepcopy(self.lockedInPlace)
   
   def readUserChar(self):
     output = ""

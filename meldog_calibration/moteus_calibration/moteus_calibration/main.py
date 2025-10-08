@@ -94,8 +94,8 @@ def main():
 
     currentPositions = moteusController.getPositions()
     terminalInterface.setPositions(currentPositions)
-    # lockedIds= terminalInterface.getLockedInPlace()
-    # moteusController.setLockedIds(lockedIds)
+    lockedIds = terminalInterface.getLockedInPlace()
+    moteusController.setLockedIds(lockedIds)
 
     time.sleep(sleepTime)
 
