@@ -43,23 +43,31 @@ def main():
                     epilog='Authors: Bartłomiej Krajewski (https://github.com/BartlomiejK2)')
   
   parser.add_argument('-j', '--joints', nargs='+', help='List of joint names', required=True)
-  parser.add_argument('-i', '--ids', nargs='+', help='List of motor ids', required=True)
+  parser.add_argument('-bi', '--bus_id', nargs='+', help='List of motor bus_id', required=True)
   parser.add_argument('-o', '--output', help='File path for output', required=True)
   parser.add_argument('-t', '--type', help='Type of data: [offset, maximum, minimum]', 
                       choices=['offset', 'maximum,' 'minimum'], required=True)
   args = parser.parse_args()
 
-  ids = []
-  for id in args.ids:
-    if id.isdigit():
-      ids.append(int(id))
+  busIdsDict = {}
+  for bus_id in args.bus_ids:
+    _index = bus_id.find("_")
+    busString = bus_id[:_index]
+    idString = bus_id[_index + 1:]
+    if idString.isdigit() and busString.isdigit():
+      bus = int(busString)
+      id = int(idString)
+      if bus in busIdsDict:
+        busIdsDict[bus].append(id)
+      else:
+        busIdsDict[bus] = [id]
     else:
        raise ValueError("Motor ids should be integer values!")
   joints = args.joints
   filePath = args.output
 
   try:
-    transport = moteus_pi3hat.Pi3HatRouter(servo_bus_map={1: [5], 2: [4], 3: [6]})
+    transport = moteus_pi3hat.Pi3HatRouter(servo_bus_map = busIdsDict)
   except RuntimeError:
     print("Could not find pi3hat transport!")
     sys.exit()
