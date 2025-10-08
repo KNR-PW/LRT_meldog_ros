@@ -16,21 +16,25 @@
 
 # Authors: Bartłomiej Krajewski (https://github.com/BartlomiejK2)
 
-from typing import List
+from typing import List, Dict
 from datetime import datetime
 
 class UrdfOffsetGenerator:
-  def __init__(self, filePath: str, jointNames: str, type: str):
+  def __init__(self, filePath: str, jointNames: List[str], ids: List[int], type: str):
     self.filePath = filePath
     self.jointNames = jointNames
-    self.currentPositions = []
+    self.ids = ids
+    self.currentPositions = {}
     self.type = type
+
+    if len(self.ids) != len(self.jointNames):
+      raise RuntimeError("Joint name vector does not have same length as motor id vector!")
     
-  def setPositions(self, currentPositions: List[float]):
+  def setPositions(self, currentPositions: Dict[int, float]):
     self.currentPositions = currentPositions
 
   def saveToFile(self):
-    if(len(self.currentPositions) != len(self.jointNames)):
+    if len(self.currentPositions) != len(self.jointNames):
       raise RuntimeError("Position vector does not have same length as joint name vector!")
     with open(self.filePath, "w") as file:
       file.write("<?xml version=\"1.0\"?>\n")
@@ -40,14 +44,14 @@ class UrdfOffsetGenerator:
       file.write("<!-- Authors: Bartłomiej Krajewski (https://github.com/BartlomiejK2) -->\n")
       file.write(f"<!-- Generation time: {datetime.now().ctime()} -->\n")
       file.write("\n")
-      for jointName, position in zip(self.jointNames, self.currentPositions):
-        file.write(f"\t<!-- {jointName} offset -->\n")
+      for i in range(len(self.ids)):
+        file.write(f"\t<!-- {self.jointNames[i]} offset -->\n")
         if self.type == "offset":
-          file.write(f"  <xacro:property name=\"{jointName}_motor_offset\" value=\"{position}\"/>\n")
+          file.write(f"  <xacro:property name=\"{self.jointNames[i]}_motor_offset\" value=\"{self.currentPositions[self.ids[i]]}\"/>\n")
         elif self.type == "maximum":
-          file.write(f"  <xacro:property name=\"{jointName}_motor_maximum_position\" value=\"{position}\"/>\n")
+          file.write(f"  <xacro:property name=\"{self.jointNames[i]}_motor_maximum_position\" value=\"{self.currentPositions[self.ids[i]]}\"/>\n")
         elif self.type == "minimum":
-          file.write(f"  <xacro:property name=\"{jointName}_motor_minimum_position\" value=\"{position}\"/>\n")
+          file.write(f"  <xacro:property name=\"{self.jointNames[i]}_motor_minimum_position\" value=\"{self.currentPositions[self.ids[i]]}\"/>\n")
         file.write("  \n")
       file.write("</robot>")
 
@@ -55,10 +59,13 @@ class UrdfOffsetGenerator:
 def main():
   jointNames = ["LFT", "LFH", "LFK", "RFT", "RFH", "RFK", 
                 "LRT", "LRH", "LRK", "RRT", "RRH", "RRK"]
-  positions = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  
+  ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  
+  positions = {name: 0.0 for name in jointNames}
   filePath = "motor_offsets.urdf.xacro"
   type = "offset"
-  generator = UrdfOffsetGenerator(filePath, jointNames, type)
+  generator = UrdfOffsetGenerator(filePath, jointNames, ids, type)
   generator.setPositions(positions)
   generator.saveToFile()
 
