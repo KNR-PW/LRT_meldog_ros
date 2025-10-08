@@ -74,8 +74,8 @@ class MoteusController:
     with self.idLock:
       for id in self.ids:
         if self.lockedIds[id]:
-          command = self.servos[id].make_position(position= self.currentPositions[id], 
-                                            maximum_torque = 0.2, 
+          command = self.servos[id].make_position(position= self.currentPositions[id] / (2 * pi), 
+                                            maximum_torque = 0.1, 
                                             query=True)
         else:
           command = self.servos[id].make_query()
@@ -101,5 +101,6 @@ class MoteusController:
 
       with self.positionLock:
         for result in results:
-          self.currentPositions[result.id] = result.values[moteus.Register.POSITION] / (2 * pi)
+          if not self.lockedIds[result.id]:
+            self.currentPositions[result.id] = result.values[moteus.Register.POSITION] * 2 * pi
       await sleep(self.sleepTime)

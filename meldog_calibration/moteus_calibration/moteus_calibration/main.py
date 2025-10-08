@@ -50,7 +50,8 @@ def main():
   args = parser.parse_args()
 
   busIdsDict = {}
-  for bus_id in args.bus_ids:
+  ids = []
+  for bus_id in args.bus_id:
     _index = bus_id.find("_")
     busString = bus_id[:_index]
     idString = bus_id[_index + 1:]
@@ -61,10 +62,14 @@ def main():
         busIdsDict[bus].append(id)
       else:
         busIdsDict[bus] = [id]
+      ids.append(id)
     else:
        raise ValueError("Motor ids should be integer values!")
   joints = args.joints
   filePath = args.output
+
+  if len(joints) != len(ids):
+    raise RuntimeError("Joint name vector does not have same length as motor id vector!")
 
   try:
     transport = moteus_pi3hat.Pi3HatRouter(servo_bus_map = busIdsDict)
@@ -74,7 +79,7 @@ def main():
   
   moteusController = MoteusController(ids, transport, CONTROLLER_FREQUENCY)
   terminalInterface = TerminalInterface(ids, joints, TERMINAL_FREQUENCY)
-  urdfOffsetGenerator = UrdfOffsetGenerator(filePath, joints)
+  urdfOffsetGenerator = UrdfOffsetGenerator(filePath, joints, ids, args.type)
 
   async def moteusControllerAsync():
     await moteusController.run()

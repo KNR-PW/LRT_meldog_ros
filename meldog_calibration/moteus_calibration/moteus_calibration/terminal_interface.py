@@ -51,6 +51,7 @@ class TerminalInterface:
     self.oldConsolSettings = termios.tcgetattr(sys.stdin)
     tty.setcbreak(sys.stdin.fileno())
 
+    self.positionLock = Lock()
     self.idLock = Lock()
 
     self.console = Console()
@@ -80,7 +81,7 @@ class TerminalInterface:
     table.add_column("[b]Motor ID[/b]", justify="center", style="magenta")
     table.add_column("[b]Current Position \[rad][/b]", justify="center", style="magenta")
     table.add_column("[b]Locked in place?[/b]", justify="center", style="magenta")
-    with self.lock:
+    with self.positionLock:
       for name, id, position, locked in zip(self.jointNames, self.ids, self.currentPositions.values(), 
                                     self.lockedInPlace.values()):
         if(locked):
@@ -127,7 +128,7 @@ class TerminalInterface:
     return layout
   
   def setPositions(self, currentPositions):
-    with self.lock:
+    with self.positionLock:
       self.currentPositions = currentPositions
   
   def getLockedInPlace(self):
