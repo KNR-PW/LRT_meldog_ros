@@ -31,10 +31,11 @@ class MoteusController:
     self.transport = transport
     self.sleepTime = 1 / frequency
     self.currentPositions = {id: 0.0 for id in self.ids}
-    self.lockedIds = []
+    self.lockedIds = {id: False for id in self.ids}
     
     self.positionLock = Lock()
     self.escapeFlagLock = Lock()
+    self.idLock = Lock()
 
     self.escapeFlag = False
     
@@ -49,7 +50,8 @@ class MoteusController:
       return positions
   
   def setLockedIds(self, ids):
-    self.lockedIds = ids
+    with self.idLock:
+      self.lockedIds = ids
   
   # Spawn or despawn moteuses
   async def spawn(self):
@@ -69,14 +71,15 @@ class MoteusController:
   # Query or lock moteuses
   async def queryOrLock(self):
     commands = []
-    for id in self.ids:
-      if id in self.lockedIds:
-         command = self.servos[id].make_position(position= self.currentPositions[id], 
+    with self.idLock:
+      for id in self.ids:
+        if self.lockedIds[id]:
+          command = self.servos[id].make_position(position= self.currentPositions[id], 
                                             maximum_torque = 0.2, 
                                             query=True)
-      else:
-         command = self.servos[id].make_query()
-      commands.append(command)
+        else:
+          command = self.servos[id].make_query()
+        commands.append(command)
     return await self.transport.cycle(commands)
        
   # Main funtion
@@ -84,8 +87,8 @@ class MoteusController:
     # Restart moteuses:
     results = await self.spawn()
     with self.positionLock:
-      for result in results:
-        self.currentPositions[result.id] = result.values[moteus.Register.POSITION] * 2 * pi
+        for result in results:
+          self.currentPositions[result.id] = result.values[moteus.Register.POSITION] * 2 * pi
 
     # Main control loop:
     while True:   
