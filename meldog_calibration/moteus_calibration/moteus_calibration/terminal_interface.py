@@ -51,8 +51,7 @@ class TerminalInterface:
     self.oldConsolSettings = termios.tcgetattr(sys.stdin)
     tty.setcbreak(sys.stdin.fileno())
 
-    self.positionLock = Lock()
-    self.idLock = Lock()
+    self.lock = Lock()
 
     self.console = Console()
     self.layout = self.generateLayout()
@@ -81,7 +80,7 @@ class TerminalInterface:
     table.add_column("[b]Motor ID[/b]", justify="center", style="magenta")
     table.add_column("[b]Current Position \[rad][/b]", justify="center", style="magenta")
     table.add_column("[b]Locked in place?[/b]", justify="center", style="magenta")
-    with self.positionLock:
+    with self.lock:
       for name, id, position, locked in zip(self.jointNames, self.ids, self.currentPositions.values(), 
                                     self.lockedInPlace.values()):
         if(locked):
@@ -109,7 +108,7 @@ class TerminalInterface:
       self.userInput = self.userInput.strip('\n')
       if self.userInput.isdigit():
         try:
-          with self.idLock:
+          with self.lock:
             self.lockedInPlace[int(self.userInput)] = not self.lockedInPlace[
               int(self.userInput)]
         except KeyError:
@@ -128,11 +127,11 @@ class TerminalInterface:
     return layout
   
   def setPositions(self, currentPositions):
-    with self.positionLock:
+    with self.lock:
       self.currentPositions = currentPositions
   
   def getLockedInPlace(self):
-    with self.idLock:
+    with self.lock:
       return deepcopy(self.lockedInPlace)
   
   def readUserChar(self):
