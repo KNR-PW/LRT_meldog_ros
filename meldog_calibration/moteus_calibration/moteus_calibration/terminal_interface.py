@@ -17,7 +17,7 @@
 # Authors: Bartłomiej Krajewski (https://github.com/BartlomiejK2)
 
 
-from threading import Lock
+from threading import Lock, Thread
 from copy import deepcopy
 from typing import List
 import time
@@ -39,10 +39,11 @@ import termios
 # Class for controlling moteuses via terminal
 class TerminalInterface:
 
-  def __init__(self, ids: List[int], jointNames: List[str], frequency: float = 10):
+  def __init__(self, ids: List[int], jointNames: List[str], frequency: float = 5):
     self.ids = ids
     self.jointNames = jointNames
     self.currentPositions = {id: 0.0 for id in self.ids}
+    self.savedPositions = {id: 0.0 for id in self.ids}
     self.lockedInPlace = {id: False for id in self.ids}
     self.sleepTime = 1 / frequency
     self.userInput = ""
@@ -51,7 +52,8 @@ class TerminalInterface:
     self.oldConsolSettings = termios.tcgetattr(sys.stdin)
     tty.setcbreak(sys.stdin.fileno())
 
-    self.lock = Lock()
+    self.positionLock = Lock()
+    self.lockedLock = Lock()
 
     self.console = Console()
     self.layout = self.generateLayout()
@@ -63,7 +65,7 @@ class TerminalInterface:
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.oldConsolSettings)
 
   def run(self):
-    with Live(self.layout, refresh_per_second=10, screen=True) as live:
+    with Live(self.layout, screen=True) as live:
       while True:
         if self.escape:
           break
@@ -80,14 +82,20 @@ class TerminalInterface:
     table.add_column("[b]Motor ID[/b]", justify="center", style="magenta")
     table.add_column("[b]Current Position \[rad][/b]", justify="center", style="magenta")
     table.add_column("[b]Locked in place?[/b]", justify="center", style="magenta")
-    with self.lock:
-      for name, id, position, locked in zip(self.jointNames, self.ids, self.currentPositions.values(), 
-                                    self.lockedInPlace.values()):
+    table.add_column("[b]Saved position?[/b]", justify="center", style="magenta")
+    with self.positionLock and self.lockedLock:
+      for i in range(len(self.jointNames)):
+        id = self.ids[i]
+        name = self.jointNames[i]
+        locked = self.lockedInPlace[id]
         if(locked):
           state = "[b][green]True[/b]"
+          position = self.savedPositions[id]
         else:
           state = "[b][red]False[/b]"
-        table.add_row(f"[b]{name}[/b]", f"[b]{id}[/b]", f"[b]{position:.2f}[/b]", state)
+          self.savedPositions[id] = self.currentPositions[id]
+          position = self.currentPositions[id]
+        table.add_row(f"[b]{name}[/b]", f"[b]{id}[/b]", f"[b]{position:.2f}[/b]", state, state)
     table = Align.center(table, vertical="top")
     return Panel(table, border_style="magenta")
 
@@ -104,11 +112,11 @@ class TerminalInterface:
     self.userInput += self.readUserChar()
     if len(self.userInput) > 0 and self.userInput[-1] == '\x1b':
       self.escape = True
-    if len(self.userInput) > 0 and self.userInput[-1] == "\n":
+    elif len(self.userInput) > 0 and self.userInput[-1] == "\n":
       self.userInput = self.userInput.strip('\n')
       if self.userInput.isdigit():
         try:
-          with self.lock:
+          with self.lockedLock:
             self.lockedInPlace[int(self.userInput)] = not self.lockedInPlace[
               int(self.userInput)]
         except KeyError:
@@ -127,11 +135,14 @@ class TerminalInterface:
     return layout
   
   def setPositions(self, currentPositions):
-    with self.lock:
+    with self.positionLock:
       self.currentPositions = currentPositions
   
+  def getSavedPositons(self):
+    return deepcopy(self.savedPositions)
+  
   def getLockedInPlace(self):
-    with self.lock:
+    with self.lockedLock:
       return deepcopy(self.lockedInPlace)
   
   def readUserChar(self):
@@ -147,8 +158,28 @@ class TerminalInterface:
 def main():
   jointNames = ["Amogus", "Sus", "A", "aAA"]
   ids = [1, 2, 3, 4]
+  positions = {id: 0.0 for id in ids}
   terminalInterface = TerminalInterface(ids, jointNames)
-  terminalInterface.run()
+
+  def terminalFunction():
+    terminalInterface.run()
+
+  terminalThread = Thread(target=terminalFunction)
+  terminalThread.start()
+
+  while True:
+    escapeFlag = terminalInterface.getEscape()
+    if escapeFlag:
+      break
+    for i in range(len(positions)):
+      positions[ids[i]] += 0.1
+    terminalInterface.setPositions(positions)
+
+    time.sleep(0.5)
+  terminalThread.join()
+
+  print(terminalInterface.getLockedInPlace())
+  print(terminalInterface.getSavedPositons())
 
 if __name__ == "__main__":
   main()

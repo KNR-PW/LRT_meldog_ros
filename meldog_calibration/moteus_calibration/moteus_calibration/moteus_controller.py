@@ -33,7 +33,9 @@ class MoteusController:
     self.currentPositions = {id: 0.0 for id in self.ids}
     self.lockedIds = {id: False for id in self.ids}
     
-    self.lock = Lock()
+    self.positionLock = Lock()
+    self.lockedLock = Lock()
+    self.escapeLock = Lock()
     
     self.escapeFlag = False
     
@@ -43,12 +45,11 @@ class MoteusController:
   
   # Get current positions in thread-safe manner
   def getPositions(self):
-      with self.lock:
-          positions = deepcopy(self.currentPositions)
-      return positions
+      with self.positionLock:
+        return deepcopy(self.currentPositions)
   
   def setLockedIds(self, ids):
-    with self.lock:
+    with self.lockedLock:
       self.lockedIds = ids
   
   # Spawn or despawn moteuses
@@ -63,17 +64,17 @@ class MoteusController:
   
   # Set escape flag
   def setEscapeFlag(self, flag):
-    with self.lock:
+    with self.escapeLock:
       self.escapeFlag = flag
 
   # Query or lock moteuses
   async def queryOrLock(self):
     commands = []
-    with self.lock:
+    with self.positionLock and self.lockedLock: 
       for id in self.ids:
         if self.lockedIds[id]:
           command = self.servos[id].make_position(position= self.currentPositions[id] / (2 * pi), 
-                                            maximum_torque = 0.1, 
+                                            maximum_torque = 0.2, 
                                             query=True)
         else:
           command = self.servos[id].make_query()
@@ -84,20 +85,20 @@ class MoteusController:
   async def run(self):
     # Restart moteuses:
     results = await self.spawn()
-    with self.lock:
+    with self.positionLock:
         for result in results:
           self.currentPositions[result.id] = result.values[moteus.Register.POSITION] * 2 * pi
 
     # Main control loop:
     while True:   
-      with self.lock:
+      with self.escapeLock:
         if(self.escapeFlag):
           await self.spawn()
           return
         
       results = await self.queryOrLock()
 
-      with self.lock:
+      with self.positionLock and self.lockedLock:
         for result in results:
           if not self.lockedIds[result.id]:
             self.currentPositions[result.id] = result.values[moteus.Register.POSITION] * 2 * pi
