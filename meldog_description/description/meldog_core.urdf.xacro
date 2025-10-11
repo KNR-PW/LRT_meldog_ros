@@ -21,6 +21,10 @@
     <!-- IMU gazebo setup -->
     <xacro:include filename="gazebo/imu_gazebo_setup.urdf.xacro"/>
 
+    <!-- Contact sensors setup -->
+    <xacro:include filename="gazebo/contact_gazebo_setup.urdf.xacro"/>
+
+
     <!-- ROS2 Control -->
     <xacro:include filename="ros2_control/meldog_gazebo_ros2_control.urdf.xacro"/>
 
@@ -49,6 +53,7 @@
 
             <!-- Left front foot link -->
             <xacro:include filename="links/foot/LFF_link.urdf.xacro"/>
+
 
         <!-- Right front leg links -->
 
@@ -117,6 +122,7 @@
             <!-- Left front foot joint -->
             <xacro:include filename="joints/foot/LFF_joint.urdf.xacro"/>
 
+
         <!-- Right front leg joints -->
 
             <!-- Right front trunk joint -->
@@ -130,6 +136,7 @@
 
             <!-- Right front foot joint -->
             <xacro:include filename="joints/foot/RFF_joint.urdf.xacro"/>
+
 
         <!-- Left rear leg joints -->
 
@@ -145,6 +152,7 @@
             <!-- Left rear foot joint -->
             <xacro:include filename="joints/foot/LRF_joint.urdf.xacro"/>
 
+
         <!-- Right rear leg joints -->
 
             <!-- Right rear trunk joint -->
@@ -158,8 +166,5 @@
 
             <!-- Right rear foot joint -->
             <xacro:include filename="joints/foot/RRF_joint.urdf.xacro"/>
-
-
-
 
 </robot>

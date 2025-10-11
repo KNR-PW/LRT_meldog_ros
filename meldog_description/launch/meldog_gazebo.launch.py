@@ -76,6 +76,10 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'imu_sensor_broadcaster'],
         output='screen'
     )
+    load_contact_sensors_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'contact_sensors_broadcaster'],
+        output='screen'
+    )
 
 
 
@@ -98,6 +102,13 @@ def generate_launch_description():
             OnProcessExit(
                 target_action=load_controller,
                 on_exit=[load_imu_broadcaster],
+            )
+        ),
+
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=load_imu_broadcaster,
+                on_exit=[load_contact_sensors_broadcaster],
             )
         ),
         robot_state_publisher_node,
