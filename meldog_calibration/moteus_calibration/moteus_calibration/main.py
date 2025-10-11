@@ -27,9 +27,9 @@ from .urdf_offset_generator import UrdfOffsetGenerator
 from .terminal_interface import TerminalInterface
 from .moteus_controller import MoteusController
 
-MAIN_THREAD_FREQUENCY = 100
+MAIN_THREAD_FREQUENCY = 1
 CONTROLLER_FREQUENCY = 100
-TERMINAL_FREQUENCY = 10
+TERMINAL_FREQUENCY = 5
 
 def start_background_loop(loop: asyncio.AbstractEventLoop) -> None:
     asyncio.set_event_loop(loop)
@@ -114,6 +114,8 @@ def main():
 
   terminalThread.join()
   moteusThread.join()
+
+  currentPositions = terminalInterface.getSavedPositons()
 
   urdfOffsetGenerator.setPositions(currentPositions)
   urdfOffsetGenerator.saveToFile()
