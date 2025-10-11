@@ -102,7 +102,7 @@
         <joint name="base_joint" type="fixed">
             <parent link="base_link" />
             <child link="trunk_link" />
-            <origin xyz="0 0 500.55" rpy="0 0 0" />
+            <origin xyz="0 0 0.55" rpy="0 0 0" />
         </joint>
 
         <!-- IMU joint -->
