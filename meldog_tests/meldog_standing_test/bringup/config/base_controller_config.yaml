@@ -1,0 +1,5 @@
+base_controller:
+  ros__parameters:
+    joint_names: ['LFT_joint','LFH_joint','LFK_joint','RFT_joint','RFH_joint','RFK_joint','LRT_joint','LRH_joint','LRK_joint','RRT_joint','RRH_joint','RRK_joint']
+    
+
