@@ -9,17 +9,20 @@
 <xacro:property name="trunk_actuators_width" value="0.15" />
 <xacro:property name="trunk_actuators_height" value="0.1" />
 
-<xacro:property name="trunk_mass" value="8.0"/>
+<xacro:property name="trunk_mass" value="10.0"/>
 
 <link name="trunk_link">
         <inertial>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <!--ADD PARAMETRIZATION TRUNK FIX
+            current CAD model is broken, STL center is shifted relative to geometric center by 19,774mm
+         -->
+            <origin xyz="0.019774 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <mass value="${trunk_mass}"/> 
             <inertia ixx="${1/12*trunk_mass*(trunk_base_width*trunk_base_width + trunk_base_height*trunk_base_height)}" ixy="0.0" ixz="0.0" iyy="${1/12*trunk_mass*(trunk_base_length*trunk_base_length + trunk_base_height*trunk_base_height)}" iyz=".0" izz="${1/12*trunk_mass*(trunk_base_length*trunk_base_length + trunk_base_width*trunk_base_width)}"/> 
         </inertial>
 
         <visual>
-            <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
+            <origin xyz="0.019774 0 0" rpy="${pi/2} 0 ${pi/2}"/>
             <geometry>
                 <mesh filename="package://meldog_description/meshes/visual/trunk.stl" 
                       scale="0.001 0.001 0.001" />
@@ -27,7 +30,7 @@
         </visual>
 
         <collision>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0.019774 0 0" rpy="${pi/2} 0 ${pi/2}"/>
             <geometry>
                 <mesh filename="package://meldog_description/meshes/collision/trunk_collision.stl" 
                       scale="0.001 0.001 0.001" /> 
