@@ -4,7 +4,8 @@
     <joint name="LRT_joint" type="revolute">
         <parent link="trunk_link" />
         <child link="LRH_link" />
-        <origin xyz="${-trunk_actuators_length/2.0} ${(trunk_base_width+trunk_actuators_width)/2.0} 0" rpy="0 0 0" />
+        <!-- ADD LEG PLACEMENT AS PARAMETERS-->
+        <origin xyz="-0.084 0.1101 0" rpy="0 0 0" />
         <limit lower="${T_lower_limit/180.0*pi}" 
                upper="${T_upper_limit/180.0*pi}" 
                effort="${T_effort}" 
