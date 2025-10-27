@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:contact_sensor_macro 
+        name="LFCS_link" 
+
+        m="${contact_sensor_mass}" 
+        cm_x="${contact_sensor_cm_x}" 
+        cm_y="${contact_sensor_cm_y}" 
+        cm_z="${contact_sensor_cm_z}"
+
+        ixx="${contact_sensor_ixx}" ixy="${contact_sensor_ixy}" ixz="${contact_sensor_ixz}" 
+                          iyy="${contact_sensor_iyy}" iyz="${contact_sensor_iyz}" 
+                                            izz="${contact_sensor_izz}"/>
+
+</robot>
