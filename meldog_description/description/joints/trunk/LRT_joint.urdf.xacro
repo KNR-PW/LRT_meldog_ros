@@ -4,7 +4,6 @@
     <joint name="LRT_joint" type="revolute">
         <parent link="trunk_link" />
         <child link="LRH_link" />
-        <!-- ADD LEG PLACEMENT AS PARAMETERS-->
                 <origin xyz="${-T_x}
                         ${T_y}
                         ${T_z}" 
