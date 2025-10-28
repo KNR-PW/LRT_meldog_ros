@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!-- Macro for defining a link, please ensure that 
-    the visual and collision models coordinate 
-    systems are placed in joints -->
-
-    <xacro:macro name="link_macro" params="name is_foot vis_name coll_name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz">
+    <xacro:macro name="link_macro" params="name is_foot vis_name coll_name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz
+                                            vis_xyz:='0.0 0.0 0.0' vis_rpy:='0.0 0.0 0.0'
+                                            coll_xyz:='0.0 0.0 0.0' coll_rpy:='0.0 0.0 0.0'">
 
         <link name="${name}">
             <visual>
@@ -13,7 +11,7 @@
                     <mesh filename="package://meldog_description/meshes/visual/${vis_name}" 
                           scale="0.001 0.001 0.001" />
                 </geometry>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="${vis_xyz}" rpy="${vis_rpy}"/>
             </visual>
 
             <xacro:if value="${is_foot == 1}">
@@ -21,7 +19,7 @@
                     <geometry>
                         <sphere radius="${foot_radius}" />
                     </geometry>
-                    <origin xyz="0 0 0" rpy="0 0 0" />
+                    <origin xyz="${coll_xyz}" rpy="0 0 0" />
                 </collision>
             </xacro:if>
 
@@ -31,7 +29,7 @@
                         <mesh filename="package://meldog_description/meshes/collision/${coll_name}" 
                             scale="0.001 0.001 0.001" />
                     </geometry>
-                    <origin xyz="0 0 0" rpy="0 0 0" />
+                    <origin xyz="${coll_xyz}" rpy="${coll_rpy}" />
                 </collision>
             </xacro:if>
     
