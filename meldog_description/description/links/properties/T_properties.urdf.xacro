@@ -18,7 +18,7 @@
         <!-- moments of inertia -->
         <!-- Current Inertia values approximated by cuboid, not real CAD values,
         real robot trunk dimensions 72x34x14cm XYZ,
-        here used inertia values fo cuboid 50x34x14 of uniform density to  betterapproximate real weight distribution-->
+        here used inertia values fo cuboid 50x34x14 of uniform density to  better approximate real weight distribution-->
         <xacro:property name="trunk_ixx" value="112667000.0"/> <!-- g*mm^2-->
         <xacro:property name="trunk_ixy" value="0"/> <!-- g*mm^2-->
         <xacro:property name="trunk_ixz" value="00"/> <!-- g*mm^2-->
