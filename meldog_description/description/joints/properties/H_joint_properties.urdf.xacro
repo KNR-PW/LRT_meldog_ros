@@ -2,9 +2,9 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- Hip joint origin -->
-    <xacro:property name="H_x" value="0.174"/>
-    <xacro:property name="H_y" value="0.0925"/>
-    <xacro:property name="H_z" value="0"/>
+    <xacro:property name="H_x" value="0.174"/> <!--meters-->
+    <xacro:property name="H_y" value="0.0925"/> <!--meters-->
+    <xacro:property name="H_z" value="0"/> <!--meters-->
 
     <!-- Hip upper limb joint movement limits -->
     <xacro:property name="H_lower_limit" value="-360" /> <!-- degrees-->
