@@ -7,8 +7,8 @@
     <xacro:property name="H_z" value="0"/>
 
     <!-- Hip upper limb joint movement limits -->
-    <xacro:property name="H_lower_limit" value="-120" />
-    <xacro:property name="H_upper_limit" value="120" />
+    <xacro:property name="H_lower_limit" value="-360" /> <!-- degrees-->
+    <xacro:property name="H_upper_limit" value="360" /> <!-- degrees-->
 
     <!-- Hip joint effort and velocity limits -->
     <xacro:property name="H_effort" value="${motor_max_eff*actuator_reduction}" />

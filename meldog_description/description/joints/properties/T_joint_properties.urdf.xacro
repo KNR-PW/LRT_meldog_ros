@@ -2,8 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- Trunk joint movement limits -->
-    <xacro:property name="T_lower_limit" value="-45" />
-    <xacro:property name="T_upper_limit" value="45" />
+    <xacro:property name="T_lower_limit" value="-60" /> <!-- degrees-->
+    <xacro:property name="T_upper_limit" value="60" /> <!-- degrees-->
 
     <!-- Trunk joint effort and velocity limits -->
     <xacro:property name="T_effort" value="${motor_max_eff*actuator_reduction}" />
