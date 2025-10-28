@@ -5,7 +5,10 @@
         <parent link="trunk_link" />
         <child link="RRH_link" />
         <!-- ADD LEG PLACEMENT AS PARAMETERS-->
-        <origin xyz="-0.084 -0.1101 0" rpy="0 0 0" />
+                <origin xyz="${-T_x}
+                        ${-T_y}
+                        ${T_z}" 
+                    rpy="0 0 0" />
         <limit lower="${T_lower_limit/180.0*pi}" 
                upper="${T_upper_limit/180.0*pi}" 
                effort="${T_effort}" 

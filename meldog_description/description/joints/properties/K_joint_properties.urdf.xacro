@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+
     <!-- Knee joint movement limits -->
     <xacro:property name="K_lower_limit" value="-160" /> <!-- degrees-->
     <xacro:property name="K_upper_limit" value="160" /> <!-- degrees-->
