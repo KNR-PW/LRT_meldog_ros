@@ -12,7 +12,7 @@ Dokument opisuje sposób komunikacji pomiędzy urządzeniami komputerowymi znajd
 
 # Topologia sieci
 
-![[topologia.png]]
+![[img/topologia.png]]
 
 # Konfiguracja routera 
 
@@ -27,7 +27,7 @@ Własna sieć bezprzewodowa Wi-Fi udostępniana przez router pracuje w paśmie 5
 
 Jetson, NUC oraz Raspberry Pi posiadają statyczne przypisania adresów IP skonfigurowane w serwerze DHCP. Oznacza to, że po podłączeniu do sieci urządzeniom tym automatycznie przydzielany jest wcześniej zdefiniowany adres IP, bez konieczności ręcznej konfiguracji adresacji po stronie urządzeń.
 
-![[adresyIP.png]]
+![[img/adresyIP.png]]
 **Sam router ma adres IP: 192.168.88.1**
 ## Ograniczenia
 
@@ -39,6 +39,6 @@ Należy uwzględnić możliwość, że niektóre urządzenia  nie obsługują pa
 Specyfikacja RouterBoard L23UGSR-5HaxD2HaxD
 [https://help.mikrotik.com/docs/spaces/UM/pages/253919358/L23UGSR-5HaxD2HaxD](https://help.mikrotik.com/docs/spaces/UM/pages/253919358/L23UGSR-5HaxD2HaxD "https://help.mikrotik.com/docs/spaces/UM/pages/253919358/L23UGSR-5HaxD2HaxD")
 
-Specyfikacja 
+Specyfikacja switcha
 [https://atte.pl/ASW-5-50-OF](https://atte.pl/ASW-5-50-OF "https://atte.pl/ASW-5-50-OF")
 
