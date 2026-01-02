@@ -3,7 +3,10 @@
 
     <xacro:link_macro 
         name="LFH_link" 
-        is_foot="0"
+        
+        sc_length="${hip_col_length}"
+        sc_radius="${hip_col_radius}"
+        
         vis_name="${hip_vis_stl_name}" 
         coll_name="${hip_coll_stl_name}" 
 

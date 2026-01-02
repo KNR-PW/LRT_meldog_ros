@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- simple collision shape dimensions  -->
+    <xacro:property name="lower_limb_col_length" value="0.25"/>
+    <xacro:property name="lower_limb_col_radius" value="0.125"/>
+
     <!-- meshes -->
     <xacro:property name="lower_limb_vis_stl_name" value="LL_vis_v2.stl" />
     <xacro:property name="lower_limb_coll_stl_name" value="lower_limb_collision.stl" />
@@ -27,5 +31,6 @@
         <xacro:property name="lower_limb_iyz" value="0.0"/>
 
         <xacro:property name="lower_limb_izz" value="13.771"/>
+        
 
 </robot>

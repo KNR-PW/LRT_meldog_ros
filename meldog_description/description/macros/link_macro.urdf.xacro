@@ -5,7 +5,9 @@
     the visual and collision models coordinate 
     systems are placed in joints -->
 
-    <xacro:macro name="link_macro" params="name is_foot vis_name coll_name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz">
+    <!-- sc abbreviates simple collision -->
+
+    <xacro:macro name="link_macro" params="name has_sc sc_length sc_radius vis_name coll_name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz">
 
         <link name="${name}">
             <visual>
@@ -16,16 +18,21 @@
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </visual>
 
-            <xacro:if value="${is_foot == 1}">
+            <xacro:if value="${has_simple_collision == 1}">
                 <collision name="collision">
                     <geometry>
-                        <sphere radius="${foot_radius}" />
+                        <xacro:if value="${sc_length == 0}">
+                            <sphere radius="${sc_radius}" />
+                        </xacro:if>
+                        <xacro:if value="${sc_length != 0}">
+                            <cyllinder length="${sc_length}" radius="${sc_radius}"/>
+                        </xacro:if>
                     </geometry>
                     <origin xyz="0 0 0" rpy="0 0 0" />
                 </collision>
-            </xacro:if>
+            
 
-            <xacro:if value="${is_foot == 0}">
+            <xacro:if value="${has_simple_collision == 0}">
                 <collision>
                     <geometry>
                         <mesh filename="package://meldog_description/meshes/collision/${coll_name}" 

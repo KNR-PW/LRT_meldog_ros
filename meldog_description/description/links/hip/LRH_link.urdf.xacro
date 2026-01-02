@@ -3,7 +3,10 @@
 
     <xacro:link_macro 
         name="LRH_link" 
-        is_foot="0"
+         
+        sc_length="${hip_col_length}"
+        sc_radius="${hip_col_radius}"
+
         vis_name="rear_left_hip.stl" 
         coll_name="rear_left_hip_collision.stl" 
 

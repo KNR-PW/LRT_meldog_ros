@@ -3,7 +3,10 @@
 
     <xacro:link_macro 
         name="LRF_link" 
-        is_foot="1"
+ 
+        sc_length="${foot_col_length}"
+        sc_radius="${foot_col_radius}"
+
         vis_name="${foot_vis_stl_name}"
         coll_name="empty" 
 
