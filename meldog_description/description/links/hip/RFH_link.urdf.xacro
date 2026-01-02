@@ -3,7 +3,8 @@
 
     <xacro:link_macro 
         name="RFH_link" 
-        
+                
+        has_sc = 1
         vis_name="${hip_vis_stl_name}" 
         coll_name="${hip_coll_stl_name}" 
 

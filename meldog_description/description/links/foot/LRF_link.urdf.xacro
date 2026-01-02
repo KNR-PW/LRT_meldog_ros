@@ -3,7 +3,8 @@
 
     <xacro:link_macro 
         name="LRF_link" 
- 
+         
+        has_sc = 1
         sc_length="${foot_col_length}"
         sc_radius="${foot_col_radius}"
 

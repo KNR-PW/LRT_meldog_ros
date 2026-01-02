@@ -3,7 +3,8 @@
 
     <xacro:link_macro 
         name="RRH_link" 
-         
+                 
+        has_sc = 1
         sc_length="${hip_col_length}"
         sc_radius="${hip_col_radius}"
 

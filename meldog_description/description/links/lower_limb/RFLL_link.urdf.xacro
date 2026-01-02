@@ -3,7 +3,8 @@
 
     <xacro:link_macro 
         name="RFLL_link" 
-
+        
+        has_sc = 1
         sc_length="${lower_limb_col_length}"
         sc_radius="${lower_limb_col_radius}"
 
