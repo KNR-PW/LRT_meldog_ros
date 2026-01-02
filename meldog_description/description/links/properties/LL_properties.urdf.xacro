@@ -3,7 +3,7 @@
 
     <!-- simple collision shape dimensions  -->
     <xacro:property name="lower_limb_col_length" value="0.25"/>
-    <xacro:property name="lower_limb_col_radius" value="0.125"/>
+    <xacro:property name="lower_limb_col_radius" value="0.0275"/>
 
     <!-- meshes -->
     <xacro:property name="lower_limb_vis_stl_name" value="LL_vis_v2.stl" />
