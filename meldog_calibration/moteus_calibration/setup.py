@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
         'moteus_calibration = moteus_calibration.main:main',
+        'moteus_calibration_async = moteus_calibration.main_async:main',
         ],
     },
 )

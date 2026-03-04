@@ -24,14 +24,14 @@ import moteus_pi3hat
 import asyncio
 
 from .urdf_offset_generator import UrdfOffsetGenerator
-from .terminal_interface import TerminalInterface
-from .moteus_controller import MoteusController
+from .terminal_interface_async import TerminalInterface
+from .moteus_controller_async import MoteusController
 
-MAIN_THREAD_FREQUENCY = 1
+MAIN_THREAD_FREQUENCY = 5
 CONTROLLER_FREQUENCY = 100
 TERMINAL_FREQUENCY = 5
 
-def main():
+async def main():
   parser = argparse.ArgumentParser(
                     prog='ros2 run moteus_calibration moteus_calibration',
                     description='Program to calibrate moteus motors, set starting ' \
@@ -77,39 +77,37 @@ def main():
   terminalInterface = TerminalInterface(ids, joints, TERMINAL_FREQUENCY)
   urdfOffsetGenerator = UrdfOffsetGenerator(filePath, joints, ids, args.type)
 
-  async def moteusControllerAsync():
-    await moteusController.run()
-
-  def moteusControllerTarget():
-    asyncio.run(moteusControllerAsync())
-
-  def terminalInterfaceTarget():
-    terminalInterface.run()
-
-  terminalThread = threading.Thread(target=terminalInterfaceTarget)
-  moteusThread = threading.Thread(target=moteusControllerTarget)
-
-  moteusThread.start()
-  terminalThread.start()
-
   sleepTime = 1 / MAIN_THREAD_FREQUENCY
   currentPositions = {}
 
-  while True:
-    escapeFlag = terminalInterface.getEscape()
-    if escapeFlag:
-      moteusController.setEscapeFlag(escapeFlag)
-      break
+  async def moteusControllerLoop():
+    await moteusController.run()
 
-    currentPositions = moteusController.getPositions()
-    terminalInterface.setPositions(currentPositions)
-    lockedIds = terminalInterface.getLockedInPlace()
-    moteusController.setLockedIds(lockedIds)
+  async def terminalInterfaceLoop():
+    terminalInterface.run()
 
-    time.sleep(sleepTime)
+  async def mainLoop():
+    while True:
+      escapeFlag = terminalInterface.getEscape()
+      if escapeFlag:
+        moteusController.setEscapeFlag(escapeFlag)
+        break
 
-  terminalThread.join()
-  moteusThread.join()
+      currentPositions = moteusController.getPositions()
+      terminalInterface.setPositions(currentPositions)
+      lockedIds = terminalInterface.getLockedInPlace()
+      moteusController.setLockedIds(lockedIds)
+
+      await asyncio.sleep(sleepTime)
+
+  
+  moteusControllerTask = asyncio.create_task(moteusControllerLoop())
+  terminalInterfaceTask = asyncio.create_task(terminalInterfaceLoop())
+  mainTask = asyncio.create_task(mainLoop())
+
+  await moteusControllerTask
+  await terminalInterfaceTask
+  await mainTask
 
   currentPositions = terminalInterface.getSavedPositons()
 
@@ -117,4 +115,4 @@ def main():
   urdfOffsetGenerator.saveToFile()
 
 if __name__ == "__main__":
-  main()
+  asyncio.run(main())
