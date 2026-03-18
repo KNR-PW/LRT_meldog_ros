@@ -4,7 +4,7 @@
     <xacro:link_macro 
         name="RRUL_link" 
         
-        has_sc="1"
+        has_sc="${upper_limb_has_sc}"
         sc_length="${upper_limb_col_length}"
         sc_radius="${upper_limb_col_radius}"
 

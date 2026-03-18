@@ -2,6 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- simple collision shape properties  -->
+    <xacro:property name="upper_limb_has_sc" value="0"/>
     <xacro:property name="upper_limb_col_length" value="0.25"/>
     <xacro:property name="upper_limb_col_radius" value="0.05"/>
 

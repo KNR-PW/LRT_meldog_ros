@@ -4,11 +4,11 @@
     <xacro:link_macro 
         name="LRH_link" 
                  
-        has_sc="0"
+        has_sc="${hip_has_sc}"
         sc_length="${hip_col_length}"
         sc_radius="${hip_col_radius}"
 
-        vis_name="rear_left_hip.stl" 
+        vis_name="${hip_vis_stl_name}" 
         coll_name="rear_left_hip_collision.stl" 
 
         m="${hip_mass}" 
