@@ -3,7 +3,7 @@
 
     <!-- simple collision shape properties  -->
     <xacro:property name="upper_limb_col_length" value="0.25"/>
-    <xacro:property name="upper_limb_col_radius" value="0.025"/>
+    <xacro:property name="upper_limb_col_radius" value="0.05"/>
 
     <!-- meshes -->
     <xacro:property name="upper_limb_vis_stl_name" value="upper_limb_test.stl" />

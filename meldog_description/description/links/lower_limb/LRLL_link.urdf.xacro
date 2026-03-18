@@ -4,9 +4,9 @@
     <xacro:link_macro 
         name="LRLL_link" 
         
-        has_sc = 1
+        has_sc="1"
         sc_length="${lower_limb_col_length}"
-        sc_radius="${fower_limb_col_radius}"
+        sc_radius="${lower_limb_col_radius}"
 
         vis_name="${lower_limb_vis_stl_name}" 
         coll_name="${lower_limb_coll_stl_name}" 

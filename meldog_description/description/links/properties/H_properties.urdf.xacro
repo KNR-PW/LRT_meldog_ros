@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- simple collision shape properties  -->
-    <xacro:property name="hip_col_length" value="0.23"/>
+    <xacro:property name="hip_col_length" value="0.023"/>
     <xacro:property name="hip_col_radius" value="0.12"/>
 
     <!-- meshes -->

@@ -18,21 +18,22 @@
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </visual>
 
-            <xacro:if value="${has_simple_collision == 1}">
+            <xacro:if value="${has_sc == 1}">
                 <collision name="collision">
                     <geometry>
                         <xacro:if value="${sc_length == 0}">
                             <sphere radius="${sc_radius}" />
                         </xacro:if>
                         <xacro:if value="${sc_length != 0}">
-                            <cyllinder length="${sc_length}" radius="${sc_radius}"/>
+                            <cylinder length="${sc_length}" radius="${sc_radius}"/>
                         </xacro:if>
                     </geometry>
-                    <origin xyz="0 0 0" rpy="0 0 0" />
+                    <origin xyz="0 0 -${sc_length/2}" rpy="0 0 0" />
                 </collision>
+            </xacro:if>
             
 
-            <xacro:if value="${has_simple_collision == 0}">
+            <xacro:if value="${has_sc == 0}">
                 <collision>
                     <geometry>
                         <mesh filename="package://meldog_description/meshes/collision/${coll_name}" 
