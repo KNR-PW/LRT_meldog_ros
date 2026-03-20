@@ -8,8 +8,8 @@
         sc_length="${hip_col_length}"
         sc_radius="${hip_col_radius}"
         
-        vis_name="${hip_vis_stl_name}" 
-        coll_name="hip_collision.stl" 
+        vis_name="front_left_hip.stl" 
+        coll_name="front_left_hip_collision.stl" 
 
         m="${hip_mass}" 
         cm_x="${hip_cm_x}" 
