@@ -4,7 +4,7 @@
     <let name="rviz_config" value="$(find-pkg-share meldog_description)/rviz/meldog_config.rviz" />
 
     <node pkg="robot_state_publisher" exec="robot_state_publisher">
-        <param name="robot_description" value="$(command 'xacro $(var urdf_path)')" />
+        <param name="robot_description" value="$(command 'xacro &quot;$(var urdf_path)&quot;')" />
     </node>
 
     <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" />

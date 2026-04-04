@@ -3,7 +3,11 @@
 
     <xacro:link_macro 
         name="LFLL_link" 
-        is_foot="0"
+        
+        has_sc="${lower_limb_has_sc}"
+        sc_length="${lower_limb_col_length}"
+        sc_radius="${lower_limb_col_radius}"
+
         vis_name="${lower_limb_vis_stl_name}" 
         coll_name="${lower_limb_coll_stl_name}" 
 

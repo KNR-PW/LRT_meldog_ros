@@ -9,10 +9,13 @@
 
     <xacro:link_macro 
         name="trunk_link" 
-        is_foot="0"
+
+        has_sc= "${trunk_has_sc}"
+        sc_length="${trunk_col_length}"
+        sc_radius="${trunk_col_radius}"
+
         vis_name="${trunk_vis_stl_name}" 
         coll_name="${trunk_coll_stl_name}" 
-
         
         vis_rpy="${pi/2} 0.0 ${pi/2}"
         vis_xyz="0.019774 0.0 0.0"

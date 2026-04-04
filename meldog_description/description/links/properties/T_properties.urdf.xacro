@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- simple collision shape properties  -->
+    <xacro:property name="trunk_col_length" value="0.8"/>
+    <xacro:property name="trunk_has_sc" value="1"/>
+    <xacro:property name="trunk_col_radius" value="0.2"/>
+
     <!-- meshes -->
     <xacro:property name="trunk_vis_stl_name" value="trunk.stl" />
     <xacro:property name="trunk_coll_stl_name" value="trunk_collision.stl" />

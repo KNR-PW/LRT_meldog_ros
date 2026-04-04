@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- simple collision shape properties  -->
+    <xacro:property name="upper_limb_has_sc" value="0"/>
+    <xacro:property name="upper_limb_col_length" value="0.25"/>
+    <xacro:property name="upper_limb_col_radius" value="0.05"/>
+
     <!-- meshes -->
     <xacro:property name="upper_limb_vis_stl_name" value="upper_limb_test.stl" />
     <xacro:property name="upper_limb_coll_stl_name" value="upper_limb_collision.stl" />
@@ -29,4 +34,3 @@
         <xacro:property name="upper_limb_izz" value="424.555"/>
 
 </robot>
-
