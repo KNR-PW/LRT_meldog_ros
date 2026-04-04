@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- Knee joint origin -->
+    <!-- Knee origin is simply defined by upper limb length defined in knee link properties -->
+
     <!-- Knee joint movement limits -->
-    <xacro:property name="K_lower_limit" value="-160" />
-    <xacro:property name="K_upper_limit" value="160" />
+    <xacro:property name="K_lower_limit" value="-160" /> <!-- degrees-->
+    <xacro:property name="K_upper_limit" value="160" /> <!-- degrees-->
 
     <!-- Knee joint effort and velocity limits -->
     <xacro:property name="K_effort" value="${motor_max_eff*actuator_reduction}" />

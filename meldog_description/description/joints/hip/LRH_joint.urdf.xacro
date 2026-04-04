@@ -8,7 +8,7 @@
                      ${H_y}
                      ${H_z}" 
                 rpy="0 0 0" />
-        <limit lower="${H_lower_limit}" upper="${H_upper_limit}" 
+        <limit lower="${H_lower_limit/180.0*pi}" upper="${H_upper_limit/180.0*pi}" 
                effort="${H_effort}" velocity="${H_velocity}" />
         <dynamics friction="${H_friction}" damping="${H_damping}" />
         <axis xyz="0 -1 0" />

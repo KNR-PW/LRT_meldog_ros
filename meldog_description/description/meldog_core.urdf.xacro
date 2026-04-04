@@ -9,6 +9,7 @@
     <xacro:include filename="links/properties/H_properties.urdf.xacro"/>
     <xacro:include filename="links/properties/LL_properties.urdf.xacro"/>
     <xacro:include filename="links/properties/UL_properties.urdf.xacro"/>
+    <xacro:include filename="links/properties/T_properties.urdf.xacro"/>
 
     <!-- Joint properties -->
     <xacro:include filename="joints/properties/T_joint_properties.urdf.xacro"/>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="imu_radius" value="0.03" />
+    <xacro:property name="imu_height" value="0.01" />
+    <xacro:property name="imu_mass" value="0.05" />
+
+    <link name="imu_link">
+    <inertial>
+        <origin xyz="0 0 ${imu_height/2}" rpy="0 0 0" />
+        <mass value="${imu_mass}" />
+        <inertia ixx="1e-6" ixy="0" ixz="0"
+                iyy="1e-6" iyz="0"
+                izz="1e-6" />
+    </inertial>
+
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+        <cylinder radius="${imu_radius}" length="${imu_height}" />
+        </geometry>
+        <material name="blue">
+            <color rgba="0.0 0.0 1.0 1.0" />
+        </material>
+    </visual>
+
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+        <cylinder radius="${imu_radius}" length="${imu_height}" />
+        </geometry>
+    </collision>
+    </link>
+</robot>
