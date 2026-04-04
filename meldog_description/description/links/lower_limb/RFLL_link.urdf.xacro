@@ -8,6 +8,8 @@
         sc_length="${lower_limb_col_length}"
         sc_radius="${lower_limb_col_radius}"
 
+        coll_xyz="0 0 -${lower_limb_col_length/2}"
+
         vis_name="${lower_limb_vis_stl_name}" 
         coll_name="${lower_limb_coll_stl_name}" 
 
