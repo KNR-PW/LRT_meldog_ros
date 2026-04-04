@@ -7,13 +7,9 @@
 
     <!-- sc abbreviates simple collision -->
 
-<<<<<<< HEAD
-    <xacro:macro name="link_macro" params="name has_sc sc_length sc_radius vis_name coll_name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz">
-=======
     <xacro:macro name="link_macro" params="name has_sc sc_length sc_radius vis_name coll_name m cm_x cm_y cm_z ixx ixy ixz iyy iyz izz
                                             vis_xyz:='0.0 0.0 0.0' vis_rpy:='0.0 0.0 0.0'
                                             coll_xyz:='0.0 0.0 0.0' coll_rpy:='0.0 0.0 0.0'">
->>>>>>> meldog-urdf-fix
 
         <link name="${name}">
             <visual>
@@ -34,11 +30,7 @@
                             <cylinder length="${sc_length}" radius="${sc_radius}"/>
                         </xacro:if>
                     </geometry>
-<<<<<<< HEAD
-                    <origin xyz="0 0 -${sc_length/2}" rpy="0 0 0" />
-=======
                     <origin xyz="${coll_xyz}" rpy="${coll_rpy}" />
->>>>>>> meldog-urdf-fix
                 </collision>
             </xacro:if>
             
