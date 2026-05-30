@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- This file contains staring offsets for motors (meaning "zero" joint position) -->
+<!-- Authors: Bartłomiej Krajewski (https://github.com/BartlomiejK2) -->
+<!-- Generation time: Sat Oct  4 20:56:58 2025 -->
+
+	<!-- LFT offset -->
+  <xacro:property name="LFT_motor_offset" value="0.0"/>
+  
+	<!-- LFH offset -->
+  <xacro:property name="LFH_motor_offset" value="0.0"/>
+  
+	<!-- LFK offset -->
+  <xacro:property name="LFK_motor_offset" value="0.0"/>
+  
+	<!-- RFT offset -->
+  <xacro:property name="RFT_motor_offset" value="0.0"/>
+  
+	<!-- RFH offset -->
+  <xacro:property name="RFH_motor_offset" value="0.0"/>
+  
+	<!-- RFK offset -->
+  <xacro:property name="RFK_motor_offset" value="0.0"/>
+  
+	<!-- LRT offset -->
+  <xacro:property name="LRT_motor_offset" value="0.0"/>
+  
+	<!-- LRH offset -->
+  <xacro:property name="LRH_motor_offset" value="0.0"/>
+  
+	<!-- LRK offset -->
+  <xacro:property name="LRK_motor_offset" value="0.0"/>
+  
+	<!-- RRT offset -->
+  <xacro:property name="RRT_motor_offset" value="0.0"/>
+  
+	<!-- RRH offset -->
+  <xacro:property name="RRH_motor_offset" value="0.0"/>
+  
+	<!-- RRK offset -->
+  <xacro:property name="RRK_motor_offset" value="0.0"/>
+  
+</robot>
