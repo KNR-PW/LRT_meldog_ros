@@ -1,0 +1,419 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="hardware_properties.urdf.xacro" />
+  <xacro:include filename="ros2_control_macros.urdf.xacro" />
+  <xacro:include filename="../joints/properties/H_joint_properties.urdf.xacro" />
+  <xacro:include filename="../joints/properties/K_joint_properties.urdf.xacro" />
+  <xacro:include filename="../joints/properties/T_joint_properties.urdf.xacro" />
+  <xacro:include filename="motor_offsets.urdf.xacro" />
+
+  <xacro:property name="LFT_bus" value="1" />
+  <xacro:property name="LFH_bus" value="1" />
+  <xacro:property name="LFK_bus" value="1" />
+  <xacro:property name="LFT_id"  value="3" />
+  <xacro:property name="LFH_id"  value="1" />
+  <xacro:property name="LFK_id"  value="2" />
+
+  <xacro:property name="RFT_bus" value="2" /> 
+  <xacro:property name="RFH_bus" value="2" />
+  <xacro:property name="RFK_bus" value="2" /> 
+  <xacro:property name="RFT_id"  value="6" /> 
+  <xacro:property name="RFH_id"  value="4" /> 
+  <xacro:property name="RFK_id"  value="5" /> 
+
+  <xacro:property name="LRT_bus" value="3" /> 
+  <xacro:property name="LRH_bus" value="3" /> 
+  <xacro:property name="LRK_bus" value="3" /> 
+  <xacro:property name="LRT_id"  value="9" /> 
+  <xacro:property name="LRH_id"  value="7" /> 
+  <xacro:property name="LRK_id"  value="8" /> 
+
+  <xacro:property name="RRT_bus" value="4" /> 
+  <xacro:property name="RRH_bus" value="4" /> 
+  <xacro:property name="RRK_bus" value="4" /> 
+  <xacro:property name="RRT_id"  value="12" /> 
+  <xacro:property name="RRH_id"  value="10" /> 
+  <xacro:property name="RRK_id"  value="11" />
+
+    <xacro:property name="LFT_direction" value="-1"/>
+    <xacro:property name="LFH_direction" value="-1"/>
+    <xacro:property name="LFK_direction" value="1"/>
+    <xacro:property name="RFT_direction" value="1" /> 
+    <xacro:property name="RFH_direction" value="1" />
+    <xacro:property name="RFK_direction" value="-1" /> 
+    <xacro:property name="LRT_direction" value="1" /> 
+    <xacro:property name="LRH_direction" value="-1" /> 
+    <xacro:property name="LRK_direction" value="1" />
+    <xacro:property name="RRT_direction" value="-1" /> 
+    <xacro:property name="RRH_direction" value="1" /> 
+    <xacro:property name="RRK_direction" value="-1" /> 
+
+
+  <ros2_control name="pi3hat_hardware_interface" type="system">
+    <hardware>
+          <plugin>pi3hat_hardware_interface/Pi3HatHardwareInterface</plugin>
+            <param name="wait_for_attitude">false</param>
+            <param name="imu_mounting_deg.yaw">0</param>
+            <param name="imu_mounting_deg.pitch">0</param>
+            <param name="imu_mounting_deg.roll">0</param>
+            <param name="imu_sampling_rate">100</param>
+
+            <param name="can_1_fdcan_frame">true</param>
+            <param name="can_1_automatic_retransmission">true</param>
+            <param name="can_1_bitrate_switch">true</param>
+
+            <param name="can_2_fdcan_frame">true</param>
+            <param name="can_2_automatic_retransmission">true</param>
+            <param name="can_2_bitrate_switch">true</param>
+
+            <param name="can_3_fdcan_frame">true</param>
+            <param name="can_3_automatic_retransmission">true</param>
+            <param name="can_3_bitrate_switch">true</param>
+
+            <param name="can_4_fdcan_frame">true</param>
+            <param name="can_4_automatic_retransmission">true</param>
+            <param name="can_4_bitrate_switch">true</param>
+
+            <param name="can_5_fdcan_frame">true</param>
+            <param name="can_5_automatic_retransmission">true</param>
+            <param name="can_5_bitrate_switch">true</param>
+      </hardware>
+
+      <!-- JOINTS -->
+
+      <!-- Left Front Leg Joints -->
+
+      <joint name="LFT_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${LFT_bus}</param>
+          <param name="controller_can_id">${LFT_id}</param>
+
+          <param name="motor_direction">${LFT_direction}</param>
+          <param name="motor_position_offset">${LFT_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <joint name="LFH_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${LFH_bus}</param>
+          <param name="controller_can_id">${LFH_id}</param>
+
+          <param name="motor_direction">${LFH_direction}</param>
+          <param name="motor_position_offset">${LFH_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <joint name="LFK_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${LFK_bus}</param>
+          <param name="controller_can_id">${LFK_id}</param>
+
+          <param name="motor_direction">${LFK_direction}</param>
+          <param name="motor_position_offset">${LFK_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <!-- Right Front Leg Joints -->
+
+      <joint name="RFT_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${RFT_bus}</param>
+          <param name="controller_can_id">${RFT_id}</param>
+
+          <param name="motor_direction">${RFT_direction}</param>
+          <param name="motor_position_offset">${RFT_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <joint name="RFH_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${RFH_bus}</param>
+          <param name="controller_can_id">${RFH_id}</param>
+
+          <param name="motor_direction">${RFH_direction}</param>
+          <param name="motor_position_offset">${RFH_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <joint name="RFK_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${RFK_bus}</param>
+          <param name="controller_can_id">${RFK_id}</param>
+
+          <param name="motor_direction">${RFK_direction}</param>
+          <param name="motor_position_offset">${RFK_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <!-- Left Rear Leg Joints -->
+
+      <joint name="LRT_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${LRT_bus}</param>
+          <param name="controller_can_id">${LRT_id}</param>
+
+          <param name="motor_direction">${LRT_direction}</param>
+          <param name="motor_position_offset">${LRT_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <joint name="LRH_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${LRH_bus}</param>
+          <param name="controller_can_id">${LRH_id}</param>
+
+          <param name="motor_direction">${LRH_direction}</param>
+          <param name="motor_position_offset">${LRH_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <joint name="LRK_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${LRK_bus}</param>
+          <param name="controller_can_id">${LRK_id}</param>
+
+          <param name="motor_direction">${LRK_direction}</param>
+          <param name="motor_position_offset">${LRK_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <!-- Right Rear Leg Joints -->
+
+      <joint name="RRT_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${RRT_bus}</param>
+          <param name="controller_can_id">${RRT_id}</param>
+
+          <param name="motor_direction">${RRT_direction}</param>
+          <param name="motor_position_offset">${RRT_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <joint name="RRH_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${RRH_bus}</param>
+          <param name="controller_can_id">${RRH_id}</param>
+
+          <param name="motor_direction">${RRH_direction}</param>
+          <param name="motor_position_offset">${RRH_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <joint name="RRK_joint">
+          <param name="controller_type">moteus</param>
+          <param name="controller_can_bus">${RRK_bus}</param>
+          <param name="controller_can_id">${RRK_id}</param>
+
+          <param name="motor_direction">${RRK_direction}</param>
+          <param name="motor_position_offset">${RRK_motor_offset}</param>
+          <param name="motor_position_max">500.0</param>
+          <param name="motor_position_min">-500.0</param>
+          <param name="motor_velocity_max">${motor_max_vel}</param>
+          <param name="motor_torque_max">${motor_max_eff}</param>
+
+          <command_interface name="position"/>
+          <command_interface name="velocity"/>
+          <command_interface name="effort"/>
+
+          <state_interface name = "position"/>
+          <state_interface name = "velocity"/>
+          <state_interface name = "effort"/>
+          <state_interface name = "temperature"/>
+          <state_interface name = "fault"/>
+          <state_interface name="motor_effort"/>
+      </joint>
+
+      <!-- TRANSMISSIONS -->
+
+      <!-- Left Front Joint Transmissions -->
+
+      <!-- <xacro:simple_transmission joint="LFT" reduction="${actuator_reduction}" offset="0.0" />
+      <xacro:four_bar_linkage_transmission first_joint="LFH" second_joint="LFK" reduction="${actuator_reduction}" /> -->
+
+      <!-- Right Front Joint Transmissions -->
+      
+      <!-- <xacro:simple_transmission joint="RFT" reduction="${actuator_reduction}" offset="0.0" />
+      <xacro:four_bar_linkage_transmission first_joint="RFH" second_joint="RFK" reduction="${actuator_reduction}" /> -->
+
+      <!-- Left Rear Joint Transmissions -->
+
+      <!-- <xacro:simple_transmission joint="LRT" reduction="${actuator_reduction}" offset="0.0" />
+      <xacro:four_bar_linkage_transmission first_joint="LRH" second_joint="LRK" reduction="${actuator_reduction}" /> -->
+
+      <!-- Right Rear Joint Transmissions -->
+      
+      <!-- <xacro:simple_transmission joint="RRT" reduction="${actuator_reduction}" offset="0.0" />
+      <xacro:four_bar_linkage_transmission first_joint="RRH" second_joint="RRK" reduction="${actuator_reduction}" /> -->
+
+    
+      <sensor name="imu_sensor">
+          <state_interface name = "orientation.x"/>
+          <state_interface name = "orientation.y"/>
+          <state_interface name = "orientation.z"/>
+          <state_interface name = "orientation.w"/>
+          <state_interface name = "angular_velocity.x"/>
+          <state_interface name = "angular_velocity.y"/>
+          <state_interface name = "angular_velocity.z"/>
+          <state_interface name = "linear_acceleration.x"/>
+          <state_interface name = "linear_acceleration.y"/>
+          <state_interface name = "linear_acceleration.z"/>
+      </sensor>
+
+  </ros2_control>
+
+</robot>

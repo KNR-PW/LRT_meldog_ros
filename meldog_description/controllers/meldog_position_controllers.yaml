@@ -1,0 +1,53 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    imu_sensor_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
+
+    forward_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    diagnostic_broadcaster:
+      type: diagnostic_broadcaster/DiagnosticBroadcaster
+
+imu_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: "imu_sensor"
+    frame_id: "imu"
+
+forward_position_controller:
+  ros__parameters:
+    joints:
+      - LFT_joint
+      - LFH_joint
+      - LFK_joint
+      - RFT_joint
+      - RFH_joint
+      - RFK_joint
+      - LRT_joint
+      - LRH_joint
+      - LRK_joint
+      - RRT_joint
+      - RRH_joint
+      - RRK_joint
+    interface_name: position
+
+diagnostic_broadcaster:
+  ros__parameters:
+    joint_names:
+      - LFT_joint
+      - LFH_joint
+      - LFK_joint
+      - RFT_joint
+      - RFH_joint
+      - RFK_joint
+      - LRT_joint
+      - LRH_joint
+      - LRK_joint
+      - RRT_joint
+      - RRH_joint
+      - RRK_joint
