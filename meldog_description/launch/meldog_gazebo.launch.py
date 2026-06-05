@@ -81,7 +81,25 @@ def generate_launch_description():
         output='screen'
     )
 
+    bridge_config = os.path.join(
+        get_package_share_directory('meldog_description'),
+        'config',
+        'gazebo_bridge.yaml'
+    )
 
+    camera_bridge_node = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        parameters=[{'config_file': bridge_config}],
+        output='screen'
+    )
+
+    static_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '0', '0', '0', '0', 'camera_link', 'Meldog/base_link/camera'],
+        output='screen'
+    )
 
     return LaunchDescription([
         RegisterEventHandler(
@@ -115,4 +133,6 @@ def generate_launch_description():
         gazebo_resource_path,
         gazebo,
         spawn_entity,
+        camera_bridge_node,
+        static_tf_node,
     ])

@@ -20,6 +20,8 @@
     <xacro:include filename="gazebo/meldog_gazebo.urdf.xacro" />
     <!-- IMU gazebo setup -->
     <xacro:include filename="gazebo/imu_gazebo_setup.urdf.xacro"/>
+    <!-- Camera gazebo setup-->
+    <xacro:include filename="gazebo/camera_gazebo_setup.urdf.xacro"/>
 
     <!-- Contact sensors setup -->
     <xacro:include filename="gazebo/contact_gazebo_setup.urdf.xacro"/>
@@ -39,6 +41,9 @@
 
         <!-- IMU link -->
         <xacro:include filename="links/sensors/imu_link.urdf.xacro" />
+
+        <!-- Camera link-->
+        <xacro:include filename="links/sensors/camera_link.urdf.xacro" />
 
         <!-- Left front leg links -->
 
@@ -107,6 +112,9 @@
 
         <!-- IMU joint -->
         <xacro:include filename="joints/sensors/imu_joint.urdf.xacro"/>
+
+        <!-- Camera joint -->
+        <xacro:include filename="joints/sensors/camera_joint.urdf.xacro"/>
 
         <!-- Left front leg joints -->
 
