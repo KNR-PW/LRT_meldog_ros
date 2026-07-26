@@ -11,7 +11,7 @@
     <xacro:property name="implicitSpringDamper_value" value="1" />
     <xacro:property name="springStiffness_value" value="0" />
     <xacro:property name="springReference_value" value="0" />
-    <xacro:property name="implicitSpringDamper_value" value="0" />
+    <!-- <xacro:property name="implicitSpringDamper_value" value="0" /> -->
     <xacro:property name="stopErp_value" value="0" />
     <xacro:property name="stopCfm_value" value="0" />
 
@@ -24,12 +24,26 @@
     <xacro:property name="dampingFactor_value" value="0" />
 
     <!-- Gazebo link parameters for feet -->
-    <xacro:property name="mu1_value_foot" value="0" />
-    <xacro:property name="mu2_value_foot" value="0" />
-    <xacro:property name="kp_value_foot" value="0" />
-    <xacro:property name="kd_value_foot" value="0" />
-    <xacro:property name="maxVel_value_foot" value="0" />
-    <xacro:property name="dampingFactor_value_foot" value="0" />
+    <xacro:property name="mu1_value_foot" value="1.0" />
+    <xacro:property name="mu2_value_foot" value="1.0" />
+
+    <xacro:property name="kp_value_foot" value="100000.0" />
+    <xacro:property name="kd_value_foot" value="5000.0" />
+
+    <xacro:property name="maxVel_value_foot" value="0.01" />
+    <xacro:property name="minDepth_value_foot" value="0.001" />
+
+    <xacro:property name="dampingFactor_value_foot" value="0.25" />
+    <!-- <xacro:property name="mu1_value_foot" value="2.0" />
+    <xacro:property name="mu2_value_foot" value="2.0" />
+    <xacro:property name="kp_value_foot" value="1000000.0" />
+    <xacro:property name="kd_value_foot" value="1000.0" />
+    <xacro:property name="maxVel_value_foot" value="0.0" />
+    <xacro:property name="dampingFactor_value_foot" value="0.1" /> -->
+    <!-- <xacro:property name="kp_value_foot" value="10000.0"/>
+    <xacro:property name="kd_value_foot" value="10000.0"/>
+    <xacro:property name="maxVel_value_foot" value="0.0"/>
+    <xacro:property name="dampingFactor_value_foot" value="10.1"/> -->
 
 
     <!--      GAZEBO IMU NOICE PARAMETERS      -->

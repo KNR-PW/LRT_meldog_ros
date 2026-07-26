@@ -51,6 +51,16 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="log",
+        parameters=[{"use_sim_time" : True}],
+    )
+
+    clock_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+        ],
+        output='screen'
     )
     
     gazebo = IncludeLaunchDescription(
@@ -61,7 +71,10 @@ def generate_launch_description():
     
     spawn_entity = Node(package='ros_gz_sim', executable='create',
                     arguments=['-topic', 'robot_description',
-                                '-name', 'Meldog'],
+                                '-name', 'Meldog', 
+                                '-x', '0.0',
+                                '-y', '0.0',
+                                '-z', '0.55',],
                     output='screen')
     
     
@@ -77,7 +90,7 @@ def generate_launch_description():
     )   
 
     load_position_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'forward_position_controller'],
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_forward_trajectory_controller'],
         output='screen'
     )   
 
@@ -115,9 +128,10 @@ def generate_launch_description():
                 on_exit=[load_position_controller],
             )
         ),
-        rviz_node,
-        robot_state_publisher_node,
         gazebo_resource_path,
         gazebo,
+        clock_bridge,
         spawn_entity,
+        rviz_node,
+        robot_state_publisher_node,
     ])

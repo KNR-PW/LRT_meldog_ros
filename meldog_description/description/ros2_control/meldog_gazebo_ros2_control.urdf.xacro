@@ -75,8 +75,15 @@
     </ros2_control>
 
 
-
-
+    <gazebo>
+      <plugin
+          filename="libBaseTransformTwistPublisher.so"
+          name="gazebo_plugins::BaseTransformTwistPublisher">
+        <base_frame_name>trunk_link</base_frame_name>
+        <reference_frame_name>world</reference_frame_name>
+        <max_publish_frequency>200</max_publish_frequency>
+      </plugin>
+    </gazebo>
 
     <gazebo>
         <plugin filename="gz_ros2_control-system"

@@ -27,8 +27,8 @@
 
     <!-- LINKS -->
 
-        <!-- Base link -->
-        <link name="base_link" />
+        <!-- Base link
+        <link name="base_link" /> -->
 
         <!-- Trunk link -->
         <xacro:include filename="links/trunk.urdf.xacro" />
@@ -94,11 +94,11 @@
     
     <!-- JOINTS -->
 
-        <joint name="base_joint" type="fixed">
+        <!-- <joint name="base_joint" type="fixed">
             <parent link="base_link" />
             <child link="trunk_link" />
             <origin xyz="0 0 0.55" rpy="0 0 0" />
-        </joint>
+        </joint> -->
 
         <!-- IMU joint -->
         <xacro:include filename="joints/sensors/imu_joint.urdf.xacro"/>

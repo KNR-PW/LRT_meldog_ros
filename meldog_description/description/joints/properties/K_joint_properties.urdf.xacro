@@ -10,7 +10,7 @@
     <xacro:property name="K_velocity" value="${motor_max_vel*pi/30.0/actuator_reduction}" />
 
     <!-- Knee joint friction and damping -->
-    <xacro:property name="K_damping" value="0"/>
-    <xacro:property name="K_friction" value="0.0312"/>
+    <xacro:property name="K_damping" value="0.2"/>
+    <xacro:property name="K_friction" value="0.1312"/>
 
 </robot>

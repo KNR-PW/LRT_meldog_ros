@@ -85,7 +85,7 @@ Visualization Manager:
           Value: true
         RRUL_link:
           Value: true
-        base_link:
+        empty:
           Value: true
         trunk_link:
           Value: true
@@ -95,7 +95,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_link:
+        empty:
           trunk_link:
             LFH_link:
               LFUL_link:
@@ -213,7 +213,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        base_link:
+        empty:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -233,7 +233,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_link
+    Fixed Frame: empty
     Frame Rate: 30
   Name: root
   Tools:
