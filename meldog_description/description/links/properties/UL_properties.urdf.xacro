@@ -16,21 +16,21 @@
     <!-- inertial properties -->
 
         <!-- mass -->
-        <xacro:property name="upper_limb_mass" value="0.474"/>
+        <xacro:property name="upper_limb_mass" value="0.398"/>
 
         <!-- center of mass -->
-        <xacro:property name="upper_limb_cm_x" value="-1.185"/>
-        <xacro:property name="upper_limb_cm_y" value="-4.308"/>
-        <xacro:property name="upper_limb_cm_z" value="-94.203"/>
+        <xacro:property name="upper_limb_cm_x" value="-0.467"/>
+        <xacro:property name="upper_limb_cm_y" value="0.271"/>
+        <xacro:property name="upper_limb_cm_z" value="-105.160"/>
 
         <!-- moments of inertia -->
-        <xacro:property name="upper_limb_ixx" value="4064.505"/>
-        <xacro:property name="upper_limb_ixy" value="1.241"/>
-        <xacro:property name="upper_limb_ixz" value="19.989"/>
+        <xacro:property name="upper_limb_ixx" value="3553.000"/>
+        <xacro:property name="upper_limb_ixy" value="0.288"/>
+        <xacro:property name="upper_limb_ixz" value="3.222"/>
 
-        <xacro:property name="upper_limb_iyy" value="4150.05"/>
-        <xacro:property name="upper_limb_iyz" value="235.648"/>
+        <xacro:property name="upper_limb_iyy" value="3648.05"/>
+        <xacro:property name="upper_limb_iyz" value="29.960"/>
 
-        <xacro:property name="upper_limb_izz" value="424.555"/>
+        <xacro:property name="upper_limb_izz" value="309.300"/>
 
 </robot>
