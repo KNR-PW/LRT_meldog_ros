@@ -15,7 +15,7 @@
     <xacro:property name="T_velocity" value="${motor_max_vel*pi/30.0/actuator_reduction}" />
 
     <!-- Trunk joint friction and damping -->
-    <xacro:property name="T_damping" value="0"/>
-    <xacro:property name="T_friction" value="0.0312"/>
+    <xacro:property name="T_damping" value="0.05"/>
+    <xacro:property name="T_friction" value="0.1312"/>
 
 </robot>

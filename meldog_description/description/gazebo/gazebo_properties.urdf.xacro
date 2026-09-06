@@ -24,12 +24,39 @@
     <xacro:property name="dampingFactor_value" value="0" />
 
     <!-- Gazebo link parameters for feet -->
-    <xacro:property name="mu1_value_foot" value="0" />
-    <xacro:property name="mu2_value_foot" value="0" />
-    <xacro:property name="kp_value_foot" value="0" />
-    <xacro:property name="kd_value_foot" value="0" />
-    <xacro:property name="maxVel_value_foot" value="0" />
-    <xacro:property name="dampingFactor_value_foot" value="0" />
+    <!-- Zoptymalizowane parametry kontaktu dla robota kroczącego -->
+    <xacro:property name="mu1_value_foot" value="0.8" /> <!-- Zwiększone tarcie, aby zapobiec mikro-uślizgom -->
+    <xacro:property name="mu2_value_foot" value="0.8" />
+    
+    <xacro:property name="kp_value_foot" value="1000000.0" /> <!-- Drastycznie zwiększona sztywność (10^6) -->
+    <xacro:property name="kd_value_foot" value="100.0" />     <!-- Zwiększone tłumienie, aby wygasić oscylacje -->
+    
+    <xacro:property name="maxVel_value_foot" value="0.01" />   <!-- Ograniczenie maksymalnej prędkości naprawiania kontaktu -->
+    <xacro:property name="minDepth_value_foot" value="0.001" /> <!-- Redukcja penetracji podłoża do zaledwie 1 milimetra -->
+    
+    <xacro:property name="dampingFactor_value_foot" value="0.01" />
+    <!-- <xacro:property name="mu1_value_foot" value="0.5" />
+    <xacro:property name="mu2_value_foot" value="0.5" />
+
+    <xacro:property name="kp_value_foot" value="10000.0" />
+    <xacro:property name="kd_value_foot" value="5.0" />
+
+    <xacro:property name="maxVel_value_foot" value="0.5" />
+    <xacro:property name="minDepth_value_foot" value="0.00" />
+
+    <xacro:property name="dampingFactor_value_foot" value="0.0" /> -->
+
+
+    <!-- <xacro:property name="mu1_value_foot" value="2.0" />
+    <xacro:property name="mu2_value_foot" value="2.0" />
+    <xacro:property name="kp_value_foot" value="1000000.0" />
+    <xacro:property name="kd_value_foot" value="1000.0" />
+    <xacro:property name="maxVel_value_foot" value="0.0" />
+    <xacro:property name="dampingFactor_value_foot" value="0.1" /> -->
+    <!-- <xacro:property name="kp_value_foot" value="10000.0"/>
+    <xacro:property name="kd_value_foot" value="10000.0"/>
+    <xacro:property name="maxVel_value_foot" value="0.0"/>
+    <xacro:property name="dampingFactor_value_foot" value="10.1"/> -->
 
 
     <!--      GAZEBO IMU NOICE PARAMETERS      -->

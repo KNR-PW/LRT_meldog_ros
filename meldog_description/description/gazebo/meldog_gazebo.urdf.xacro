@@ -168,5 +168,4 @@
                        stopErp="${stopErp_value}" stopCfm="${stopCfm_value}" />
 
     </xacro:if>
-
 </robot>

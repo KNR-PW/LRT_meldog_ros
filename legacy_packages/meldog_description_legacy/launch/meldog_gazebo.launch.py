@@ -81,7 +81,10 @@ def generate_launch_description():
         output='screen'
     )
 
-
+    load_contact_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'contact_sensors_broadcaster'],
+        output='screen'
+    )
 
     return LaunchDescription([
         RegisterEventHandler(
@@ -111,7 +114,13 @@ def generate_launch_description():
                 on_exit=[load_contact_sensors_broadcaster],
             )
         ),
-        robot_state_publisher_node,
+
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=load_position_controller,
+                on_exit=[load_contact_broadcaster],
+            )
+        ),
         gazebo_resource_path,
         gazebo,
         spawn_entity,
