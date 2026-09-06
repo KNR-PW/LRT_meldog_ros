@@ -1,9 +1,15 @@
 controller_manager:
   ros__parameters:
-    update_rate: 500
+
+    update_rate: 1000
+
+    use_sim_time: true
 
     joint_controller:
       type: joint_controller/JointController
+
+    joint_forward_trajectory_controller:
+      type: joint_forward_trajectory_controller/JointForwardTrajectoryController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -33,6 +39,30 @@ contact_sensors_broadcaster:
     - LRF_contact
     - RRF_contact
 
+joint_forward_trajectory_controller:
+  ros__parameters:
+    joints:
+      - joint_controller/LFT_joint
+      - joint_controller/LFH_joint
+      - joint_controller/LFK_joint
+      - joint_controller/RFT_joint
+      - joint_controller/RFH_joint
+      - joint_controller/RFK_joint
+      - joint_controller/LRT_joint
+      - joint_controller/LRH_joint
+      - joint_controller/LRK_joint
+      - joint_controller/RRT_joint
+      - joint_controller/RRH_joint
+      - joint_controller/RRK_joint
+    command_interfaces:
+      - position
+      - velocity
+      - effort
+    state_interfaces:
+      - position
+      - velocity
+    allow_nonzero_velocity_at_trajectory_end: true
+
 joint_controller:
   ros__parameters:
     joint_names:
@@ -48,7 +78,6 @@ joint_controller:
       - RRT_joint
       - RRH_joint
       - RRK_joint
-
     joint_params:
       LFT_joint: 
         position_max: 3.14
@@ -138,62 +167,62 @@ joint_controller:
 
     pid_gains:
       LFT_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       LFH_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       LFK_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 5.0
         ilimit: 0.0
       RFT_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       RFH_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       RFK_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       LRT_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       LRH_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       LRK_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       RRT_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       RRH_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0
       RRK_joint:
-        p: 109.06
-        d: 0.344
+        p: 120.0
+        d: 0.95
         i: 0.0
         ilimit: 0.0

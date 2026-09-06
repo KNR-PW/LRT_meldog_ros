@@ -3,7 +3,13 @@
 
     <xacro:link_macro 
         name="RRUL_link" 
-        is_foot="0"
+        
+        has_sc="${upper_limb_has_sc}"
+        sc_length="${upper_limb_col_length}"
+        sc_radius="${upper_limb_col_radius}"
+
+        coll_xyz="0 0 -${upper_limb_col_length/2}"
+
         vis_name="r_upper_limb_vis.stl" 
         coll_name="upper_limb_collision.stl" 
 

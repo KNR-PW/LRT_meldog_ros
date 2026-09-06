@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- simple collision shape dimensions  -->
+    <xacro:property name="lower_limb_has_sc" value="0"/>
+    <xacro:property name="lower_limb_col_length" value="0.25"/>
+    <xacro:property name="lower_limb_col_radius" value="0.0275"/>
+
     <!-- meshes -->
     <xacro:property name="lower_limb_vis_stl_name" value="LL_vis_v2.stl" />
     <xacro:property name="lower_limb_coll_stl_name" value="lower_limb_collision.stl" />
@@ -11,21 +16,22 @@
     <!-- inertial properties -->
 
         <!-- mass -->
-        <xacro:property name="lower_limb_mass" value="0.079"/>
+        <xacro:property name="lower_limb_mass" value="0.226"/>
 
         <!-- center of mass -->
-        <xacro:property name="lower_limb_cm_x" value="0.801"/>
+        <xacro:property name="lower_limb_cm_x" value="0.048"/>
         <xacro:property name="lower_limb_cm_y" value="0"/>
-        <xacro:property name="lower_limb_cm_z" value="-139.836"/>
+        <xacro:property name="lower_limb_cm_z" value="-182.98"/>
 
         <!-- moments of inertia -->
-        <xacro:property name="lower_limb_ixx" value="598.222"/>
+        <xacro:property name="lower_limb_ixx" value="1811.000"/>
         <xacro:property name="lower_limb_ixy" value="0.0"/>
-        <xacro:property name="lower_limb_ixz" value="-2.447"/>
+        <xacro:property name="lower_limb_ixz" value="-3.618"/>
 
-        <xacro:property name="lower_limb_iyy" value="603.088"/>
+        <xacro:property name="lower_limb_iyy" value="1838.000"/>
         <xacro:property name="lower_limb_iyz" value="0.0"/>
 
-        <xacro:property name="lower_limb_izz" value="13.771"/>
+        <xacro:property name="lower_limb_izz" value="83.423"/>
+        
 
 </robot>

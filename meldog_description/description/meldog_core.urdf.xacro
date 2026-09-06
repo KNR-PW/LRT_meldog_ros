@@ -9,6 +9,7 @@
     <xacro:include filename="links/properties/H_properties.urdf.xacro"/>
     <xacro:include filename="links/properties/LL_properties.urdf.xacro"/>
     <xacro:include filename="links/properties/UL_properties.urdf.xacro"/>
+    <xacro:include filename="links/properties/T_properties.urdf.xacro"/>
 
     <!-- Joint properties -->
     <xacro:include filename="joints/properties/T_joint_properties.urdf.xacro"/>
@@ -30,9 +31,6 @@
 
 
     <!-- LINKS -->
-
-        <!-- Base link -->
-        <link name="base_link" />
 
         <!-- Trunk link -->
         <xacro:include filename="links/trunk.urdf.xacro" />
@@ -98,12 +96,6 @@
             <xacro:include filename="links/foot/RRF_link.urdf.xacro"/>
     
     <!-- JOINTS -->
-
-        <joint name="base_joint" type="fixed">
-            <parent link="base_link" />
-            <child link="trunk_link" />
-            <origin xyz="0 0 0.55" rpy="0 0 0" />
-        </joint>
 
         <!-- IMU joint -->
         <xacro:include filename="joints/sensors/imu_joint.urdf.xacro"/>

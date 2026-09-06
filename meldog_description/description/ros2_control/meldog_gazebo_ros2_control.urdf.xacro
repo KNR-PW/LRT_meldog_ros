@@ -86,18 +86,67 @@
         <xacro:FourBarLinkageTransmission first_joint_name="RFH" second_joint_name="RFK" />
         <xacro:FourBarLinkageTransmission first_joint_name="LRH" second_joint_name="LRK" />
         <xacro:FourBarLinkageTransmission first_joint_name="RRH" second_joint_name="RRK" /> -->
-        
+      
+      <sensor name="RFF_link_contact_sensor" type="contact_sensor">
+        <state_interface name="contact"/>
+        <state_interface name="force.x"/>
+        <state_interface name="force.y"/>
+        <state_interface name="force.z"/>
+        <state_interface name="torque.x"/>
+        <state_interface name="torque.y"/>
+        <state_interface name="torque.z"/>
+      </sensor>
+
+      <sensor name="LFF_link_contact_sensor" type="contact_sensor">
+        <state_interface name="contact"/>
+        <state_interface name="force.x"/>
+        <state_interface name="force.y"/>
+        <state_interface name="force.z"/>
+        <state_interface name="torque.x"/>
+        <state_interface name="torque.y"/>
+        <state_interface name="torque.z"/>
+      </sensor>
+
+      <sensor name="LRF_link_contact_sensor" type="contact_sensor">
+        <state_interface name="contact"/>
+        <state_interface name="force.x"/>
+        <state_interface name="force.y"/>
+        <state_interface name="force.z"/>
+        <state_interface name="torque.x"/>
+        <state_interface name="torque.y"/>
+        <state_interface name="torque.z"/>
+      </sensor>
+
+      <sensor name="RRF_link_contact_sensor" type="contact_sensor">
+        <state_interface name="contact"/>
+        <state_interface name="force.x"/>
+        <state_interface name="force.y"/>
+        <state_interface name="force.z"/>
+        <state_interface name="torque.x"/>
+        <state_interface name="torque.y"/>
+        <state_interface name="torque.z"/>
+      </sensor>
     </ros2_control>
 
 
     <gazebo>
-        <plugin filename="gz_ros2_control-system"
-          name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-          <robot_param>robot_description</robot_param>
-          <robot_param_node>robot_state_publisher</robot_param_node>
-          <parameters>$(find meldog_description)/controllers/meldog_joint_controllers.yaml</parameters>
-          <hold_joints>true</hold_joints>
-        </plugin>
+      <plugin
+        filename="libBaseTransformTwistPublisher.so"
+        name="gazebo_plugins::BaseTransformTwistPublisher">
+        <base_frame_name>trunk_link</base_frame_name>
+        <reference_frame_name>world</reference_frame_name>
+        <max_publish_frequency>200</max_publish_frequency>
+      </plugin>
+    </gazebo>
+
+    <gazebo>
+      <plugin filename="gz_ros2_control-system"
+        name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <robot_param>robot_description</robot_param>
+        <robot_param_node>robot_state_publisher</robot_param_node>
+        <parameters>$(find meldog_description)/controllers/meldog_joint_controllers.yaml</parameters>
+        <hold_joints>true</hold_joints>
+      </plugin>
     </gazebo>
 
 </robot>

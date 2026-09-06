@@ -37,6 +37,15 @@ def generate_launch_description():
         value=[str(Path(get_package_share_directory('meldog_description')).parent.resolve())]
     )
 
+    clock_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+        ],
+        output='screen'
+    )
+
      # Load world for gazebo sim
     world = PathJoinSubstitution(
         [
@@ -52,10 +61,18 @@ def generate_launch_description():
             launch_arguments={'gz_args': ['-r -v -v4 ', world], 'on_exit_shutdown': 'true'}.items()
         )
     
-    spawn_entity = Node(package='ros_gz_sim', executable='create',
-                    arguments=['-topic', 'robot_description',
-                                '-name', 'Meldog'],
-                    output='screen')
+    spawn_entity = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-topic', 'robot_description',
+            '-name', 'Meldog',
+            '-x', '0',
+            '-y', '0',
+            '-z', '0.55',
+        ],
+        output='screen'
+        )
     
     
     load_joint_state_broadcaster = ExecuteProcess(
@@ -68,20 +85,21 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_controller'],
         output='screen'
     )   
+
     load_trajectory_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_controller'],
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_forward_trajectory_controller'],
         output='screen'
     )
+
     load_imu_broadcaster = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'imu_sensor_broadcaster'],
         output='screen'
     )
+
     load_contact_sensors_broadcaster = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'contact_sensors_broadcaster'],
         output='screen'
     )
-
-
 
     return LaunchDescription([
         RegisterEventHandler(
@@ -111,8 +129,16 @@ def generate_launch_description():
                 on_exit=[load_contact_sensors_broadcaster],
             )
         ),
+
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=load_contact_sensors_broadcaster,
+                on_exit=[load_trajectory_controller],
+            )
+        ),
         robot_state_publisher_node,
         gazebo_resource_path,
         gazebo,
         spawn_entity,
+        clock_bridge,
     ])

@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- simple collision shape properties  -->
+    <xacro:property name="hip_has_sc" value="1"/>
+    <xacro:property name="hip_col_length" value="0.023"/>
+    <xacro:property name="hip_col_radius" value="0.12"/>
+
     <!-- meshes -->
     <xacro:property name="hip_vis_stl_name" value="hip_test.stl" />
     <xacro:property name="hip_coll_stl_name" value="hip_collision.stl" />
@@ -8,21 +13,22 @@
     <!-- inertial properties -->
 
         <!-- mass -->
-        <xacro:property name="hip_mass" value="2.276"/>
+        <xacro:property name="hip_mass" value="2.210"/>
 
         <!-- center of mass -->
-        <xacro:property name="hip_cm_x" value="126.369"/>
-        <xacro:property name="hip_cm_y" value="14.729"/>
-        <xacro:property name="hip_cm_z" value="0.160"/>
+        <xacro:property name="hip_cm_x" value="126.318"/>
+        <xacro:property name="hip_cm_y" value="12.309"/>
+        <xacro:property name="hip_cm_z" value="0.112"/>
 
         <!-- tensor of inertia -->
-        <xacro:property name="hip_ixx" value="3609.753"/>
-        <xacro:property name="hip_ixy" value="-371.167"/>
-        <xacro:property name="hip_ixz" value="0.550"/>
+        <xacro:property name="hip_ixx" value="3658.000"/>
+        <xacro:property name="hip_ixy" value="-334.100"/>
+        <xacro:property name="hip_ixz" value="0.218"/>
 
-        <xacro:property name="hip_iyy" value="8775.172"/>
-        <xacro:property name="hip_iyz" value="17.541"/>
+        <xacro:property name="hip_iyy" value="8851.000"/>
+        <xacro:property name="hip_iyz" value="12.221"/>
 
-        <xacro:property name="hip_izz" value="9362.116"/>
+        <xacro:property name="hip_izz" value="9241.000"/>
+
 
 </robot>
