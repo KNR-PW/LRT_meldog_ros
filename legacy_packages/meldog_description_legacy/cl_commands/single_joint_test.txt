@@ -1,0 +1,6 @@
+// Wysyłanie pozycji 1.0 dla jointa "body_1_joint" 
+
+ros2 topic pub /joint_controller/joint_commands joint_controller_msgs/msg/JointCommand "{name: {'LFT_joint', 'LFH_joint', 'LFK_joint', 'RFT_joint', 'RFH_joint', 'RFK_joint', 'LRT_joint', 'LRH_joint', 'LRK_joint', 'RRT_joint', 'RRH_joint', 'RRK_joint'}, desired_position: [0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0], desired_velocity: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], kp_scale: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], kd_scale: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], feedforward_effort: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}"
+
+
+ros2 topic pub /joint_controller/joint_commands joint_controller_msgs/msg/JointCommand "{name: {'LFT_joint', 'LFH_joint', 'LFK_joint', 'RFT_joint', 'RFH_joint', 'RFK_joint', 'LRT_joint', 'LRH_joint', 'LRK_joint', 'RRT_joint', 'RRH_joint', 'RRK_joint'}, desired_position: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], desired_velocity: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], kp_scale: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], kd_scale: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], feedforward_effort: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}"

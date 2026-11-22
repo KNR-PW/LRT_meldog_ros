@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!-- Simulator independent Meldog model: links, joints, inertia, visual and collision geometry.
+     No <gazebo>, <ros2_control> or <mujoco> tags here - those belong to the simulator layers.
+     All numbers come from config/robot/*.yaml (SI units). -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- lazy_eval="false": paths are resolved relative to this file -->
+    <xacro:property name="meldog_geo"      value="${xacro.load_yaml('../../config/robot/geometry.yaml')}"  lazy_eval="false"/>
+    <xacro:property name="meldog_inertial" value="${xacro.load_yaml('../../config/robot/inertial.yaml')}"  lazy_eval="false"/>
+    <xacro:property name="meldog_act"      value="${xacro.load_yaml('../../config/robot/actuators.yaml')}" lazy_eval="false"/>
+
+    <!-- Collision models defined in geometry.yaml -->
+    <xacro:property name="meldog_collision_models" value="${['simple', 'mesh']}"/>
+
+    <!-- Joint side limits of the actuators, shared with ros2_control -->
+    <xacro:property name="meldog_joint_effort"
+                    value="${meldog_act.motor.max_torque*meldog_act.motor.reduction}"/>
+    <xacro:property name="meldog_joint_velocity"
+                    value="${meldog_act.motor.max_speed/meldog_act.motor.reduction}"/>
+
+    <xacro:include filename="part.urdf.xacro"/>
+    <xacro:include filename="leg.urdf.xacro"/>
+
+    <!-- collision:   simple (spheres on the legs, box on the trunk) | mesh (STL files)
+         mesh_prefix: URI of the meshes/ directory (package:// for ROS tools and Gazebo) -->
+    <xacro:macro name="meldog_core" params="collision:=simple mesh_prefix:='package://meldog_description/meshes/'">
+
+        <xacro:if value="${collision not in meldog_collision_models}">
+            ${xacro.fatal('Unknown collision:=' + collision + ' (expected ' + ' or '.join(meldog_collision_models) + ')')}
+        </xacro:if>
+
+        <!-- Trunk -->
+        <xacro:meldog_part name="trunk_link" collision="${collision}" mesh_prefix="${mesh_prefix}"
+                           inertial="${meldog_inertial.trunk}" shape="${meldog_geo.links.trunk}"/>
+
+        <!-- IMU (no collision: it sits inside the trunk) -->
+        <xacro:property name="imu" value="${meldog_geo.imu}"/>
+        <xacro:property name="imu_inertial" value="${meldog_inertial.imu}"/>
+        <link name="imu_link">
+            <inertial>
+                <origin xyz="${imu_inertial.com[0]} ${imu_inertial.com[1]} ${imu_inertial.com[2]}" rpy="0 0 0"/>
+                <mass value="${imu_inertial.mass}"/>
+                <inertia ixx="${imu_inertial.inertia.ixx}" ixy="${imu_inertial.inertia.ixy}" ixz="${imu_inertial.inertia.ixz}"
+                         iyy="${imu_inertial.inertia.iyy}" iyz="${imu_inertial.inertia.iyz}"
+                         izz="${imu_inertial.inertia.izz}"/>
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder radius="${imu.radius}" length="${imu.height}"/>
+                </geometry>
+                <material name="blue">
+                    <color rgba="0.0 0.0 1.0 1.0"/>
+                </material>
+            </visual>
+        </link>
+
+        <joint name="imu_joint" type="fixed">
+            <parent link="trunk_link"/>
+            <child link="imu_link"/>
+            <origin xyz="${imu.xyz[0]} ${imu.xyz[1]} ${imu.xyz[2]}" rpy="0 0 0"/>
+        </joint>
+
+        <!-- Legs. sx: +1 front / -1 rear, sy: +1 left / -1 right -->
+        <xacro:meldog_leg prefix="LF" sx="1"  sy="1"  collision="${collision}" mesh_prefix="${mesh_prefix}"/>
+        <xacro:meldog_leg prefix="RF" sx="1"  sy="-1" collision="${collision}" mesh_prefix="${mesh_prefix}"/>
+        <xacro:meldog_leg prefix="LR" sx="-1" sy="1"  collision="${collision}" mesh_prefix="${mesh_prefix}"/>
+        <xacro:meldog_leg prefix="RR" sx="-1" sy="-1" collision="${collision}" mesh_prefix="${mesh_prefix}"/>
+
+    </xacro:macro>
+
+</robot>

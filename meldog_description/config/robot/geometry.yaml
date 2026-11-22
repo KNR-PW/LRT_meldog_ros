@@ -1,0 +1,106 @@
+# Meldog geometry - simulator independent, SI units (m, rad).
+# Values are given for the left-front (LF) leg. The leg macro mirrors them:
+#   y for right legs (RF, RR) - always,
+#   x for rear legs (LR, RR)  - only for parts with mirror_front_rear: true.
+
+trunk_joint:              # *T_joint origin in trunk_link (trunk -> hip link)
+  x: 0.084
+  y: 0.1101
+  z: 0.0
+
+hip_joint:                # *H_joint origin in *H_link (hip link -> upper limb)
+  x: 0.174
+  y: 0.0925
+  z: 0.0
+
+upper_limb_length: 0.25   # *K_joint origin = (0, 0, -upper_limb_length) in *UL_link
+lower_limb_length: 0.25   # *F_joint origin = (0, 0, -lower_limb_length) in *LL_link
+
+imu:
+  xyz: [0.0, 0.0, 0.055]  # imu_joint origin in trunk_link. TODO: real mounting position from CAD
+  radius: 0.03            # visual cylinder
+  height: 0.01
+
+mesh_scale: 0.001         # all STL files are in millimeters
+
+# Links:
+#   mirror_front_rear  the rear part is the x-mirror of the front one (own mesh in CAD).
+#                      Applied to the inertial and to origins of primitive collisions.
+#   visual             mesh: one file for all legs or a mapping per leg; optional xyz, rpy
+#   collision          one list of shapes per collision model, selected by xacro arg collision:=
+#                        simple - spheres on the legs, box on the trunk (default)
+#                        mesh   - STL files from meshes/collision/
+# Shape: {type: mesh, mesh: <file or per-leg mapping>} | {type: box, size: [x, y, z]}
+#        | {type: cylinder, length, radius} | {type: sphere, radius};  optional xyz [m], rpy [rad].
+# Mesh origins are not mirrored (per-leg meshes are mirrored in CAD), primitive origins are.
+# The foot must have exactly one collision shape (it is used by the contact sensor).
+links:
+  trunk:
+    # STL was exported with wrong orientation and position (broken CAD), corrected here
+    visual: {mesh: trunk.stl, xyz: [0.019774, 0.0, 0.0], rpy: [1.5707963267948966, 0.0, 1.5707963267948966]}
+    collision:
+      simple:
+        # Main body of the trunk without the top handles (z > 0.07) and the nose. Narrower than
+        # the trunk (+-0.167) so that it does not intersect the thigh hubs, which sit in the side
+        # cutouts of the trunk (y +-0.07 at 0.12 < |x| < 0.27).
+        - {type: box, size: [0.73, 0.28, 0.14]}
+      mesh:
+        - {type: mesh, mesh: trunk_collision.stl,
+           xyz: [0.019774, 0.0, 0.0], rpy: [1.5707963267948966, 0.0, 1.5707963267948966]}
+
+  hip:
+    mirror_front_rear: true
+    visual:
+      mesh: {LF: front_left_hip.stl, RF: front_right_hip.stl,
+             LR: rear_left_hip.stl,  RR: rear_right_hip.stl}
+    collision:
+      simple:
+        - {type: sphere, radius: 0.055, xyz: [0.065, 0.012, 0.0]}           # inner half of the block
+        - {type: sphere, radius: 0.06,  xyz: [0.165, 0.03, 0.0]}            # outer half, H motor
+      mesh:
+        - type: mesh
+          mesh: {LF: front_left_hip_collision.stl, RF: front_right_hip_collision.stl,
+                 LR: rear_left_hip_collision.stl,  RR: rear_right_hip_collision.stl}
+
+  upper_limb:
+    mirror_front_rear: false     # rear legs use the same part as front legs
+    visual:
+      mesh: {LF: upper_limb_test.stl, RF: r_upper_limb_vis.stl,
+             LR: upper_limb_test.stl, RR: r_upper_limb_vis.stl}
+    collision:
+      simple:
+        # Chain of overlapping spheres fitted to the mesh cross-section; the hub is
+        # shifted 9 mm towards the body like the mesh.
+        - {type: sphere, radius: 0.045, xyz: [0.0, -0.009, 0.0]}            # hub (hip end)
+        - {type: sphere, radius: 0.04,  xyz: [0.0, -0.009, -0.05]}
+        - {type: sphere, radius: 0.032, xyz: [0.0, 0.0, -0.10]}
+        - {type: sphere, radius: 0.03,  xyz: [0.0, 0.0, -0.15]}
+        - {type: sphere, radius: 0.028, xyz: [0.0, 0.0, -0.20]}
+        - {type: sphere, radius: 0.028, xyz: [0.0, 0.0, -0.25]}             # knee end
+      mesh:
+        - {type: mesh, mesh: upper_limb_collision.stl}
+
+  lower_limb:
+    mirror_front_rear: false
+    visual: {mesh: LL_vis_v2.stl}
+    collision:
+      simple:
+        # Chain of overlapping spheres from the knee hub down to the foot sphere
+        - {type: sphere, radius: 0.026, xyz: [0.0, 0.0, 0.0]}               # knee hub
+        - {type: sphere, radius: 0.021, xyz: [0.0, 0.0, -0.035]}
+        - {type: sphere, radius: 0.018, xyz: [0.0, 0.0, -0.07]}
+        - {type: sphere, radius: 0.018, xyz: [0.0, 0.0, -0.105]}
+        - {type: sphere, radius: 0.018, xyz: [0.0, 0.0, -0.14]}
+        - {type: sphere, radius: 0.018, xyz: [0.0, 0.0, -0.175]}
+        - {type: sphere, radius: 0.02,  xyz: [0.0, 0.0, -0.21]}             # overlaps the foot sphere
+      mesh:
+        - {type: mesh, mesh: lower_limb_collision.stl}
+
+  foot:
+    mirror_front_rear: false
+    visual: {mesh: foot_vis.stl}
+    collision:
+      simple:
+        - {type: sphere, radius: 0.035}
+      mesh:
+        - {type: mesh, mesh: foot_collision.stl}

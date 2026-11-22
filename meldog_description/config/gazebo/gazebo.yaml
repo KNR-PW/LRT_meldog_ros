@@ -1,0 +1,32 @@
+# Gazebo (Fortress, DART physics) specific parameters.
+#
+# DART reads from <surface> only mu/mu2 (plus fdir1, slip1/slip2, restitution).
+# ODE parameters from Gazebo Classic (kp, kd, maxVel, minDepth, dampingFactor,
+# stopErp, stopCfm, implicitSpringDamper) are ignored by DART, so they are not used.
+
+surface:
+  default: {mu1: 0.0, mu2: 0.0}   # trunk, hips, upper and lower limbs
+  foot:    {mu1: 1.2, mu2: 1.2}
+
+joint_spring:                      # standard SDF <axis><dynamics>, all 12 actuated joints
+  stiffness: 0.0
+  reference: 0.0
+
+material_diffuse: "0 0 1 1"        # color of all links in Gazebo
+
+imu:
+  # Equal to the physics step (1 ms) and the controller manager rate. A rate that does not
+  # divide 1000 Hz (e.g. 700) gives uneven spacing between samples.
+  update_rate: 1000
+  visualize: true
+  # Realistic noise used before:
+  #   angular_velocity:    stddev 2.0e-4, bias_mean 7.5e-06, bias_stddev 8.0e-07
+  #   linear_acceleration: stddev 1.7e-2, bias_mean 0.1,     bias_stddev 0.001
+  angular_velocity_noise:    {mean: 0.0, stddev: 0.0, bias_mean: 0.0, bias_stddev: 0.0}
+  linear_acceleration_noise: {mean: 0.0, stddev: 0.0, bias_mean: 0.0, bias_stddev: 0.0}
+
+contact:
+  update_rate: 200
+
+odometry:                          # BaseOdometryPublisher plugin
+  max_publish_frequency: 200

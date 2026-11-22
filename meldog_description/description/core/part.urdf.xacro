@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- One collision shape (entry of a collision list in config/robot/geometry.yaml).
+         mx, sy - mirroring of primitive origins (front/rear, left/right).
+         Meshes are mirrored in CAD, so their origins are used as they are. Primitives are
+         mirrored here (x to -x flips pitch and yaw, y to -y flips roll and yaw).
+         The <collision> has no name attribute on purpose. With a name, sdformat 12 fails to
+         match <gazebo reference="..."> surface params (mu1/mu2) to collisions lumped through
+         fixed joints (e.g. feet), and they are silently dropped.
+         Comments inside macros are copied to the generated URDF, so keep them out of macro
+         bodies (a colon followed by a space breaks YAML parsing of robot_description in
+         ROS 2 XML launch files). -->
+    <xacro:macro name="meldog_collision_shape" params="shape prefix mesh_prefix mx sy">
+        <xacro:property name="t" value="${shape.type}"/>
+        <xacro:property name="xyz" value="${shape.get('xyz', [0.0, 0.0, 0.0])}"/>
+        <xacro:property name="rpy" value="${shape.get('rpy', [0.0, 0.0, 0.0])}"/>
+
+        <xacro:if value="${t not in ['mesh', 'box', 'cylinder', 'sphere']}">
+            ${xacro.fatal('Unknown collision type "' + t + '"')}
+        </xacro:if>
+
+        <collision>
+            <geometry>
+                <xacro:if value="${t == 'mesh'}">
+                    <xacro:property name="file" value="${shape.mesh if python.isinstance(shape.mesh, str) else shape.mesh[prefix]}"/>
+                    <mesh filename="${mesh_prefix}collision/${file}"
+                          scale="${meldog_geo.mesh_scale} ${meldog_geo.mesh_scale} ${meldog_geo.mesh_scale}"/>
+                </xacro:if>
+                <xacro:if value="${t == 'box'}">
+                    <box size="${shape.size[0]} ${shape.size[1]} ${shape.size[2]}"/>
+                </xacro:if>
+                <xacro:if value="${t == 'cylinder'}">
+                    <cylinder length="${shape.length}" radius="${shape.radius}"/>
+                </xacro:if>
+                <xacro:if value="${t == 'sphere'}">
+                    <sphere radius="${shape.radius}"/>
+                </xacro:if>
+            </geometry>
+            <xacro:if value="${t == 'mesh'}">
+                <origin xyz="${xyz[0]} ${xyz[1]} ${xyz[2]}" rpy="${rpy[0]} ${rpy[1]} ${rpy[2]}"/>
+            </xacro:if>
+            <xacro:unless value="${t == 'mesh'}">
+                <origin xyz="${mx*xyz[0]} ${sy*xyz[1]} ${xyz[2]}" rpy="${sy*rpy[0]} ${mx*rpy[1]} ${mx*sy*rpy[2]}"/>
+            </xacro:unless>
+        </collision>
+    </xacro:macro>
+
+    <!-- All shapes of a collision list (xacro has no loops, so recursion) -->
+    <xacro:macro name="meldog_collision_shapes" params="shapes prefix mesh_prefix mx sy">
+        <xacro:if value="${len(shapes) > 0}">
+            <xacro:meldog_collision_shape shape="${shapes[0]}" prefix="${prefix}" mesh_prefix="${mesh_prefix}" mx="${mx}" sy="${sy}"/>
+            <xacro:meldog_collision_shapes shapes="${shapes[1:]}" prefix="${prefix}" mesh_prefix="${mesh_prefix}" mx="${mx}" sy="${sy}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <!-- One link of the robot.
+         name        link name
+         inertial    entry of config/robot/inertial.yaml
+         shape       entry of `links` in config/robot/geometry.yaml
+         collision   collision model: simple | mesh
+         mesh_prefix URI prefix of the meshes/ directory
+         prefix      leg prefix (LF, RF, LR, RR), selects per-leg meshes; '' for the trunk
+         sx, sy      +1/-1 - front/rear and left/right side. The inertial and primitive collisions
+                     are mirrored left/right always, front/rear only if shape.mirror_front_rear.
+                     Mirroring x to -x flips ixy and ixz, mirroring y to -y flips ixy and iyz. -->
+    <xacro:macro name="meldog_part" params="name inertial shape collision mesh_prefix prefix:='' sx:=1 sy:=1">
+
+        <xacro:property name="mx" value="${sx if shape.get('mirror_front_rear', False) else 1}"/>
+        <xacro:property name="scale" value="${meldog_geo.mesh_scale}"/>
+        <xacro:property name="vis" value="${shape.visual}"/>
+        <xacro:property name="vis_mesh" value="${vis.mesh if python.isinstance(vis.mesh, str) else vis.mesh[prefix]}"/>
+        <xacro:property name="vis_xyz" value="${vis.get('xyz', [0.0, 0.0, 0.0])}"/>
+        <xacro:property name="vis_rpy" value="${vis.get('rpy', [0.0, 0.0, 0.0])}"/>
+        <xacro:property name="J" value="${inertial.inertia}"/>
+
+        <link name="${name}">
+            <visual>
+                <geometry>
+                    <mesh filename="${mesh_prefix}visual/${vis_mesh}" scale="${scale} ${scale} ${scale}"/>
+                </geometry>
+                <origin xyz="${vis_xyz[0]} ${vis_xyz[1]} ${vis_xyz[2]}" rpy="${vis_rpy[0]} ${vis_rpy[1]} ${vis_rpy[2]}"/>
+            </visual>
+
+            <xacro:meldog_collision_shapes shapes="${shape.collision[collision]}" prefix="${prefix}"
+                                           mesh_prefix="${mesh_prefix}" mx="${mx}" sy="${sy}"/>
+
+            <inertial>
+                <mass value="${inertial.mass}"/>
+                <origin xyz="${mx*inertial.com[0]} ${sy*inertial.com[1]} ${inertial.com[2]}" rpy="0 0 0"/>
+                <inertia ixx="${J.ixx}" ixy="${J.ixy*mx*sy}" ixz="${J.ixz*mx}"
+                         iyy="${J.iyy}" iyz="${J.iyz*sy}"
+                         izz="${J.izz}"/>
+            </inertial>
+        </link>
+
+    </xacro:macro>
+
+</robot>

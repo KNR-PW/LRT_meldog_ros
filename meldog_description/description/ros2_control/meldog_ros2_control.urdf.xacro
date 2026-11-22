@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!-- ros2_control description of Meldog, shared by all backends (Gazebo, MuJoCo, real robot).
+     Only the hardware plugin differs, it is a parameter of meldog_ros2_control_system.
+     Requires core/core.urdf.xacro (meldog_joint_effort).
+
+     Macros:
+       meldog_ros2_control_system          whole <ros2_control> block (entry point of this file)
+       meldog_ros2_control_leg_joints      the three actuated joints of one leg
+       meldog_ros2_control_effort_joint    one joint: effort command, position/velocity/effort state
+       meldog_ros2_control_imu_sensor      IMU: orientation, angular velocity, linear acceleration
+       meldog_ros2_control_foot_contact_sensor  binary foot contact
+     Transmissions (not used yet): see transmissions.urdf.xacro -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="transmissions.urdf.xacro"/>
+
+    <!-- joint: full joint name, e.g. LFT_joint -->
+    <xacro:macro name="meldog_ros2_control_effort_joint" params="joint">
+        <joint name="${joint}">
+            <command_interface name="effort">
+                <param name="min">${-meldog_joint_effort}</param>
+                <param name="max">${meldog_joint_effort}</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+    </xacro:macro>
+
+    <!-- prefix: LF, RF, LR, RR -->
+    <xacro:macro name="meldog_ros2_control_leg_joints" params="prefix">
+        <xacro:meldog_ros2_control_effort_joint joint="${prefix}T_joint"/>
+        <xacro:meldog_ros2_control_effort_joint joint="${prefix}H_joint"/>
+        <xacro:meldog_ros2_control_effort_joint joint="${prefix}K_joint"/>
+    </xacro:macro>
+
+    <!-- sensor: has to match the simulator sensor name and imu_sensor_broadcaster -->
+    <xacro:macro name="meldog_ros2_control_imu_sensor" params="sensor:=imu_sensor">
+        <sensor name="${sensor}" type="imu">
+            <state_interface name="orientation.x"/>
+            <state_interface name="orientation.y"/>
+            <state_interface name="orientation.z"/>
+            <state_interface name="orientation.w"/>
+            <state_interface name="angular_velocity.x"/>
+            <state_interface name="angular_velocity.y"/>
+            <state_interface name="angular_velocity.z"/>
+            <state_interface name="linear_acceleration.x"/>
+            <state_interface name="linear_acceleration.y"/>
+            <state_interface name="linear_acceleration.z"/>
+        </sensor>
+    </xacro:macro>
+
+    <!-- Sensor <prefix>F_contact; the name has to match the simulator sensor
+         and contact_sensors_broadcaster -->
+    <xacro:macro name="meldog_ros2_control_foot_contact_sensor" params="prefix">
+        <sensor name="${prefix}F_contact" type="contact_sensor">
+            <state_interface name="contact"/>
+        </sensor>
+    </xacro:macro>
+
+    <!-- name            ros2_control system name
+         plugin          hardware interface plugin, e.g. gz_ros2_control/GazeboSimSystem
+         contact_sensors export the four binary foot contact sensors -->
+    <xacro:macro name="meldog_ros2_control_system" params="name plugin contact_sensors:=true">
+        <ros2_control name="${name}" type="system">
+            <hardware>
+                <plugin>${plugin}</plugin>
+            </hardware>
+
+            <xacro:meldog_ros2_control_imu_sensor/>
+
+            <xacro:if value="${contact_sensors}">
+                <xacro:meldog_ros2_control_foot_contact_sensor prefix="LF"/>
+                <xacro:meldog_ros2_control_foot_contact_sensor prefix="RF"/>
+                <xacro:meldog_ros2_control_foot_contact_sensor prefix="LR"/>
+                <xacro:meldog_ros2_control_foot_contact_sensor prefix="RR"/>
+            </xacro:if>
+
+            <xacro:meldog_ros2_control_leg_joints prefix="LF"/>
+            <xacro:meldog_ros2_control_leg_joints prefix="RF"/>
+            <xacro:meldog_ros2_control_leg_joints prefix="LR"/>
+            <xacro:meldog_ros2_control_leg_joints prefix="RR"/>
+        </ros2_control>
+    </xacro:macro>
+
+</robot>

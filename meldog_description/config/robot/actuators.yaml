@@ -1,0 +1,28 @@
+# Meldog actuators - simulator independent, SI units (N*m, rad, rad/s).
+# Used by URDF <limit>/<dynamics> (core) and by the ros2_control command limits.
+
+motor:
+  max_torque: 3.5                 # [N*m]   motor side
+  max_speed: 188.49555921538757   # [rad/s] motor side (1800 rpm)
+  reduction: 9.97                 # gearbox ratio -> joint side: 34.895 N*m, 18.906 rad/s
+
+# Joint groups:
+#   trunk = *T_joint  trunk -> hip link        (axis +x left, -x right)
+#   hip   = *H_joint  hip link -> upper limb   (axis -y)
+#   knee  = *K_joint  upper limb -> lower limb (axis -y)
+joints:
+  trunk:
+    lower: -1.0471975511965976    # [rad] -60 deg
+    upper: 1.0471975511965976     # [rad]  60 deg
+    damping: 0.08                 # [N*m*s/rad]
+    friction: 0.1312              # [N*m] Coulomb friction
+  hip:
+    lower: -6.283185307179586     # [rad] -360 deg
+    upper: 6.283185307179586      # [rad]  360 deg
+    damping: 0.08
+    friction: 0.1312
+  knee:
+    lower: -2.792526803190927     # [rad] -160 deg
+    upper: 2.792526803190927      # [rad]  160 deg
+    damping: 0.08
+    friction: 0.1312
