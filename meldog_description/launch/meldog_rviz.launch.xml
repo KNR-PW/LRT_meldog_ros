@@ -1,10 +1,15 @@
 <launch>
-    <let name="urdf_path" value="$(find-pkg-share meldog_description)/description/meldog_core.urdf.xacro" />
+    <!-- Collision model: simple (spheres on the legs, box on the trunk) or mesh (STL) -->
+    <arg name="collision" default="simple" />
+
+    <let name="urdf_path" value="$(find-pkg-share meldog_description)/description/meldog.urdf.xacro" />
 
     <let name="rviz_config" value="$(find-pkg-share meldog_description)/rviz/meldog_config.rviz" />
 
     <node pkg="robot_state_publisher" exec="robot_state_publisher">
-        <param name="robot_description" value="$(command 'xacro &quot;$(var urdf_path)&quot;')" />
+        <!-- type="str": otherwise launch parses the URDF as YAML -->
+        <param name="robot_description" type="str"
+               value="$(command 'xacro &quot;$(var urdf_path)&quot; sim:=none collision:=$(var collision)')" />
     </node>
 
     <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" />

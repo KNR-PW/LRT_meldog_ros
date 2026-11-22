@@ -18,7 +18,7 @@ controller_manager:
 imu_sensor_broadcaster:
   ros__parameters:
     sensor_name: "imu_sensor"
-    frame_id: "imu"
+    frame_id: "imu_link"
 
 
 
@@ -52,8 +52,10 @@ joint_trajectory_controller:
       - RRH_joint
       - RRK_joint
 
+    # The hardware exports only the effort command interface; with effort, JTC closes
+    # the position loop with the PID `gains` below.
     command_interfaces:
-      - position
+      - effort
     state_interfaces:
       - position
       - velocity

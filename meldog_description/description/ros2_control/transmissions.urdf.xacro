@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- Transmission macros (not used yet). Joint names are full names. Example, inside <ros2_control>:
+       <xacro:meldog_simple_transmission joint="LFT_joint" reduction="${meldog_act.motor.reduction}"/>
+       <xacro:meldog_four_bar_transmission joint1="LFH_joint" joint2="LFK_joint"/> -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="meldog_simple_transmission" params="joint reduction offset:=0.0">
+        <transmission name="${joint}_transmission">
+            <plugin>transmission_interface/SimpleTransmission</plugin>
+            <joint name="${joint}" role="joint1">
+                <mechanical_reduction>${reduction}</mechanical_reduction>
+                <offset>${offset}</offset>
+            </joint>
+        </transmission>
+    </xacro:macro>
+
+    <xacro:macro name="meldog_four_bar_transmission" params="joint1 joint2">
+        <transmission name="${joint1}_${joint2}_four_bar_transmission">
+            <plugin>transmission_interface/FourBarLinkageTransmission</plugin>
+            <!-- <actuator name="${joint1}_actuator" role="actuator1">
+                <mechanical_reduction>${reduction}</mechanical_reduction>
+            </actuator>
+            <actuator name="${joint2}_actuator" role="actuator2">
+                <mechanical_reduction>${reduction}</mechanical_reduction>
+            </actuator> -->
+            <joint name="${joint1}" role="joint1">
+                <mechanical_reduction>1.0</mechanical_reduction>
+                <offset>0.0</offset>
+            </joint>
+            <joint name="${joint2}" role="joint2">
+                <mechanical_reduction>1.0</mechanical_reduction>
+                <offset>0.0</offset>
+            </joint>
+        </transmission>
+    </xacro:macro>
+
+</robot>

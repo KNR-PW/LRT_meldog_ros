@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot name="meldog" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<!--
+  Meldog robot description - single entry point.
+
+    xacro meldog.urdf.xacro sim:=none     core only: kinematics, dynamics, visual, collision
+    xacro meldog.urdf.xacro sim:=gazebo   core + ros2_control (gz_ros2_control) + Gazebo tags
+    xacro meldog.urdf.xacro sim:=mujoco   core + <mujoco> compiler tag for MuJoCo's URDF importer
+
+  Arguments:
+    collision:=simple          spheres on the legs, box on the trunk (default)
+    collision:=mesh            STL collision meshes from meshes/collision/
+    controllers_file:=<path>   (sim:=gazebo) controller_manager parameters for gz_ros2_control
+
+  Structure:
+    core/          simulator independent model     <- config/robot/*.yaml (SI units)
+    ros2_control/  ros2_control interfaces (hardware plugin is a parameter)
+    gazebo/        Gazebo only tags and plugins     <- config/gazebo/gazebo.yaml
+    mujoco/        MuJoCo only tags
+  Checks: test/test_description.py
+
+  This comment stays out of the generated URDF (xacro drops comments directly in front of
+  xacro elements). Comments that reach the URDF must not contain a colon followed by a space,
+  it breaks YAML parsing of robot_description in ROS 2 XML launch files.
+-->
+    <xacro:arg name="sim" default="none"/>
+    <xacro:arg name="collision" default="simple"/>
+
+    <xacro:property name="sim" value="$(arg sim)"/>
+    <xacro:property name="collision" value="$(arg collision)"/>
+    <xacro:if value="${sim not in ['none', 'gazebo', 'mujoco']}">
+        ${xacro.fatal('Unknown sim:=' + sim + ' (expected none, gazebo or mujoco)')}
+    </xacro:if>
+
+    <!-- Core (simulator independent) -->
+    <xacro:include filename="core/core.urdf.xacro"/>
+
+    <xacro:if value="${sim == 'mujoco'}">
+        <!-- MuJoCo does not resolve package:// URIs, use absolute mesh paths -->
+        <xacro:meldog_core collision="${collision}" mesh_prefix="$(find meldog_description)/meshes/"/>
+    </xacro:if>
+    <xacro:unless value="${sim == 'mujoco'}">
+        <xacro:meldog_core collision="${collision}"/>
+    </xacro:unless>
+
+    <!-- Gazebo -->
+    <xacro:if value="${sim == 'gazebo'}">
+        <!-- declared here, so that $(find) is only needed for sim:=gazebo -->
+        <xacro:arg name="controllers_file"
+                   default="$(find meldog_description)/controllers/meldog_joint_controllers.yaml"/>
+        <xacro:include filename="ros2_control/meldog_ros2_control.urdf.xacro"/>
+        <xacro:include filename="gazebo/meldog_gazebo.urdf.xacro"/>
+
+        <xacro:meldog_ros2_control_system name="GazeboSimSystem" plugin="gz_ros2_control/GazeboSimSystem"/>
+        <xacro:meldog_gazebo controllers_file="$(arg controllers_file)" collision="${collision}"/>
+    </xacro:if>
+
+    <!-- MuJoCo -->
+    <xacro:if value="${sim == 'mujoco'}">
+        <xacro:include filename="mujoco/meldog_mujoco.urdf.xacro"/>
+        <xacro:meldog_mujoco/>
+    </xacro:if>
+
+</robot>

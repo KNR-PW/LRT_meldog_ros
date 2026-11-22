@@ -20,14 +20,22 @@ controller_manager:
     contact_sensors_broadcaster:
       type: contact_sensors_broadcaster/ContactSensorsBroadcaster
 
+# Broadcasters only publish state, so they run slower than the controller manager (1000 Hz).
+# update_rate has to divide the controller manager's update_rate.
+joint_state_broadcaster:
+  ros__parameters:
+    update_rate: 500
+
 imu_sensor_broadcaster:
   ros__parameters:
+    update_rate: 500
     sensor_name: "imu_sensor"
     frame_id: "imu_link"
 
 
 contact_sensors_broadcaster:
   ros__parameters:
+    update_rate: 500
     frame_ids:
     - LFF_link
     - RFF_link
@@ -80,85 +88,85 @@ joint_controller:
       - RRK_joint
     joint_params:
       LFT_joint: 
-        position_max: 3.14
-        position_min: -3.14
+        position_max: 1.0471975511965976
+        position_min: -1.0471975511965976
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       LFH_joint: 
-        position_max: 10000.0
-        position_min: -10000.0
+        position_max: 6.283185307179586
+        position_min: -6.283185307179586
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       LFK_joint: 
-        position_max: 2.793
-        position_min: -2.793
+        position_max: 2.792526803190927
+        position_min: -2.792526803190927
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       RFT_joint: 
-        position_max: 3.14
-        position_min: -3.14
+        position_max: 1.0471975511965976
+        position_min: -1.0471975511965976
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       RFH_joint: 
-        position_max: 10000.0
-        position_min: -10000.0
+        position_max: 6.283185307179586
+        position_min: -6.283185307179586
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       RFK_joint: 
-        position_max: 2.793
-        position_min: -2.793
+        position_max: 2.792526803190927
+        position_min: -2.792526803190927
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       LRT_joint: 
-        position_max: 3.14
-        position_min: -3.14
+        position_max: 1.0471975511965976
+        position_min: -1.0471975511965976
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       LRH_joint: 
-        position_max: 10000.0
-        position_min: -10000.0
+        position_max: 6.283185307179586
+        position_min: -6.283185307179586
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       LRK_joint: 
-        position_max: 2.793
-        position_min: -2.793
+        position_max: 2.792526803190927
+        position_min: -2.792526803190927
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       RRT_joint: 
-        position_max: 3.14
-        position_min: -3.14
+        position_max: 1.0471975511965976
+        position_min: -1.0471975511965976
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
       
       RRH_joint: 
-        position_max: 10000.0
-        position_min: -10000.0
+        position_max: 6.283185307179586
+        position_min: -6.283185307179586
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895
 
       RRK_joint: 
-        position_max: 2.793
-        position_min: -2.793
+        position_max: 2.792526803190927
+        position_min: -2.792526803190927
         position_offset: 0.0
         velocity_max: 18.906
         effort_max: 34.895

@@ -1,0 +1,41 @@
+# Meldog mass properties - simulator independent, SI units:
+#   mass [kg], com [m] in the link frame, inertia [kg*m^2] about the CoM in link frame axes.
+# Values are for the left-front (LF) leg. The leg macro mirrors them: right legs in y,
+# rear legs in x for parts with mirror_front_rear: true (see geometry.yaml).
+# Source: CAD export (converted from mm and kg*mm^2), except the trunk.
+
+trunk:
+  # Not CAD values: uniform cuboid 0.50 x 0.34 x 0.14 m. The real trunk is 0.72 x 0.34 x 0.14 m,
+  # the shorter cuboid approximates the real mass distribution better.
+  mass: 10.0
+  com: [0.0, 0.0, 0.0]
+  inertia: {ixx: 0.112667, ixy: 0.0, ixz: 0.0, iyy: 0.224667, iyz: 0.0, izz: 0.304667}
+
+hip:
+  mass: 2.21
+  com: [0.126318, 0.012309, 0.000112]
+  inertia: {ixx: 0.003658, ixy: -0.0003341, ixz: 2.18e-07,
+            iyy: 0.008851, iyz: 1.2221e-05, izz: 0.009241}
+
+upper_limb:
+  mass: 0.398
+  com: [-0.000467, 0.000271, -0.10516]
+  inertia: {ixx: 0.003553, ixy: 2.88e-07, ixz: 3.222e-06,
+            iyy: 0.00364805, iyz: 2.996e-05, izz: 0.0003093}
+
+lower_limb:
+  mass: 0.226
+  com: [4.8e-05, 0.0, -0.18298]
+  inertia: {ixx: 0.001811, ixy: 0.0, ixz: -3.618e-06,
+            iyy: 0.001838, iyz: 0.0, izz: 8.3423e-05}
+
+foot:
+  # TODO: no mass data yet - massless frame carrying the foot collision.
+  mass: 0.0
+  com: [0.0, 0.0, 0.0]
+  inertia: {ixx: 0.0, ixy: 0.0, ixz: 0.0, iyy: 0.0, iyz: 0.0, izz: 0.0}
+
+imu:
+  mass: 0.05
+  com: [0.0, 0.0, 0.0]    # center of the IMU cylinder
+  inertia: {ixx: 1.0e-06, ixy: 0.0, ixz: 0.0, iyy: 1.0e-06, iyz: 0.0, izz: 1.0e-06}

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- <limit> and <dynamics> of an actuated joint; group = entry of `joints` in actuators.yaml -->
+    <xacro:macro name="meldog_joint_props" params="group">
+        <limit lower="${group.lower}"
+               upper="${group.upper}"
+               effort="${meldog_joint_effort}"
+               velocity="${meldog_joint_velocity}"/>
+        <dynamics friction="${group.friction}" damping="${group.damping}"/>
+    </xacro:macro>
+
+    <!-- One leg: hip link (H), upper limb (UL), lower limb (LL), foot (F) and joints
+         T (trunk -> hip link), H (hip -> upper limb), K (knee), F (fixed foot).
+         prefix: LF, RF, LR, RR;  sx: +1 front / -1 rear;  sy: +1 left / -1 right
+         collision: simple | mesh -->
+    <xacro:macro name="meldog_leg" params="prefix sx sy collision mesh_prefix">
+
+        <xacro:property name="links" value="${meldog_geo.links}"/>
+        <xacro:property name="tj" value="${meldog_geo.trunk_joint}"/>
+        <xacro:property name="hj" value="${meldog_geo.hip_joint}"/>
+        <xacro:property name="groups" value="${meldog_act.joints}"/>
+
+        <xacro:meldog_part name="${prefix}H_link" prefix="${prefix}" sx="${sx}" sy="${sy}"
+                           collision="${collision}" mesh_prefix="${mesh_prefix}"
+                           inertial="${meldog_inertial.hip}" shape="${links.hip}"/>
+
+        <xacro:meldog_part name="${prefix}UL_link" prefix="${prefix}" sx="${sx}" sy="${sy}"
+                           collision="${collision}" mesh_prefix="${mesh_prefix}"
+                           inertial="${meldog_inertial.upper_limb}" shape="${links.upper_limb}"/>
+
+        <xacro:meldog_part name="${prefix}LL_link" prefix="${prefix}" sx="${sx}" sy="${sy}"
+                           collision="${collision}" mesh_prefix="${mesh_prefix}"
+                           inertial="${meldog_inertial.lower_limb}" shape="${links.lower_limb}"/>
+
+        <xacro:meldog_part name="${prefix}F_link" prefix="${prefix}" sx="${sx}" sy="${sy}"
+                           collision="${collision}" mesh_prefix="${mesh_prefix}"
+                           inertial="${meldog_inertial.foot}" shape="${links.foot}"/>
+
+        <joint name="${prefix}T_joint" type="revolute">
+            <parent link="trunk_link"/>
+            <child link="${prefix}H_link"/>
+            <origin xyz="${sx*tj.x} ${sy*tj.y} ${tj.z}" rpy="0 0 0"/>
+            <xacro:meldog_joint_props group="${groups.trunk}"/>
+            <axis xyz="${sy} 0 0"/>
+        </joint>
+
+        <joint name="${prefix}H_joint" type="revolute">
+            <parent link="${prefix}H_link"/>
+            <child link="${prefix}UL_link"/>
+            <origin xyz="${sx*hj.x} ${sy*hj.y} ${hj.z}" rpy="0 0 0"/>
+            <xacro:meldog_joint_props group="${groups.hip}"/>
+            <axis xyz="0 -1 0"/>
+        </joint>
+
+        <joint name="${prefix}K_joint" type="revolute">
+            <parent link="${prefix}UL_link"/>
+            <child link="${prefix}LL_link"/>
+            <origin xyz="0 0 ${-meldog_geo.upper_limb_length}" rpy="0 0 0"/>
+            <xacro:meldog_joint_props group="${groups.knee}"/>
+            <axis xyz="0 -1 0"/>
+        </joint>
+
+        <joint name="${prefix}F_joint" type="fixed">
+            <parent link="${prefix}LL_link"/>
+            <child link="${prefix}F_link"/>
+            <origin xyz="0 0 ${-meldog_geo.lower_limb_length}" rpy="0 0 0"/>
+        </joint>
+
+    </xacro:macro>
+
+</robot>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- MuJoCo layer: options for MuJoCo's URDF importer (<mujoco><compiler/> inside <robot>).
+     With sim:=mujoco the meshes are referenced by absolute paths (MuJoCo does not resolve
+     package:// URIs), so strippath must be false.
+     Not verified in MuJoCo yet. Still missing for a full simulation: free joint of the trunk,
+     actuators, sensors (IMU, foot touch) and contact parameters - to be added on the MJCF side. -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="meldog_mujoco">
+        <mujoco>
+            <compiler strippath="false"/>
+        </mujoco>
+    </xacro:macro>
+
+</robot>
